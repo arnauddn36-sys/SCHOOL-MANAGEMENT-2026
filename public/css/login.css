@@ -1,0 +1,192 @@
+/* =====================================================================
+   LOGIN.CSS — PAGE DE CONNEXION (thème clair professionnel)
+===================================================================== */
+
+body.enveloppe-connexion{
+  background:var(--fond-page) !important;
+}
+
+.conteneur-connexion{
+  min-height:100vh;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+  padding:40px 20px !important;
+  background:
+    radial-gradient(circle at 12% 10%, var(--lueur-primaire) 0%, transparent 40%),
+    radial-gradient(circle at 88% 90%, var(--lueur-teal) 0%, transparent 40%),
+    var(--fond-page);
+}
+
+/* =========================
+   EN-TÊTE D'ACCUEIL
+========================= */
+.en-tete-accueil{
+  text-align:center;
+  max-width:720px;
+  margin-bottom:30px;
+  animation:apparition .5s ease-out;
+}
+
+.titre-accueil{
+  font-family:'Poppins',sans-serif;
+  font-size:2rem !important;
+  font-weight:800 !important;
+  color:var(--texte) !important;
+  margin-bottom:10px !important;
+  letter-spacing:-0.02em;
+}
+
+.sous-titre-accueil{
+  font-size:1.02rem;
+  color:var(--texte-attenue);
+  margin-bottom:16px;
+}
+
+.etiquettes-accueil{
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:center;
+  gap:10px;
+}
+
+.etiquettes-accueil .etiquette{
+  display:inline-flex; align-items:center; gap:6px;
+  background:#fff;
+  border:1px solid var(--bordure);
+  color:var(--primaire-fonce);
+  font-weight:600;
+  font-size:0.85rem;
+  padding:7px 14px;
+  border-radius:999px;
+  box-shadow:0 6px 14px -8px rgba(45,40,110,0.2);
+}
+
+.etiquettes-accueil .puce-etiquette{ color:var(--accent-teal); font-weight:800; }
+
+@keyframes apparition{ from{ opacity:0; transform:translateY(-14px);} to{ opacity:1; transform:translateY(0);} }
+
+/* =========================
+   CARTE DE CONNEXION
+========================= */
+.carte-connexion{
+  width:100%;
+  max-width:420px;
+  padding:40px 34px;
+  background:var(--fond-carte) !important;
+  border-radius:26px !important;
+  border:1px solid var(--bordure) !important;
+  box-shadow:0 30px 60px -30px rgba(45,40,110,0.45);
+  display:flex; flex-direction:column; align-items:center;
+  position:relative;
+  overflow:hidden;
+}
+
+.carte-connexion::before{
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:5px;
+  background:linear-gradient(90deg,var(--primaire),var(--secondaire),var(--accent-teal));
+}
+
+.avatar-utilisateur{
+  width:68px; height:68px; border-radius:50%;
+  background:linear-gradient(135deg,var(--primaire) 0%,var(--secondaire) 100%);
+  display:flex; align-items:center; justify-content:center;
+  color:#fff; font-size:26px;
+  margin-bottom:18px;
+  box-shadow:0 12px 24px -10px var(--lueur-primaire);
+}
+
+.en-tete-marque{ text-align:center; margin-bottom:26px; }
+
+.carte-connexion h1{
+  font-size:0.85rem !important;
+  font-weight:800 !important;
+  letter-spacing:2px !important;
+  color:var(--primaire) !important;
+  text-transform:uppercase;
+  margin-bottom:4px;
+}
+
+.carte-connexion h2{
+  font-size:1.15rem !important;
+  font-weight:700 !important;
+  color:var(--texte) !important;
+}
+
+.carte-connexion form{
+  background:transparent !important;
+  border:none !important;
+  box-shadow:none !important;
+  padding:0 !important;
+  max-width:100% !important;
+  width:100%;
+  gap:0 !important;
+}
+
+/* Champs de saisie */
+.champ-saisie{
+  position:relative;
+  display:flex; align-items:center;
+  margin-bottom:18px;
+  background:var(--fond-doux);
+  border:1.5px solid var(--bordure);
+  border-radius:var(--rayon-md);
+  padding:4px 14px;
+  transition:var(--transition);
+}
+
+.champ-saisie i{
+  font-size:14px; color:var(--texte-attenue); margin-right:10px; width:18px; text-align:center;
+}
+
+.champ-saisie input{
+  width:100% !important;
+  background:transparent !important;
+  border:none !important;
+  outline:none !important;
+  font-size:0.92rem !important;
+  color:var(--texte) !important;
+  padding:10px 0 !important;
+  box-shadow:none !important;
+}
+
+.champ-saisie input::placeholder{ color:#b5b9cc !important; }
+
+.champ-saisie:focus-within{
+  border-color:var(--secondaire);
+  background:#fff;
+  box-shadow:0 0 0 4px var(--lueur-primaire);
+}
+.champ-saisie:focus-within i{ color:var(--secondaire); }
+
+/* Bouton de connexion */
+.carte-connexion button.bouton-valider,
+.carte-connexion button[type="submit"]{
+  width:100% !important;
+  padding:14px !important;
+  border-radius:999px !important;
+  background:linear-gradient(135deg,var(--primaire) 0%,var(--secondaire) 100%) !important;
+  color:#fff !important;
+  font-size:0.9rem !important;
+  font-weight:700 !important;
+  letter-spacing:1px !important;
+  text-transform:uppercase;
+  box-shadow:0 14px 26px -10px var(--lueur-primaire) !important;
+  margin-top:8px;
+}
+.carte-connexion button.bouton-valider:hover{ transform:translateY(-2px); }
+
+/* Comptes de démonstration */
+.indice-connexion{
+  margin-top:24px;
+  font-size:0.76rem !important;
+  color:var(--texte-attenue) !important;
+  text-align:center;
+  line-height:1.7;
+}
+.indice-connexion span{ color:var(--primaire-fonce); font-weight:700; }
+
+@media (max-width:600px){
+  .titre-accueil{ font-size:1.4rem !important; }
+  .puce-etiquette{ display:none; }
+}

@@ -1,0 +1,289 @@
+/* =====================================================================
+   GLOBAL.CSS — THÈME CLAIR PROFESSIONNEL (violet / bleu / blanc)
+===================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+:root{
+  --primaire:#6f5cf0;
+  --primaire-fonce:#5843d6;
+  --secondaire:#3f7ff5;
+  --accent-teal:#12b8a6;
+  --danger:#ef4444;
+
+  --fond-page:#eef1f8;
+  --fond-carte:#ffffff;
+  --fond-doux:#f5f6fc;
+
+  --texte:#1c1e2b;
+  --texte-attenue:#8d92a8;
+  --bordure:#e7e9f2;
+
+  --lueur-primaire:rgba(111,92,240,0.25);
+  --lueur-teal:rgba(18,184,166,0.25);
+
+  --fond-succes:#e3f9f4;
+  --texte-succes:#0e9c8c;
+  --fond-danger:#fdeaea;
+  --texte-danger:#e14c4c;
+
+  --rayon-sm:10px;
+  --rayon-md:14px;
+  --rayon-lg:22px;
+
+  --ombre-carte:0 16px 34px -20px rgba(45,40,110,0.18);
+  --transition:all .2s cubic-bezier(.4,0,.2,1);
+}
+
+/* =========================
+   RESET
+========================= */
+*,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+
+html{ scroll-behavior:smooth; }
+
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--fond-page);
+  color:var(--texte);
+  min-height:100vh;
+  line-height:1.6;
+}
+
+h1,h2,h3{ font-family:'Poppins',sans-serif; font-weight:700; color:var(--texte); }
+h1{ font-size:1.6rem; letter-spacing:-0.01em; }
+h2{ font-size:1.15rem; margin-bottom:14px; }
+h3{ font-size:1rem; }
+
+p{ color:var(--texte-attenue); }
+
+/* Barre de défilement fine et discrète, dans la couleur de la marque */
+::-webkit-scrollbar{ width:8px; height:8px; }
+::-webkit-scrollbar-thumb{ background:var(--primaire); border-radius:99px; opacity:.5; }
+::-webkit-scrollbar-track{ background:transparent; }
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:.01ms !important; transition-duration:.01ms !important; }
+}
+
+/* Contour de focus clavier visible, dans la couleur de la marque */
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible{
+  outline:3px solid var(--secondaire);
+  outline-offset:2px;
+  border-radius:6px;
+}
+
+/* =========================
+   BOUTONS
+========================= */
+button{
+  font-family:'Inter',sans-serif;
+  border:none;
+  padding:11px 22px;
+  border-radius:999px;
+  cursor:pointer;
+  background:linear-gradient(135deg,var(--primaire) 0%,var(--secondaire) 100%);
+  color:#fff;
+  font-size:0.85rem;
+  font-weight:700;
+  letter-spacing:0.2px;
+  box-shadow:0 10px 22px -10px var(--lueur-primaire);
+  transition:var(--transition);
+}
+
+button:hover{ transform:translateY(-2px); box-shadow:0 14px 26px -10px var(--lueur-primaire); }
+button:active{ transform:translateY(0); }
+
+button.secondaire{
+  background:#fff;
+  color:var(--primaire);
+  border:1.5px solid var(--primaire);
+  box-shadow:none;
+}
+button.secondaire:hover{ background:var(--fond-doux); }
+
+button.danger{
+  background:linear-gradient(135deg,#f26565 0%,var(--danger) 100%);
+  box-shadow:0 10px 20px -10px rgba(239,68,68,0.45);
+}
+
+/* =========================
+   FORMULAIRES
+========================= */
+form{
+  background:var(--fond-carte);
+  border:1px solid var(--bordure);
+  border-radius:var(--rayon-lg);
+  box-shadow:var(--ombre-carte);
+  padding:32px;
+  max-width:520px;
+  margin:0 auto;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+label{
+  font-size:0.78rem;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.04em;
+  color:var(--primaire);
+  margin-bottom:-8px;
+}
+
+input, select{
+  font-family:'Inter',sans-serif;
+  padding:12px 14px;
+  border-radius:var(--rayon-sm);
+  border:1.5px solid var(--bordure);
+  background:var(--fond-doux);
+  font-size:0.92rem;
+  color:var(--texte);
+  transition:var(--transition);
+}
+
+input:focus, select:focus{
+  border-color:var(--secondaire);
+  background:#fff;
+  box-shadow:0 0 0 4px var(--lueur-primaire);
+}
+
+/* =========================
+   CARTES
+========================= */
+.card{
+  background:var(--fond-carte);
+  border:1px solid var(--bordure);
+  border-radius:var(--rayon-lg);
+  box-shadow:var(--ombre-carte);
+  padding:22px;
+  position:relative;
+  overflow:hidden;
+  transition:var(--transition);
+}
+
+/* Petite signature : un fin trait dégradé qui apparaît en haut de chaque carte au survol */
+.card::before{
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg,var(--primaire),var(--accent-teal));
+  transform:scaleX(0);
+  transform-origin:left;
+  transition:transform .35s ease;
+}
+.card:hover::before{ transform:scaleX(1); }
+.card:hover{ transform:translateY(-3px); box-shadow:0 22px 40px -20px rgba(45,40,110,0.25); }
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:16px;
+  margin-top:10px;
+}
+
+/* =========================
+   TABLEAUX
+========================= */
+table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  background:var(--fond-carte);
+  border:1px solid var(--bordure);
+  border-radius:var(--rayon-lg);
+  overflow:hidden;
+  box-shadow:var(--ombre-carte);
+}
+
+thead{ background:var(--fond-doux); }
+
+thead th{
+  color:var(--primaire-fonce);
+  text-align:left;
+  padding:16px 20px;
+  font-size:0.72rem;
+  text-transform:uppercase;
+  letter-spacing:0.06em;
+  font-weight:800;
+  border-bottom:1px solid var(--bordure);
+}
+
+tbody td{
+  padding:15px 20px;
+  border-bottom:1px solid var(--bordure);
+  font-size:0.9rem;
+  color:var(--texte);
+}
+
+tbody tr:last-child td{ border-bottom:none; }
+tbody tr{ transition:var(--transition); }
+tbody tr:hover{ background:var(--fond-doux); }
+
+td.mono, span.mono{ font-family:'Courier New',monospace; color:var(--texte-attenue); }
+
+/* =========================
+   BADGES
+========================= */
+.badge{
+  display:inline-flex;
+  align-items:center;
+  padding:5px 14px;
+  border-radius:999px;
+  font-size:0.72rem;
+  font-weight:700;
+  background:var(--fond-danger);
+  color:var(--texte-danger);
+}
+.badge.ok{ background:var(--fond-succes); color:var(--texte-succes); }
+
+/* =========================
+   PROFIL UTILISATEUR & DÉCONNEXION (partagés admin / professeur / élève)
+========================= */
+.profil-utilisateur{
+  display:flex; align-items:center; gap:14px;
+  background:var(--fond-carte);
+  padding:8px 18px;
+  border-radius:999px;
+  border:1px solid var(--bordure);
+  box-shadow:var(--ombre-carte);
+}
+.profil-utilisateur i{ font-size:1.25rem; color:var(--primaire); }
+.nom-utilisateur{ font-weight:700; font-size:0.9rem; color:var(--texte); }
+
+.bouton-deconnexion, #deconnexion{
+  background:linear-gradient(135deg,var(--accent-teal) 0%,var(--secondaire) 100%) !important;
+  color:#fff !important;
+  font-weight:700 !important;
+  padding:8px 18px !important;
+  border-radius:999px !important;
+  box-shadow:0 8px 18px -8px var(--lueur-teal);
+}
+.bouton-deconnexion:hover, #deconnexion:hover{ transform:translateY(-2px); }
+
+/* =========================
+   ÉTAT VIDE
+========================= */
+.etat-vide{
+  background:var(--fond-carte);
+  border:1.5px dashed var(--bordure);
+  border-radius:var(--rayon-lg);
+  padding:34px;
+  text-align:center;
+  color:var(--texte-attenue);
+}
+
+/* =========================
+   ACCESSIBILITÉ
+========================= */
+/* Cache visuellement un élément tout en le gardant lisible par les lecteurs d'écran
+   (utilisé sur les <label> du formulaire de connexion, qui a déjà des icônes visibles) */
+.masque-visuellement{
+  position:absolute;
+  width:1px; height:1px;
+  padding:0; margin:-1px;
+  overflow:hidden;
+  clip:rect(0,0,0,0);
+  white-space:nowrap;
+  border:0;
+}

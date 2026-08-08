@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard Administrateur — SCHOOL MANAGEMENT</title>
+
+    <!-- FontAwesome pour les icônes néon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Styles CSS -->
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/admin.css">
+
+</head>
+
+<body>
+
+    <div class="disposition-admin">
+
+        <!-- BARRE LATÉRALE GAUCHE -->
+        <aside class="barre-laterale-admin">
+            <div>
+                <!-- Titre en MAJUSCULES -->
+                <div class="marque-barre-laterale">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span>SCHOOL MANAGEMENT</span>
+                </div>
+
+                <p class="etiquette-barre-laterale">MENU</p>
+
+                <!-- MENU ADMIN : attributs data-panel utilisés par admin.js -->
+                <nav class="menu-admin">
+                    <ul>
+                        <li><button data-panel="statistiques" class="actif"><i class="fa-solid fa-chart-pie"></i> Vue d'ensemble</button></li>
+                        <li><button data-panel="utilisateurs"><i class="fa-solid fa-users"></i> Utilisateurs</button></li>
+                        <li><button data-panel="eleves"><i class="fa-solid fa-user-graduate"></i> Élèves</button></li>
+                        <li><button data-panel="professeurs"><i class="fa-solid fa-chalkboard-user"></i> Professeurs</button></li>
+                        <li><button data-panel="matieres"><i class="fa-solid fa-book"></i> Matières</button></li>
+                        <li><button data-panel="notes"><i class="fa-solid fa-file-pen"></i> Notes</button></li>
+                        <li><button data-panel="absences"><i class="fa-solid fa-user-clock"></i> Absences</button></li>
+
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- ZONE PRINCIPALE -->
+        <main class="zone-principale-admin">
+
+            <!-- EN-TÊTE SUPÉRIEUR (PROFIL + DÉCONNEXION EN HAUT À DROITE) -->
+            <header class="barre-superieure">
+                <div class="profil-utilisateur">
+                    <i class="fa-solid fa-circle-user"></i>
+                    <span id="nomAdmin" class="nom-utilisateur">Administrateur</span>
+                    <button id="deconnexion" class="bouton-deconnexion">
+                        <i class="fa-solid fa-power-off"></i> Déconnexion
+                    </button>
+                </div>
+            </header>
+
+            <!-- CONTENU PRINCIPAL (OCCUPE 100% DE LA LARGEUR DISPONIBLE) -->
+            <section class="contenu-admin" id="contenu"></section>
+
+        </main>
+
+    </div>
+
+    <!-- Un seul point d'entrée module : il importe lui-même tous les panneaux nécessaires -->
+    <script type="module" src="../js/admin.js"></script>
+
+</body>
+
+</html>

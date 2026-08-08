@@ -1,0 +1,190 @@
+/* =====================================================================
+   ADMIN.CSS — TABLEAU DE BORD ADMINISTRATEUR (thème clair professionnel)
+===================================================================== */
+
+body{
+  background:var(--fond-page);
+  padding:20px;
+}
+
+.disposition-admin{
+  display:flex;
+  min-height:calc(100vh - 40px);
+  border-radius:var(--rayon-lg);
+  overflow:hidden;
+  box-shadow:0 30px 60px -30px rgba(45,40,110,0.35);
+}
+
+/* =========================
+   BARRE LATÉRALE
+========================= */
+.barre-laterale-admin{
+  width:270px;
+  min-width:270px;
+  background:linear-gradient(165deg,var(--primaire) 0%,var(--secondaire) 100%);
+  color:#fff;
+  padding:30px 22px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+.marque-barre-laterale{
+  display:flex; align-items:center; gap:12px;
+  font-family:'Poppins',sans-serif;
+  font-size:1.2rem; font-weight:800;
+  letter-spacing:0.5px;
+  margin-bottom:36px;
+}
+
+.etiquette-barre-laterale{
+  font-size:0.7rem;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.1em;
+  color:rgba(255,255,255,0.6);
+  margin-bottom:12px;
+  padding-left:6px;
+}
+
+.menu-admin ul{ list-style:none; display:flex; flex-direction:column; gap:6px; }
+
+.menu-admin button{
+  width:100%;
+  text-align:left;
+  justify-content:flex-start;
+  background:transparent;
+  color:rgba(255,255,255,0.8);
+  box-shadow:none;
+  font-weight:600;
+  padding:12px 16px;
+  border-radius:12px;
+  display:flex; align-items:center; gap:12px;
+}
+
+.menu-admin button:hover{ background:rgba(255,255,255,0.12); transform:none; color:#fff; }
+
+.menu-admin button.actif{
+  background:#fff;
+  color:var(--primaire-fonce);
+  box-shadow:0 10px 22px -8px rgba(0,0,0,0.25);
+}
+
+/* =========================
+   ZONE PRINCIPALE
+========================= */
+.zone-principale-admin{
+  flex:1;
+  background:var(--fond-page);
+  padding:26px 36px 40px;
+  overflow-y:auto;
+}
+
+.barre-superieure{
+  display:flex;
+  justify-content:flex-end;
+  margin-bottom:26px;
+}
+
+/* =========================
+   CONTENU
+========================= */
+.contenu-admin, #contenu{
+  display:flex;
+  flex-direction:column;
+  gap:22px;
+}
+
+.barre-outils-panneau{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:12px;
+  background:var(--fond-carte);
+  padding:20px 26px;
+  border-radius:var(--rayon-lg);
+  border:1px solid var(--bordure);
+  box-shadow:var(--ombre-carte);
+}
+
+/* =========================
+   STATISTIQUES
+========================= */
+.grille-statistiques{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:18px;
+}
+
+.carte-statistique{
+  background:var(--fond-carte);
+  border:1px solid var(--bordure);
+  border-radius:var(--rayon-lg);
+  box-shadow:var(--ombre-carte);
+  padding:22px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  transition:var(--transition);
+  position:relative;
+  overflow:hidden;
+}
+.carte-statistique::before{
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg,var(--primaire),var(--accent-teal));
+}
+.carte-statistique:hover{ transform:translateY(-4px); box-shadow:0 22px 40px -20px rgba(45,40,110,0.28); }
+
+.titre-statistique{
+  font-size:0.75rem;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.05em;
+  color:var(--texte-attenue);
+}
+
+.valeur-statistique{
+  font-family:'Poppins',sans-serif;
+  font-size:2rem;
+  font-weight:800;
+  color:var(--primaire-fonce);
+}
+
+/* =========================
+   ACTIONS DE LIGNE
+========================= */
+.actions-ligne{ display:flex; gap:8px; }
+.actions-ligne button{ padding:7px 14px; font-size:0.78rem; }
+
+/* Couleurs des onglets du menu par module */
+.menu-admin button[data-panel="statistiques"] i{ color:#ffd166; }
+.menu-admin button[data-panel="utilisateurs"] i{ color:#8ecae6; }
+.menu-admin button[data-panel="eleves"] i{ color:#95d5b2; }
+.menu-admin button[data-panel="professeurs"] i{ color:#ffb4a2; }
+.menu-admin button[data-panel="matieres"] i{ color:#e0aaff; }
+.menu-admin button[data-panel="notes"] i{ color:#ffd6a5; }
+.menu-admin button[data-panel="absences"] i{ color:#ff8fa3; }
+.menu-admin button.actif i{ color:var(--primaire) !important; }
+
+/* =====================================================================
+   RESPONSIVE
+===================================================================== */
+@media (max-width:1024px){
+  .disposition-admin{ flex-direction:column; border-radius:var(--rayon-lg); }
+  .barre-laterale-admin{ width:100%; min-width:100%; flex-direction:row; align-items:center; justify-content:space-between; padding:16px 20px; }
+  .marque-barre-laterale{ margin-bottom:0; }
+  .barre-laterale-admin > div:first-child{ display:flex; align-items:center; gap:20px; }
+  .menu-admin ul{ flex-direction:row; overflow-x:auto; gap:6px; }
+  .menu-admin li{ flex-shrink:0; }
+  .zone-principale-admin{ padding:20px; }
+}
+
+@media (max-width:600px){
+  body{ padding:0; }
+  .disposition-admin{ border-radius:0; min-height:100vh; }
+  .grille-statistiques{ grid-template-columns:1fr; }
+  .barre-outils-panneau{ flex-direction:column; align-items:stretch; }
+  table{ display:block; overflow-x:auto; white-space:nowrap; }
+}

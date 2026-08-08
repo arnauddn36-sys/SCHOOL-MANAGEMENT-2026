@@ -1,0 +1,31 @@
+{
+  "name": "school-management",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "cli": "node main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "better-sqlite3": "^12.10.0",
+    "express": "^5.2.1",
+    "herozion": "^1.2.27",
+    "nodemon": "^3.1.14",
+    "scan": "^0.9.0"
+  },
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arnauddn36-sys/SCHOOL-MANAGEMENT-JUIN.git"
+  },
+  "bugs": {
+    "url": "https://github.com/arnauddn36-sys/SCHOOL-MANAGEMENT-JUIN/issues"
+  },
+  "homepage": "https://github.com/arnauddn36-sys/SCHOOL-MANAGEMENT-JUIN#readme"
+}

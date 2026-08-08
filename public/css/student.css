@@ -1,0 +1,81 @@
+/* =====================================================================
+   STUDENT.CSS — TABLEAU DE BORD ÉLÈVE (thème clair, accent teal)
+===================================================================== */
+
+:root{ --accent-role:var(--accent-teal); }
+
+body.corps-role{ background:var(--fond-page); }
+
+.entete-role{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:18px 40px;
+  background:var(--fond-carte);
+  border-bottom:1px solid var(--bordure);
+  position:sticky; top:0; z-index:10;
+  box-shadow:0 4px 20px -12px rgba(45,40,110,0.15);
+}
+
+.marque-role{
+  display:flex; align-items:center; gap:10px;
+  font-family:'Poppins',sans-serif;
+  font-size:1.05rem; font-weight:800;
+  letter-spacing:0.5px;
+  color:var(--accent-role);
+}
+
+.entete-role--eleve .profil-utilisateur i{ color:var(--accent-role); }
+
+.conteneur-role{
+  max-width:1100px;
+  margin:0 auto;
+  padding:32px 24px 60px;
+  display:flex; flex-direction:column; gap:22px;
+}
+
+.identite-eleve, .carte-notes, .carte-absences{
+  background:var(--fond-carte);
+  border:1px solid var(--bordure);
+  border-radius:var(--rayon-lg);
+  box-shadow:var(--ombre-carte);
+  padding:24px 28px;
+  border-top:4px solid var(--accent-role);
+}
+
+.identite-eleve h2, .carte-notes h2, .carte-absences h2{
+  display:flex; align-items:center; gap:10px;
+  margin-bottom:14px;
+}
+
+.grille-identite{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:16px;
+}
+
+.grille-identite > div{
+  background:var(--fond-doux);
+  border:1px solid var(--bordure);
+  border-radius:var(--rayon-md);
+  padding:14px 16px;
+}
+
+.etiquette-info{
+  display:block;
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:0.06em;
+  color:var(--texte-attenue);
+  margin-bottom:6px;
+}
+
+.valeur-info{
+  font-family:'Courier New',monospace;
+  font-size:16px;
+  font-weight:700;
+  color:var(--texte-succes);
+}
+
+@media (max-width:600px){
+  .entete-role{ flex-direction:column; gap:12px; padding:16px 20px; }
+  .conteneur-role{ padding:20px 16px 40px; }
+}
