@@ -71,10 +71,8 @@ application.get("/", (requete, reponse) => {
 });
 
 // Lancement du serveur
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 application.listen(PORT, "0.0.0.0", () => {
-    console.log(`Serveur prêt :`);
-    console.log(`- Sur ton PC  : http://localhost:${PORT}`);
-    console.log(`- Sur ton tel :http://10.0.0.14:${PORT}`);
+    console.log(`Serveur prêt sur le port ${PORT}`);
 });
