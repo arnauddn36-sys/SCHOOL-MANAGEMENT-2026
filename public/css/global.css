@@ -97,7 +97,10 @@ button.secondaire{
   border:1.5px solid var(--primaire);
   box-shadow:none;
 }
-button.secondaire:hover{ background:var(--fond-doux); }
+
+   button.secondaire:hover {
+     background: var(--fond-doux);
+   }
 
 button.danger{
   background:linear-gradient(135deg,#f26565 0%,var(--danger) 100%);
