@@ -19,8 +19,10 @@ if (utilisateur) {
     document.getElementById("deconnexion").addEventListener("click", deconnexion); // Déconnexion
 
     // Association entre les boutons du menu et les panneaux à afficher
+    // Pour "eleves", on passe lectureSeule = true : le professeur voit uniquement
+    // la liste, sans les boutons Ajouter / Modifier / Supprimer (réservés à l'admin).
     const panneaux = {
-        eleves: afficherPanneauEleves,
+        eleves: (conteneur) => afficherPanneauEleves(conteneur, true),
         notes: afficherPanneauNotes,
         absences: afficherPanneauAbsences
     };

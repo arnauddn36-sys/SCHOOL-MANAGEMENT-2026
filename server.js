@@ -74,6 +74,5 @@ application.get("/", (requete, reponse) => {
 const PORT = process.env.PORT || 3000;
 
 application.listen(PORT, "0.0.0.0", () => {
-    console.log(`Serveur prêt sur le port ${PORT}`);
     console.log(`Accéder à l'application via http://localhost:${PORT}`);
 });

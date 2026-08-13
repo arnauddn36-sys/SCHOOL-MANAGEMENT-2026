@@ -33,7 +33,7 @@ routeur.get("/:id", autoriser("admin", "teacher"), obtenirEleveUnique);
 // ==========================
 // Ajouter un élève (admin uniquement)
 // ==========================
-routeur.post("/", autoriser("admin"), creerEleve);
+routeur.post("/", autoriser("admin", ), creerEleve);
 
 // ==========================
 // Modifier un élève (admin uniquement)
@@ -43,6 +43,6 @@ routeur.put("/:id", autoriser("admin"), mettreAJourEleve);
 // ==========================
 // Supprimer un élève (admin uniquement)
 // ==========================
-routeur.delete("/:id", autoriser("admin"), retirerEleve);
+routeur.delete("/:id", autoriser("admin",), retirerEleve);
 
 export default routeur;

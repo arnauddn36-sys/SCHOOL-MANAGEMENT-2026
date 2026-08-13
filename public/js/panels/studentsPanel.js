@@ -1,16 +1,19 @@
 // public/js/panels/studentsPanel.js
-// Panneau "Gestion des élèves" du tableau de bord administrateur.
+// Panneau "Gestion des élèves" — utilisé par le dashboard admin (CRUD complet)
+// et par le dashboard enseignant (lecture seule : liste uniquement).
 
 import { api } from "../api.js";
 import { afficherNotification, echapperHtml, confirmerAction } from "../ui.js";
 
-// Point d'entrée du panneau : appelé quand l'admin clique sur "Élèves"
-export async function afficherPanneauEleves(conteneur) {
+// Point d'entrée du panneau.
+// lectureSeule = true  -> pour l'enseignant : affiche uniquement la liste, sans boutons d'action.
+// lectureSeule = false -> pour l'admin : CRUD complet (ajouter / modifier / supprimer).
+export async function afficherPanneauEleves(conteneur, lectureSeule = false) {
 
     try {
 
         const eleves = await api.get("/api/students"); // Récupère tous les élèves
-        afficherListe(conteneur, eleves);                 // Affiche la liste
+        afficherListe(conteneur, eleves, lectureSeule);    // Affiche la liste
 
     } catch (erreur) {
 
@@ -19,13 +22,13 @@ export async function afficherPanneauEleves(conteneur) {
 }
 
 // Affiche le tableau des élèves
-function afficherListe(conteneur, eleves) {
+function afficherListe(conteneur, eleves, lectureSeule) {
 
     conteneur.innerHTML = `
 
         <div class="barre-outils-panneau">
-            <h2>Gestion des élèves</h2>
-            <button id="boutonAjouterEleve">+ Ajouter un élève</button>
+            <h2>${lectureSeule ? "Liste des élèves" : "Gestion des élèves"}</h2>
+            ${lectureSeule ? "" : `<button id="boutonAjouterEleve">+ Ajouter un élève</button>`}
         </div>
 
         ${eleves.length === 0 ? `
@@ -39,15 +42,20 @@ function afficherListe(conteneur, eleves) {
                         <th>Prénom</th>
                         <th>Âge</th>
                         <th>Classe</th>
-                        <th>Actions</th>
+                        ${lectureSeule ? "" : "<th>Actions</th>"}
                     </tr>
                 </thead>
                 <tbody>
-                    ${eleves.map(ligneTableau).join("")}
+                    ${eleves.map(eleve => ligneTableau(eleve, lectureSeule)).join("")}
                 </tbody>
             </table>
         `}
     `;
+
+    // En lecture seule, on n'attache aucun écouteur d'ajout/modification/suppression
+    if (lectureSeule) {
+        return;
+    }
 
     conteneur.querySelector("#boutonAjouterEleve")
         .addEventListener("click", () => afficherFormulaire(conteneur));
@@ -62,7 +70,7 @@ function afficherListe(conteneur, eleves) {
 }
 
 // Construit une ligne de tableau pour un élève
-function ligneTableau(eleve) {
+function ligneTableau(eleve, lectureSeule) {
     return `
         <tr>
             <td class="mono">${echapperHtml(eleve.matricule)}</td>
@@ -70,12 +78,14 @@ function ligneTableau(eleve) {
             <td>${echapperHtml(eleve.prenom)}</td>
             <td>${eleve.age}</td>
             <td>${echapperHtml(eleve.classe)}</td>
+            ${lectureSeule ? "" : `
             <td>
                 <div class="actions-ligne">
                     <button class="secondaire modifier-eleve" data-id="${eleve.id}">Modifier</button>
                     <button class="danger supprimer-eleve" data-id="${eleve.id}">Supprimer</button>
                 </div>
             </td>
+            `}
         </tr>
     `;
 }
@@ -85,7 +95,7 @@ function trouverEleve(eleves, id) {
     return eleves.find(eleve => String(eleve.id) === String(id));
 }
 
-// Affiche le formulaire d'ajout ou de modification
+// Affiche le formulaire d'ajout ou de modification (admin uniquement)
 function afficherFormulaire(conteneur, eleveExistant = null) {
 
     const estModification = Boolean(eleveExistant);
@@ -153,7 +163,7 @@ async function gererEnvoi(evenement, conteneur, idExistant) {
     }
 }
 
-// Supprime un élève après confirmation
+// Supprime un élève après confirmation (admin uniquement)
 async function gererSuppression(conteneur, id) {
 
     if (!confirmerAction("Supprimer définitivement cet élève ?")) {

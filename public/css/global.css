@@ -1,6 +1,4 @@
-/* =====================================================================
-   GLOBAL.CSS — THÈME CLAIR PROFESSIONNEL (violet / bleu / blanc)
-===================================================================== */
+/*GLOBAL.CSS — THÈME CLAIR PROFESSIONNEL */
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 
@@ -35,10 +33,15 @@
   --transition:all .2s cubic-bezier(.4,0,.2,1);
 }
 
-   /*RESET*/
+/*RESET*/
 *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
 
 html{ scroll-behavior:smooth; }
+
+/* Taille de base de la police : on la réduit légèrement sur très petit écran
+   pour que tout le "rem" du fichier (h1, h2, boutons, tableaux...) rétrécisse
+   automatiquement avec elle, sans avoir à réécrire chaque règle. */
+html{ font-size:100%; }
 
 body{
   font-family:'Inter',system-ui,sans-serif;
@@ -54,6 +57,8 @@ h2{ font-size:1.15rem; margin-bottom:14px; }
 h3{ font-size:1rem; }
 
 p{ color:var(--texte-attenue); }
+
+img, table{ max-width:100%; height:auto; }
 
 /* Barre de défilement fine et discrète, dans la couleur de la marque */
 ::-webkit-scrollbar{ width:8px; height:8px; }
@@ -71,7 +76,15 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   border-radius:6px;
 }
 
-   /*BOUTONS*/
+/*CONTENEUR GÉNÉRAL*/
+.container{
+  width:100%;
+  max-width:1200px;
+  margin:0 auto;
+  padding:0 15px;
+}
+
+/*BOUTONS*/
 
 button{
   font-family:'Inter',sans-serif;
@@ -80,7 +93,7 @@ button{
   border-radius:999px;
   cursor:pointer;
   background:linear-gradient(135deg,var(--primaire) 0%,var(--secondaire) 100%);
-  color:#d31515;
+  color:#fff;
   font-size:0.85rem;
   font-weight:700;
   letter-spacing:0.2px;
@@ -98,16 +111,14 @@ button.secondaire{
   box-shadow:none;
 }
 
-   button.secondaire:hover {
-     background: var(--fond-doux);
-   }
+button.secondaire:hover{ background:var(--fond-doux); }
 
 button.danger{
   background:linear-gradient(135deg,#f26565 0%,var(--danger) 100%);
   box-shadow:0 10px 20px -10px rgba(239,68,68,0.45);
 }
 
-   /*FORMULAIRES*/
+/*FORMULAIRES*/
 form{
   background:var(--fond-carte);
   border:1px solid var(--bordure);
@@ -139,6 +150,7 @@ input, select{
   font-size:0.92rem;
   color:var(--texte);
   transition:var(--transition);
+  width:100%;
 }
 
 input:focus, select:focus{
@@ -147,7 +159,7 @@ input:focus, select:focus{
   box-shadow:0 0 0 4px var(--lueur-primaire);
 }
 
-   /*CARTES*/
+/*CARTES*/
 .card{
   background:var(--fond-carte);
   border:1px solid var(--bordure);
@@ -178,9 +190,8 @@ input:focus, select:focus{
   margin-top:10px;
 }
 
+/*TABLEAUX*/
 
-   /*TABLEAUX*/
- 
 table{
   width:100%;
   border-collapse:separate;
@@ -218,9 +229,18 @@ tbody tr:hover{ background:var(--fond-doux); }
 
 td.mono, span.mono{ font-family:'Courier New',monospace; color:var(--texte-attenue); }
 
-/* =========================
-   BADGES
-========================= */
+/* Conteneur qui permet au tableau de défiler horizontalement sur petit écran
+   sans casser la mise en page de la page entière. À mettre autour de <table>
+   dans le HTML (ex: <div class="tableau-scroll"><table>...</table></div>).
+   Si ce wrapper n'existe pas encore dans le HTML, le fallback ci-dessous
+   (table { display:block; overflow-x:auto } en media query) prend le relais. */
+.tableau-scroll{
+  width:100%;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+}
+
+   /*BADGES*/
 .badge{
   display:inline-flex;
   align-items:center;
@@ -284,47 +304,86 @@ td.mono, span.mono{ font-family:'Courier New',monospace; color:var(--texte-atten
   border:0;
 }
 
-/* RESPONSIVE*/
+/* =========================================================
+   RESPONSIVE — TOUS LES ÉCRANS
+   Approche "desktop-first" : le style de base ci-dessus est pensé
+   pour le grand écran, puis on adapte en descendant par palier.
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+   Paliers utilisés :
+   - ≥1440px : très grand écran (moniteur large)
+   - 1024–1439px : desktop standard (style de base, aucun changement)
+   - 768–1023px : tablette
+   - 480–767px  : mobile (portrait standard)
+   - <480px     : très petit mobile
+========================================================= */
+
+/* ---------- Très grand écran : on aère un peu plus le contenu ---------- */
+@media (min-width:1440px){
+  .container{ max-width:1360px; }
+  h1{ font-size:1.9rem; }
 }
 
-  
+/* ---------- Tablette (768px – 1023px) ---------- */
+@media (max-width:1023px){
+  .container{ padding:0 20px; }
 
+  .cards{ grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); }
 
-* {
-    box-sizing: border-box;
+  form{ max-width:100%; padding:26px; }
+
+  thead th, tbody td{ padding:12px 14px; }
 }
 
+/* ---------- Mobile (480px – 767px) ---------- */
+@media (max-width:767px){
 
+  html{ font-size:93.75%; } /* réduit légèrement toutes les tailles en rem */
 
+  .container{ padding:0 14px; }
 
-img, table {
-    max-width: 100%;
-    height: auto;
+  h1{ font-size:1.35rem; }
+  h2{ font-size:1.05rem; }
+
+  /* Empile verticalement les menus et grilles au lieu de les mettre en ligne */
+  .navigation-menu, .dashboard-grid, .puces-menu, .barre-outils-panneau{
+    flex-direction:column;
+    align-items:stretch;
+    width:100%;
+    gap:10px;
+  }
+
+  .cards{ grid-template-columns:1fr; }
+
+  /* Boutons pleine largeur pour être faciles à toucher au doigt */
+  button{ width:100%; padding:12px 18px; }
+
+  /* Sauf les actions groupées dans une ligne de tableau : elles restent compactes */
+  .actions-ligne{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    width:100%;
+  }
+  .actions-ligne button{ width:100%; }
+
+  form{ padding:20px; border-radius:var(--rayon-md); }
+
+  /* Fallback si le tableau n'est pas encore enveloppé dans .tableau-scroll :
+     le tableau lui-même défile horizontalement plutôt que de déborder de l'écran. */
+  table{
+    display:block;
+    overflow-x:auto;
+    white-space:nowrap;
+  }
+
+  .profil-utilisateur{ padding:6px 12px; gap:8px; }
+  .nom-utilisateur{ font-size:0.8rem; }
 }
 
-
-
-.container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 15px;
-}
-
-/* Adaptations pour écrans mobiles */
-@media (max-width: 767px) {
-    .navigation-menu, .dashboard-grid {
-        flex-direction: column;
-        width: 100%;
-    }
-
-    table {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-    }
+/* ---------- Très petit mobile (<480px) ---------- */
+@media (max-width:479px){
+  h1{ font-size:1.2rem; }
+  form{ padding:16px; }
+  thead th, tbody td{ padding:10px 12px; font-size:0.82rem; }
+  .profil-utilisateur .nom-utilisateur{ display:none; } /* on garde juste l'icône, faute de place */
 }
