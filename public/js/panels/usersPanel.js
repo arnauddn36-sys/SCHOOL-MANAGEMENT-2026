@@ -8,12 +8,10 @@ import { afficherNotification, echapperHtml, confirmerAction } from "../ui.js";
 export async function afficherPanneauUtilisateurs(conteneur) {
 
     try {
-
         const utilisateurs = await api.get("/api/users"); // Récupère tous les comptes
         afficherListe(conteneur, utilisateurs);              // Affiche la liste
 
     } catch (erreur) {
-
         afficherNotification("Erreur lors du chargement des utilisateurs : " + (erreur.message || erreur), "error");
     }
 }
@@ -22,7 +20,6 @@ export async function afficherPanneauUtilisateurs(conteneur) {
 function afficherListe(conteneur, utilisateurs) {
 
     conteneur.innerHTML = `
-
         <div class="barre-outils-panneau">
             <h2>Gestion des utilisateurs</h2>
             <button id="boutonAjouterUtilisateur">+ Ajouter un utilisateur</button>
@@ -37,6 +34,7 @@ function afficherListe(conteneur, utilisateurs) {
                         <th>ID</th>
                         <th>Nom</th>
                         <th>Prénom</th>
+                        <th>Email</th>
                         <th>Rôle</th>
                         <th>Actions</th>
                     </tr>
@@ -70,6 +68,7 @@ function ligneTableau(utilisateur) {
             <td class="mono">${utilisateur.id}</td>
             <td>${echapperHtml(utilisateur.nom)}</td>
             <td>${echapperHtml(utilisateur.prenom)}</td>
+            <td>${echapperHtml(utilisateur.email || "-")}</td>
             <td><span class="badge ok">${libelleRole(utilisateur.role)}</span></td>
             <td>
                 <div class="actions-ligne">
@@ -99,7 +98,6 @@ function afficherFormulaire(conteneur, utilisateurExistant = null) {
     const estModification = Boolean(utilisateurExistant); // true si on modifie un utilisateur existant
 
     conteneur.innerHTML = `
-
         <div class="barre-outils-panneau">
             <h2>${estModification ? "Modifier l'utilisateur" : "Ajouter un utilisateur"}</h2>
             <button class="secondaire" id="boutonAnnulerUtilisateur">Annuler</button>
@@ -108,16 +106,19 @@ function afficherFormulaire(conteneur, utilisateurExistant = null) {
         <form id="formulaireUtilisateur">
 
             <label for="utilisateurNom">Nom</label>
-            <input type="text" id="utilisateurNom" value="${estModification ? echapperHtml(utilisateurExistant.nom) : ""}" required>
+            <input type="text" id="utilisateurNom" name="nom" value="${estModification ? echapperHtml(utilisateurExistant.nom) : ""}" required>
 
             <label for="utilisateurPrenom">Prénom</label>
-            <input type="text" id="utilisateurPrenom" value="${estModification ? echapperHtml(utilisateurExistant.prenom) : ""}" required>
+            <input type="text" id="utilisateurPrenom" name="prenom" value="${estModification ? echapperHtml(utilisateurExistant.prenom) : ""}" required>
+
+            <label for="utilisateurEmail">Email professionnel / scolaire</label>
+            <input type="email" id="utilisateurEmail" name="email" placeholder="exemple@school.com" value="${estModification ? echapperHtml(utilisateurExistant.email || "") : ""}" required>
 
             <label for="utilisateurMotDePasse">Mot de passe</label>
-            <input type="text" id="utilisateurMotDePasse" value="${estModification ? echapperHtml(utilisateurExistant.password) : ""}" required>
+            <input type="text" id="utilisateurMotDePasse" name="password" value="${estModification ? echapperHtml(utilisateurExistant.password) : ""}" required>
 
             <label for="utilisateurRole">Rôle</label>
-            <select id="utilisateurRole">
+            <select id="utilisateurRole" name="role" required>
                 <option value="admin"   ${estModification && utilisateurExistant.role === "admin"   ? "selected" : ""}>Administrateur</option>
                 <option value="teacher" ${estModification && utilisateurExistant.role === "teacher" ? "selected" : ""}>Professeur</option>
                 <option value="student" ${estModification && utilisateurExistant.role === "student" ? "selected" : ""}>Élève</option>
@@ -142,15 +143,18 @@ async function gererEnvoi(evenement, conteneur, idExistant) {
 
     evenement.preventDefault(); // On empêche le rechargement de la page
 
+    const roleElement = document.getElementById("utilisateurRole");
+    const roleValue = roleElement ? roleElement.value : "student"; // Valeur par défaut sécurisée
+
     const donnees = {
         nom: document.getElementById("utilisateurNom").value.trim(),
         prenom: document.getElementById("utilisateurPrenom").value.trim(),
+        email: document.getElementById("utilisateurEmail").value.trim(),
         password: document.getElementById("utilisateurMotDePasse").value,
-        role: document.getElementById("utilisateurRole").value
+        role: roleValue
     };
 
     try {
-
         const resultat = idExistant
             ? await api.put(`/api/users/${idExistant}`, donnees)  // Modification
             : await api.post("/api/users", donnees);                // Création
@@ -159,7 +163,7 @@ async function gererEnvoi(evenement, conteneur, idExistant) {
         await afficherPanneauUtilisateurs(conteneur); // On revient à la liste actualisée
 
     } catch (erreur) {
-        afficherNotification(erreur.message, "error"); // Ex: mot de passe déjà utilisé
+        afficherNotification(erreur.message, "error"); // Ex: mot de passe ou email déjà utilisé
     }
 }
 
@@ -171,7 +175,6 @@ async function gererSuppression(conteneur, id) {
     }
 
     try {
-
         const resultat = await api.delete(`/api/users/${id}`);
         afficherNotification(resultat.message);
         await afficherPanneauUtilisateurs(conteneur); // Rafraîchit la liste

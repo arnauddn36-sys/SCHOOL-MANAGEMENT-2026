@@ -2,6 +2,7 @@
 
 import express from "express";
 import path from "path";
+import "dotenv/config"; // Chargement des variables d'environnement depuis le fichier .env
 import { fileURLToPath } from "url";
 
 import routesUtilisateurs from "./routes/userRoutes.js";

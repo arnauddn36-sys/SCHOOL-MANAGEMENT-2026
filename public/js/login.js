@@ -21,9 +21,10 @@ formulaireConnexion.addEventListener("submit", async function (evenement) {
     // Récupération des valeurs saisies par l'utilisateur
     const nom = document.getElementById("nom").value.trim();
     const prenom = document.getElementById("prenom").value.trim();
+    const email = document.getElementById("email").value.trim();
     const motDePasse = document.getElementById("motDePasse").value;
 
-    if (nom === "" || prenom === "" || motDePasse === "") {
+    if (nom === "" || prenom === "" || email === "" || motDePasse === "") {
         afficherErreur("Veuillez remplir tous les champs.");
         return; // On arrête ici si un champ est vide
     }
@@ -32,18 +33,21 @@ formulaireConnexion.addEventListener("submit", async function (evenement) {
 
         const reponseServeur = await fetch("/api/auth/login", {
             method: "POST",
-            headers: { "Content-Type": "application/json" }, // Pas encore de session ici
-            body: JSON.stringify({ nom, prenom, password: motDePasse }) // "password" = clé attendue par l'API
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ nom, prenom, email, password: motDePasse }) // Ajout du champ email
         });
 
         const resultat = await reponseServeur.json(); // Réponse du serveur
 
         if (!resultat.success) {
-            afficherErreur(resultat.message || "Nom ou mot de passe incorrect.");
+            afficherErreur(resultat.message || "Informations de connexion incorrectes.");
             return; // Connexion refusée par le serveur
         }
 
-        enregistrerUtilisateur(resultat.user); // On mémorise l'utilisateur connecté (id, nom, prenom, rôle)
+        // On mémorise l'utilisateur ET le token JWT reçu : c'est ce token qui
+        // prouvera l'identité de l'utilisateur sur toutes les requêtes suivantes
+        // (envoyé automatiquement par api.js dans l'en-tête Authorization).
+        enregistrerUtilisateur(resultat.user, resultat.token);
 
         // Redirection vers le tableau de bord correspondant au rôle
         window.location.href = `/html/${resultat.user.role}.html`;
@@ -51,6 +55,6 @@ formulaireConnexion.addEventListener("submit", async function (evenement) {
     } catch (erreur) {
 
         console.error("Erreur connexion :", erreur);
-        afficherErreur("Nom ou mot de passe incorrect.");
+        afficherErreur("Erreur lors de la connexion au serveur.");
     }
 });

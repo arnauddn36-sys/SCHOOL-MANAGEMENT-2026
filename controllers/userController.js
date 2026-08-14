@@ -60,27 +60,30 @@ export function creerUtilisateur(requete, reponse) {
         const {
             nom,
             prenom,
+            email,
             password: motDePasse,
             role
         } = requete.body;
 
-        if (!nom || !prenom || !motDePasse || !role) {
+        // Validation incluant l'email
+        if (!nom || !prenom || !email || !motDePasse || !role) {
             return reponse.status(400).json({
                 message: "Tous les champs sont obligatoires"
             });
         }
 
-        // On vérifie le résultat du service avant de répondre
+        // Transmission de l'email au service d'ajout
         const resultat = ajouterUtilisateur(
             nom,
             prenom,
+            email,
             motDePasse,
             role
         );
 
         if (!resultat) {
             return reponse.status(400).json({
-                message: "Ce mot de passe est déjà utilisé, saisissez-en un autre !"
+                message: " cet email est déjà utilisé, saisissez-en un autre !"
             });
         }
 
@@ -108,21 +111,24 @@ export function mettreAJourUtilisateur(requete, reponse) {
         const {
             nom,
             prenom,
+            email,
             password: motDePasse,
             role
         } = requete.body;
 
+        // Transmission de l'email au service de modification
         const resultat = modifierUtilisateur(
             id,
             nom,
             prenom,
+            email,
             motDePasse,
             role
         );
 
         if (!resultat) {
             return reponse.status(400).json({
-                message: "Ce mot de passe est déjà utilisé, saisissez-en un autre !"
+                message: "Ce mot de passe ou cet email est déjà utilisé, saisissez-en un autre !"
             });
         }
 

@@ -1,22 +1,23 @@
 // public/js/api.js
 // Module partagé qui centralise tous les appels à l'API. Il ajoute automatiquement
-// les en-têtes "x-role" et "x-user-id" utilisés par le middleware RBAC du serveur
-// (voir utils/permissions.js), pour éviter de le répéter dans chaque panneau.
+// l'en-tête "Authorization: Bearer <token>" utilisé par le middleware RBAC du
+// serveur (voir utils/permissions.js), pour éviter de le répéter dans chaque panneau.
+// Le rôle n'est plus envoyé directement par le frontend : il est extrait par le
+// serveur depuis le token signé, donc impossible à falsifier depuis le navigateur.
 
-import { obtenirUtilisateur, deconnexion } from "./auth.js";
+import { obtenirToken, deconnexion } from "./auth.js";
 
-// Construit les en-têtes communs à chaque requête (JSON + identité de l'utilisateur)
+// Construit les en-têtes communs à chaque requête (JSON + token d'authentification)
 function construireEntetes() {
 
-    const utilisateur = obtenirUtilisateur(); // Utilisateur actuellement connecté
+    const token = obtenirToken(); // Token JWT de l'utilisateur actuellement connecté
 
     const entetes = {
         "Content-Type": "application/json" // Le corps des requêtes est toujours du JSON
     };
 
-    if (utilisateur) {
-        entetes["x-role"] = utilisateur.role;      // Rôle transmis pour le contrôle d'accès serveur
-        entetes["x-user-id"] = utilisateur.id;      // Id transmis pour les routes "/me"
+    if (token) {
+        entetes["Authorization"] = `Bearer ${token}`; // Preuve d'identité vérifiable par le serveur
     }
 
     return entetes;
@@ -31,7 +32,7 @@ async function executerRequete(url, options = {}) {
     });
 
     if (reponse.status === 401) {
-        deconnexion(); // Session invalide -> on renvoie vers la connexion
+        deconnexion(); // Session invalide ou expirée -> on renvoie vers la connexion
         return null;
     }
 

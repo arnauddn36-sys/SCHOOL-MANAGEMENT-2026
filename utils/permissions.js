@@ -1,23 +1,27 @@
 // utils/permissions.js
-// Ce fichier centralise le contrôle d'accès par rôle (RBAC) pour l'API Express.
-// Le frontend envoie le rôle de l'utilisateur connecté dans l'en-tête "x-role"
-// (voir public/js/api.js). Ce n'est pas un vrai système de sécurité (le rôle
-// pourrait être falsifié par un utilisateur avancé), mais cela suffit pour ce
-// projet pédagogique afin de distinguer clairement les vues admin / professeur / élève.
+// Contrôle d'accès par rôle (RBAC) pour l'API Express, basé sur un vrai JWT.
+// Le frontend doit envoyer le token reçu à la connexion dans l'en-tête :
+//   Authorization: Bearer <token>
+// Contrairement à l'ancien système (en-tête x-role lisible/modifiable par
+// n'importe qui via les DevTools du navigateur), le rôle est ici extrait
+// du token signé par le serveur : un utilisateur ne peut pas le falsifier
+// sans connaître JWT_SECRET.
 
-// Vérifie simplement qu'une requête vient d'un utilisateur connecté (rôle présent)
+import jwt from "jsonwebtoken";
+
+// Vérifie simplement qu'une requête vient d'un utilisateur connecté (token valide)
 export function exigerConnexion(requete, reponse, suivant) {
-    const role = requete.headers["x-role"]; // Rôle envoyé par le frontend après connexion
 
-    if (!role) {
-        return reponse.status(401).json({
-            message: "Connexion requise"
-        });
+    const contenuToken = verifierEtDecoderToken(requete, reponse);
+
+    if (!contenuToken) {
+        return; // La réponse d'erreur a déjà été envoyée par verifierEtDecoderToken
     }
 
-    requete.userRole = role;       // On stocke le rôle pour les prochains middlewares/contrôleurs
-    requete.userId = requete.headers["x-user-id"] ? Number(requete.headers["x-user-id"]) : null;
-    suivant(); // On laisse passer la requête vers la suite
+    requete.userRole = contenuToken.role; // Rôle disponible pour les prochains middlewares/contrôleurs
+    requete.userId = contenuToken.id;
+    suivant();
+
 }
 
 // Fabrique un middleware qui n'autorise que les rôles listés en paramètre
@@ -26,22 +30,69 @@ export function autoriser(...rolesAutorises) {
 
     return function (requete, reponse, suivant) {
 
-        const role = requete.headers["x-role"]; // Rôle transmis par le frontend
+        const contenuToken = verifierEtDecoderToken(requete, reponse);
 
-        if (!role) {
-            return reponse.status(401).json({
-                message: "Connexion requise"
-            });
+        if (!contenuToken) {
+            return; // La réponse d'erreur a déjà été envoyée par verifierEtDecoderToken
         }
 
-        if (!rolesAutorises.includes(role)) {
+        if (!rolesAutorises.includes(contenuToken.role)) {
+
             return reponse.status(403).json({
                 message: "Accès refusé pour votre rôle"
             });
+
         }
 
-        requete.userRole = role; // Rôle disponible dans les contrôleurs suivants
-        requete.userId = requete.headers["x-user-id"] ? Number(requete.headers["x-user-id"]) : null;
+        requete.userRole = contenuToken.role; // Rôle disponible dans les contrôleurs suivants
+        requete.userId = contenuToken.id;
         suivant(); // Rôle autorisé, on continue vers le contrôleur
+
     };
+
+}
+
+// Fonction interne : extrait le token de l'en-tête Authorization, le vérifie
+// (signature + expiration) et renvoie son contenu décodé, ou envoie directement
+// la réponse d'erreur appropriée et renvoie null si le token est absent/invalide.
+function verifierEtDecoderToken(requete, reponse) {
+
+    const enTeteAuthorization = requete.headers["authorization"];
+
+    if (!enTeteAuthorization || !enTeteAuthorization.startsWith("Bearer ")) {
+
+        reponse.status(401).json({
+            message: "Connexion requise"
+        });
+
+        return null;
+
+    }
+
+    const token = enTeteAuthorization.split(" ")[1];
+
+    try {
+
+        return jwt.verify(token, process.env.JWT_SECRET);
+
+    } catch (erreur) {
+
+        if (erreur.name === "TokenExpiredError") {
+
+            reponse.status(401).json({
+                message: "Session expirée, veuillez vous reconnecter"
+            });
+
+            return null;
+
+        }
+
+        reponse.status(401).json({
+            message: "Token invalide"
+        });
+
+        return null;
+
+    }
+
 }
