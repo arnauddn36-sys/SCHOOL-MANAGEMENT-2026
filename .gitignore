@@ -2,3 +2,4 @@ node_modules
 DOCUMENTATION.md
 .env
 database.db
+SECURITE.md
