@@ -1,7 +1,7 @@
 // routes/authRoutes.js
 
 import express from "express";
-import { connexion } from "../controllers/authController.js";
+import { connexion, inscription } from "../controllers/authController.js";
 
 const routeur = express.Router();
 
@@ -9,6 +9,11 @@ const routeur = express.Router();
 
 // POST /api/auth/login
 routeur.post("/login", connexion);
+
+// ROUTE D'INSCRIPTION (élève uniquement, rôle forcé côté serveur)
+
+// POST /api/auth/register
+routeur.post("/register", inscription);
 
 // Export du routeur
 export default routeur;

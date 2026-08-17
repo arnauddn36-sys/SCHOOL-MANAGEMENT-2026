@@ -1,7 +1,7 @@
 // controllers/authController.js
 
 import jwt from "jsonwebtoken";
-import { trouverUtilisateurParConnexion } from "../services/userService.js";
+import { trouverUtilisateurParConnexion, ajouterUtilisateur } from "../services/userService.js";
 
 // CONNEXION UTILISATEUR
 
@@ -92,6 +92,77 @@ export function connexion(requete, reponse) {
 
         console.error(
             "Erreur connexion :",
+            erreur
+        );
+
+        return reponse.status(500).json({
+            message: "Erreur serveur"
+        });
+
+    }
+
+}
+
+// ==========================
+// INSCRIPTION (élève uniquement)
+// ==========================
+// Point d'accès public d'auto-inscription. Le rôle est TOUJOURS forcé à
+// "student" ici, quoi que le frontend envoie dans le corps de la requête :
+// jamais faire confiance à un rôle fourni par le client. Les comptes admin
+// et professeur ne peuvent être créés que par un admin déjà connecté,
+// via le dashboard (teachersPanel.js).
+export function inscription(requete, reponse) {
+
+    try {
+
+        const { nom, prenom, email, password: motDePasse, confirmationMotDePasse } = requete.body;
+
+        if (!nom || !prenom || !email || !motDePasse || !confirmationMotDePasse) {
+
+            return reponse.status(400).json({
+                message: "Veuillez remplir tous les champs"
+            });
+
+        }
+
+        if (motDePasse !== confirmationMotDePasse) {
+
+            return reponse.status(400).json({
+                message: "Les mots de passe ne correspondent pas"
+            });
+
+        }
+
+        if (motDePasse.length < 6) {
+
+            return reponse.status(400).json({
+                message: "Le mot de passe doit contenir au moins 6 caractères"
+            });
+
+        }
+
+        // ajouterUtilisateur() valide déjà le format Gmail et l'unicité de
+        // l'email en interne (voir services/userService.js) ; elle hashe
+        // aussi le mot de passe avec bcrypt avant de l'enregistrer.
+        const succes = ajouterUtilisateur(nom, prenom, email, motDePasse, "student");
+
+        if (!succes) {
+
+            return reponse.status(409).json({
+                message: "Cet email est invalide ou déjà utilisé"
+            });
+
+        }
+
+        return reponse.status(201).json({
+            success: true,
+            message: "Compte créé avec succès. Vous pouvez maintenant vous connecter."
+        });
+
+    } catch (erreur) {
+
+        console.error(
+            "Erreur inscription :",
             erreur
         );
 

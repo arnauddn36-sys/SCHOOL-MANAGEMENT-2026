@@ -39,7 +39,7 @@ application.use(helmet({
             styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://cdnjs.cloudflare.com"],
             fontSrc: ["'self'", "https://fonts.gstatic.com", "https://cdnjs.cloudflare.com"],
             scriptSrc: ["'self'"],
-            imgSrc: ["'self'", "data:"]
+           imgSrc: ["'self'", "data:", "https://i.pinimg.com"]
         }
     }
 }));
@@ -109,11 +109,12 @@ application.use("/api/students", routesEleves);
 
 application.use("/api/absences", routesAbsences);
 
-// Route de test
+// Route racine : sert la page d'accueil (accueil.html), qui dirige ensuite
+// vers la connexion ou l'inscription via ses deux boutons.
 application.get("/", (requete, reponse) => {
 
     reponse.sendFile(
-        path.join(__dirname, "public/html/index.html")
+        path.join(__dirname, "public/html/accueil.html")
     );
 
 });

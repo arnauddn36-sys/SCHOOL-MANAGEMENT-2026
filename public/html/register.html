@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion — School Management</title>
+    <title>Inscription — School Management</title>
 
     <!-- FontAwesome pour les icônes -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,10 +17,10 @@
 
     <main class="conteneur-connexion">
 
-        <!-- EN-TÊTE AU-DESSUS DE LA CARTE DE CONNEXION -->
+        <!-- EN-TÊTE AU-DESSUS DE LA CARTE D'INSCRIPTION -->
         <header class="en-tete-accueil">
             <h1 class="titre-accueil">BIENVENUE DANS VOTRE ESPACE DE GESTION SCOLAIRE</h1>
-            <p class="sous-titre-accueil">Une solution simple pour administrer votre établissement scolaire.</p>
+            <p class="sous-titre-accueil">Créez votre compte élève pour accéder à vos notes et absences.</p>
 
             <div class="etiquettes-accueil">
                 <span class="etiquette"><i class="fa-solid fa-user-shield"></i> Administration</span>
@@ -35,19 +35,19 @@
             </div>
         </header>
 
-        <!-- CARTE DE CONNEXION NÉON -->
+        <!-- CARTE D'INSCRIPTION -->
         <section class="carte-connexion">
 
             <div class="avatar-utilisateur">
-                <i class="fa-solid fa-user-shield"></i>
+                <i class="fa-solid fa-user-graduate"></i>
             </div>
 
             <div class="en-tete-marque">
                 <h1>SCHOOL MANAGEMENT</h1>
-                <h2>Se connecter à votre espace</h2>
+                <h2>Créer votre compte élève</h2>
             </div>
 
-            <form id="formulaireConnexion" class="formulaire-neon" autocomplete="off">
+            <form id="formulaireInscription" class="formulaire-neon" autocomplete="off">
 
                 <div class="champ-saisie">
                     <label for="nom" class="masque-visuellement">Votre nom</label>
@@ -62,30 +62,33 @@
                 </div>
 
                 <div class="champ-saisie">
-                    <label for="email" class="masque-visuellement">Votre email</label>
+                    <label for="email" class="masque-visuellement">Votre email Gmail</label>
                     <i class="fa-regular fa-envelope"></i>
-                    <input type="email" id="email" name="email" placeholder="Votre email" required autocomplete="email">
+                    <input type="email" id="email" name="email" placeholder="votreadresse@gmail.com" required autocomplete="email">
                 </div>
 
                 <div class="champ-saisie">
                     <label for="motDePasse" class="masque-visuellement">Votre mot de passe</label>
                     <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="motDePasse" name="password" placeholder="Votre mot de passe" required
-                        autocomplete="new-password">
+                    <input type="password" id="motDePasse" name="password" placeholder="Votre mot de passe (6 caractères min.)" required
+                        autocomplete="new-password" minlength="6">
                 </div>
 
-                <!-- Zone d'erreur dynamique -->
-                <p id="erreurConnexion" role="alert" hidden
-                    style="color:#ff5252; font-size:13px; text-align:center; margin-bottom:12px;"></p>
+                <div class="champ-saisie">
+                    <label for="confirmationMotDePasse" class="masque-visuellement">Confirmez votre mot de passe</label>
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="confirmationMotDePasse" name="confirmationMotDePasse"
+                        placeholder="Confirmez votre mot de passe" required autocomplete="new-password" minlength="6">
+                </div>
 
-                <button type="submit" class="bouton-valider">Se connecter</button>
+                <!-- Zone de message dynamique (erreur ou succès) -->
+                <p id="messageInscription" role="alert" hidden
+                    style="font-size:13px; text-align:center; margin-bottom:12px;"></p>
+
+                <button type="submit" class="bouton-valider">Créer mon compte</button>
 
                 <p style="text-align:center; margin-top:16px; font-size:0.85rem;">
-                    Pas encore de compte élève ? <a href="/html/register.html" style="color:var(--primaire); font-weight:700;">Créer un compte</a>
-                </p>
-
-                <p style="text-align:center; margin-top:8px; font-size:0.85rem;">
-                    <a href="/html/accueil.html" style="color:var(--texte-attenue); font-weight:600;">&larr; Retour à l'accueil</a>
+                    Déjà inscrit ? <a href="/html/index.html" style="color:var(--primaire); font-weight:700;">Se connecter</a>
                 </p>
 
             </form>
@@ -94,7 +97,7 @@
 
     </main>
 
-    <script type="module" src="../js/login.js"></script>
+    <script type="module" src="../js/register.js"></script>
 
 </body>
 
