@@ -1,10 +1,13 @@
 /* =====================================================================
-   ADMIN.CSS — TABLEAU DE BORD ADMINISTRATEUR (thème clair professionnel)
+   ADMIN.CSS — TABLEAU DE BORD ADMINISTRATEUR (bleu clair professionnel)
 ===================================================================== */
 
-body{
-  background:var(--fond-page);
-  padding:20px;
+body {
+  background: linear-gradient(rgba(154, 175, 241, 0), rgba(233, 233, 235, 0)), 
+              url('../IMAGES/4567a837b545d22b9dcde81ccd98b70e.gif') no-repeat center center fixed;
+  background-size: cover;
+  padding: 20px;
+  min-height: 100vh;
 }
 
 .disposition-admin{
@@ -12,21 +15,23 @@ body{
   min-height:calc(100vh - 40px);
   border-radius:var(--rayon-lg);
   overflow:hidden;
-  box-shadow:0 30px 60px -30px rgba(45,40,110,0.35);
+  box-shadow:0 30px 60px -30px rgba(240, 240, 243, 0.915);
+  background: transparent !important;
 }
 
 /* =========================
    BARRE LATÉRALE
 ========================= */
 .barre-laterale-admin{
-  width:270px;
+  width:290px;
   min-width:270px;
-  background:linear-gradient(165deg,var(--primaire) 0%,var(--secondaire) 100%);
-  color:#fff;
+  background:linear-gradient(165deg, #4cc4d983, #3bb2c7);
+  color:#f4f0f0;
   padding:30px 22px;
   display:flex;
   flex-direction:column;
   justify-content:space-between;
+  
 }
 
 .marque-barre-laterale{
@@ -35,47 +40,65 @@ body{
   font-size:1.2rem; font-weight:800;
   letter-spacing:0.5px;
   margin-bottom:36px;
+  
 }
-
+/* =========================
+   titre ( menu ) sous school management
+========================= */
 .etiquette-barre-laterale{
   font-size:0.7rem;
   font-weight:700;
   text-transform:uppercase;
   letter-spacing:0.1em;
-  color:rgba(255,255,255,0.6);
+  color:rgba(225, 216, 216, 0.878);
   margin-bottom:12px;
   padding-left:6px;
 }
 
+
+
 .menu-admin ul{ list-style:none; display:flex; flex-direction:column; gap:6px; }
+
+
+/*menu boutons (utilisateurs, élèves, professeurs, matières, notes, absences)*/
+
 
 .menu-admin button{
   width:100%;
   text-align:left;
   justify-content:flex-start;
   background:transparent;
-  color:rgba(255,255,255,0.8);
+  color:rgba(245, 241, 241, 0.907);
   box-shadow:none;
   font-weight:600;
   padding:12px 16px;
   border-radius:12px;
   display:flex; align-items:center; gap:12px;
 }
+/* Couleur des boutons du menu au survol */
 
-.menu-admin button:hover{ background:rgba(255,255,255,0.12); transform:none; color:#fff; }
+.menu-admin button:hover{ background:#4cc4d9e1 ; transform:none; color:#420505b5; }
+
+/*barre de navigation active selectionnée*/
 
 .menu-admin button.actif{
-  background:#fff;
+  background:#d5d2d2;
   color:var(--primaire-fonce);
-  box-shadow:0 10px 22px -8px rgba(0,0,0,0.25);
+
+  /* Couleur du bouton actif du menu(ombre) */
+
+  box-shadow:0 10px 22px -8px rgba(232, 227, 227, 0.314);
 }
 
 /* =========================
-   ZONE PRINCIPALE
+   ZONE PRINCIPALE (Effet Glass)
 ========================= */
 .zone-principale-admin{
   flex:1;
-  background:var(--fond-page);
+  background: #4cc4d92e !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(251, 247, 247, 0.467) !important;
   padding:26px 36px 40px;
   overflow-y:auto;
 }
@@ -84,6 +107,8 @@ body{
   display:flex;
   justify-content:flex-end;
   margin-bottom:26px;
+  
+  
 }
 
 /* =========================
@@ -92,19 +117,21 @@ body{
 .contenu-admin, #contenu{
   display:flex;
   flex-direction:column;
-  gap:22px;
+  gap:120px;
 }
-
+/*grande barre d'outils du panneau (statistiques, utilisateurs, élèves, professeurs, matières, notes, absences)*/
 .barre-outils-panneau{
   display:flex;
   justify-content:space-between;
   align-items:center;
   flex-wrap:wrap;
   gap:12px;
-  background:var(--fond-carte);
+  background: #4cc4d93e !important;
+  backdrop-filter: blur(6px) !important; /*cela  permet de rendre flou mes arrières plans*/
+  -webkit-backdrop-filter: blur(6px) !important;/*ça permet le bon fonctionnement de l'effet flou sur tous les navigateurs*/
+  border: 3px solid #4cc4d977  !important;
   padding:20px 26px;
   border-radius:var(--rayon-lg);
-  border:1px solid var(--bordure);
   box-shadow:var(--ombre-carte);
 }
 
@@ -113,13 +140,15 @@ body{
 ========================= */
 .grille-statistiques{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));/*c'est le responsive de mes grilles, il s'adapte a tous les ecrant*/
   gap:18px;
 }
 
 .carte-statistique{
-  background:var(--fond-carte);
-  border:1px solid var(--bordure);
+  background:#4cc4d9d1  !important;
+  backdrop-filter: blur(6px) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
+  border: 4px solid #4cc4d983 !important;
   border-radius:var(--rayon-lg);
   box-shadow:var(--ombre-carte);
   padding:22px;
@@ -133,23 +162,24 @@ body{
 .carte-statistique::before{
   content:'';
   position:absolute; top:0; left:0; right:0; height:3px;
-  background:linear-gradient(90deg,var(--primaire),var(--accent-teal));
+/* Transition brutale à 50% */
+/* Transition brutale à 50% */
+background: linear-gradient(50deg, rgba(237, 232, 230, 0.598) 50%, rgba(19, 49, 219, 0.461) 50%);
 }
-.carte-statistique:hover{ transform:translateY(-4px); box-shadow:0 22px 40px -20px rgba(45,40,110,0.28); }
 
 .titre-statistique{
   font-size:0.75rem;
   font-weight:700;
   text-transform:uppercase;
   letter-spacing:0.05em;
-  color:var(--texte-attenue);
+ color:rgb(38, 4, 4);
 }
 
 .valeur-statistique{
   font-family:'Poppins',sans-serif;
   font-size:2rem;
   font-weight:800;
-  color:var(--primaire-fonce);
+  color:rgb(73, 69, 69);
 }
 
 /* =========================
@@ -168,9 +198,9 @@ body{
 .menu-admin button[data-panel="absences"] i{ color:#ff8fa3; }
 .menu-admin button.actif i{ color:var(--primaire) !important; }
 
-/* =====================================================================
-   RESPONSIVE
-===================================================================== */
+ /*  RESPONSIVE */
+
+ 
 @media (max-width:1024px){
   .disposition-admin{ flex-direction:column; border-radius:var(--rayon-lg); }
   .barre-laterale-admin{ width:100%; min-width:100%; flex-direction:row; align-items:center; justify-content:space-between; padding:16px 20px; }

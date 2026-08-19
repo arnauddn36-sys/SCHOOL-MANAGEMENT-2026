@@ -2,6 +2,7 @@
 
 import jwt from "jsonwebtoken";
 import { trouverUtilisateurParConnexion, ajouterUtilisateur } from "../services/userService.js";
+import { ajouterEleve, matriculeExisteDeja } from "../services/studentService.js";
 
 // CONNEXION UTILISATEUR
 
@@ -115,9 +116,9 @@ export function inscription(requete, reponse) {
 
     try {
 
-        const { nom, prenom, email, password: motDePasse, confirmationMotDePasse } = requete.body;
+        const { nom, prenom, email, matricule, age, classe, password: motDePasse, confirmationMotDePasse } = requete.body;
 
-        if (!nom || !prenom || !email || !motDePasse || !confirmationMotDePasse) {
+        if (!nom || !prenom || !email || !matricule || !age || !classe || !motDePasse || !confirmationMotDePasse) {
 
             return reponse.status(400).json({
                 message: "Veuillez remplir tous les champs"
@@ -141,15 +142,47 @@ export function inscription(requete, reponse) {
 
         }
 
+        // On vérifie le matricule AVANT de créer le compte utilisateur.
+        // Ces matricules sont des identifiants officiels (liés à la base de
+        // l'État ivoirien), donc l'unicité doit être garantie et vérifiée en
+        // premier : mieux vaut refuser l'inscription proprement que de créer
+        // un compte "orphelin" (connectable mais sans fiche élève valide).
+        if (matriculeExisteDeja(matricule.trim())) {
+
+            return reponse.status(409).json({
+                message: "Ce matricule est déjà associé à un compte existant"
+            });
+
+        }
+
         // ajouterUtilisateur() valide déjà le format Gmail et l'unicité de
         // l'email en interne (voir services/userService.js) ; elle hashe
         // aussi le mot de passe avec bcrypt avant de l'enregistrer.
-        const succes = ajouterUtilisateur(nom, prenom, email, motDePasse, "student");
+        // Elle renvoie maintenant l'id du compte créé (ou false en cas d'échec).
+        const idUtilisateur = ajouterUtilisateur(nom, prenom, email, motDePasse, "student");
 
-        if (!succes) {
+        if (!idUtilisateur) {
 
             return reponse.status(409).json({
                 message: "Cet email est invalide ou déjà utilisé"
+            });
+
+        }
+
+        // On crée immédiatement la fiche élève liée à ce compte (via user_id).
+        // Le matricule a déjà été vérifié comme disponible juste au-dessus,
+        // donc ce try/catch reste une sécurité supplémentaire (ex: double
+        // inscription simultanée avec le même matricule, cas rare mais possible).
+        try {
+
+            ajouterEleve(matricule.trim(), nom, prenom, Number(age), classe, idUtilisateur);
+
+        } catch (erreurMatricule) {
+
+            console.error("Erreur création fiche élève :", erreurMatricule);
+
+            return reponse.status(409).json({
+                message: "Ce matricule vient d'être utilisé par quelqu'un d'autre. Votre compte a été créé ; contactez un administrateur pour lier votre fiche élève."
             });
 
         }

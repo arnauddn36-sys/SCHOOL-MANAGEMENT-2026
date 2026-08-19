@@ -22,10 +22,13 @@ formulaireInscription.addEventListener("submit", async function (evenement) {
     const nom = document.getElementById("nom").value.trim();
     const prenom = document.getElementById("prenom").value.trim();
     const email = document.getElementById("email").value.trim();
+    const matricule = document.getElementById("matricule").value.trim();
+    const age = document.getElementById("age").value;
+    const classe = document.getElementById("classe").value.trim();
     const motDePasse = document.getElementById("motDePasse").value;
     const confirmationMotDePasse = document.getElementById("confirmationMotDePasse").value;
 
-    if (nom === "" || prenom === "" || email === "" || motDePasse === "" || confirmationMotDePasse === "") {
+    if (nom === "" || prenom === "" || email === "" || matricule === "" || age === "" || classe === "" || motDePasse === "" || confirmationMotDePasse === "") {
         afficherMessage("Veuillez remplir tous les champs.", "error");
         return;
     }
@@ -42,7 +45,7 @@ formulaireInscription.addEventListener("submit", async function (evenement) {
         const reponseServeur = await fetch("/api/auth/register", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ nom, prenom, email, password: motDePasse, confirmationMotDePasse })
+            body: JSON.stringify({ nom, prenom, email, matricule, age, classe, password: motDePasse, confirmationMotDePasse })
         });
 
         const resultat = await reponseServeur.json();

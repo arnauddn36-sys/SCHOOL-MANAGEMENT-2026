@@ -68,6 +68,24 @@
                 </div>
 
                 <div class="champ-saisie">
+                    <label for="matricule" class="masque-visuellement">Votre matricule</label>
+                    <i class="fa-solid fa-id-badge"></i>
+                    <input type="text" id="matricule" name="matricule" placeholder="Votre matricule (ex: MAT-2026-001)" required autocomplete="off">
+                </div>
+
+                <div class="champ-saisie">
+                    <label for="age" class="masque-visuellement">Votre âge</label>
+                    <i class="fa-solid fa-cake-candles"></i>
+                    <input type="number" id="age" name="age" placeholder="Votre âge" required min="3" max="30" autocomplete="off">
+                </div>
+
+                <div class="champ-saisie">
+                    <label for="classe" class="masque-visuellement">Votre classe</label>
+                    <i class="fa-solid fa-chalkboard"></i>
+                    <input type="text" id="classe" name="classe" placeholder="Votre classe (ex: 1er A1)" required autocomplete="off">
+                </div>
+
+                <div class="champ-saisie">
                     <label for="motDePasse" class="masque-visuellement">Votre mot de passe</label>
                     <i class="fa-solid fa-lock"></i>
                     <input type="password" id="motDePasse" name="password" placeholder="Votre mot de passe (6 caractères min.)" required
@@ -89,6 +107,10 @@
 
                 <p style="text-align:center; margin-top:16px; font-size:0.85rem;">
                     Déjà inscrit ? <a href="/html/index.html" style="color:var(--primaire); font-weight:700;">Se connecter</a>
+                </p>
+
+                <p style="text-align:center; margin-top:8px; font-size:0.85rem;">
+                    <a href="/html/accueil.html" style="color:var(--texte-attenue); font-weight:600;">&larr; Retour à l'accueil</a>
                 </p>
 
             </form>

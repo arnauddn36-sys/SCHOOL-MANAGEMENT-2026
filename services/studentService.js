@@ -73,3 +73,17 @@ export function supprimerEleve(id) {
 
     return resultat.changes; // Nombre de lignes supprimées (0 si l'id n'existe pas)
 }
+// ==========================
+// Vérifier si un matricule existe déjà (utilisé avant l'inscription,
+// pour ne pas créer un compte utilisateur "orphelin" si le matricule
+// officiel est déjà pris par un autre élève)
+// ==========================
+export function matriculeExisteDeja(matricule) {
+
+    const eleve = bd.prepare(`
+        SELECT id FROM students WHERE matricule = ?
+    `).get(matricule);
+
+    return Boolean(eleve); // true si un élève existe déjà avec ce matricule
+
+}

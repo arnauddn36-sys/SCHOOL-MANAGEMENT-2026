@@ -22,7 +22,7 @@ export function ajouterUtilisateur(nom, prenom, email, motDePasse, role) {
 
     const motDePasseHache = bcrypt.hashSync(motDePasse, TOURS_DE_SEL);
 
-    bd.prepare(`
+    const resultat = bd.prepare(`
         INSERT INTO users (nom, prenom, email, password, role)
         VALUES (?, ?, ?, ?, ?)
     `).run(
@@ -33,7 +33,7 @@ export function ajouterUtilisateur(nom, prenom, email, motDePasse, role) {
         role
     );
 
-    return true;
+    return resultat.lastInsertRowid;
 }
 
 // ==========================
@@ -103,16 +103,22 @@ export function modifierUtilisateur(
     );
 
     if (resultat.changes === 0) {
+
         return false;
+
     }
 
     return true;
+
 }
 
 // ==========================
 // Supprimer un utilisateur
 // ==========================
+
 export function supprimerUtilisateur(id) {
+
+    // Chercher l'utilisateur
     const utilisateur = bd.prepare(`
         SELECT *
         FROM users
@@ -120,10 +126,14 @@ export function supprimerUtilisateur(id) {
     `).get(id);
 
     if (!utilisateur) {
+
         return false;
+
     }
 
+    // Protection du dernier administrateur
     if (utilisateur.role === "admin") {
+
         const administrateurs = bd.prepare(`
             SELECT COUNT(*) AS total
             FROM users
@@ -175,8 +185,11 @@ export function trouverUtilisateurParConnexion(
     const motDePasseValide = bcrypt.compareSync(motDePasse, utilisateur.password);
 
     if (!motDePasseValide) {
+
         return null;
+
     }
 
     return utilisateur;
+
 }

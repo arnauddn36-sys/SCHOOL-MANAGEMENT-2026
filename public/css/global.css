@@ -92,7 +92,7 @@ button{
   padding:11px 22px;
   border-radius:999px;
   cursor:pointer;
-  background:linear-gradient(135deg,var(--primaire) 0%,var(--secondaire) 100%);
+  background:linear-gradient(135deg,rgba(200, 196, 196, 0.453) 0%,rgba(24, 183, 223, 0.945) 100%);
   color:#fff;
   font-size:0.85rem;
   font-weight:700;
@@ -105,8 +105,7 @@ button:hover{ transform:translateY(-2px); box-shadow:0 14px 26px -10px var(--lue
 button:active{ transform:translateY(0); }
 
 button.secondaire{
-  background:#fff;
-  color:var(--primaire);
+  color:rgb(249, 246, 246);
   border:1.5px solid var(--primaire);
   box-shadow:none;
 }
@@ -114,13 +113,13 @@ button.secondaire{
 button.secondaire:hover{ background:var(--fond-doux); }
 
 button.danger{
-  background:linear-gradient(135deg,#f26565 0%,var(--danger) 100%);
-  box-shadow:0 10px 20px -10px rgba(239,68,68,0.45);
+  background-color: #900a0a;
+  box-shadow:0 10px 20px -10px rgba(68, 239, 97, 0);
 }
 
 /*FORMULAIRES*/
 form{
-  background:var(--fond-carte);
+  background:var(--fond-carte); /* ✅ Corrigé (--fond-cart -> --fond-carte) */
   border:1px solid var(--bordure);
   border-radius:var(--rayon-lg);
   box-shadow:var(--ombre-carte);
@@ -145,7 +144,7 @@ input, select{
   font-family:'Inter',sans-serif;
   padding:12px 14px;
   border-radius:var(--rayon-sm);
-  border:1.5px solid var(--bordure);
+  border:1.5px solid var(--bordure); /* ✅ Corrigé (--bordur -> --bordure) */
   background:var(--fond-doux);
   font-size:0.92rem;
   color:var(--texte);
@@ -203,31 +202,30 @@ table{
   box-shadow:var(--ombre-carte);
 }
 
-thead{ background:var(--fond-doux); }
+thead{ background:rgba(230, 224, 224, 0.517); }
 
 thead th{
-  color:var(--primaire-fonce);
+  color: rgb(4, 13, 33);
   text-align:left;
   padding:16px 20px;
   font-size:0.72rem;
   text-transform:uppercase;
   letter-spacing:0.06em;
   font-weight:800;
-  border-bottom:1px solid var(--bordure);
+  border-bottom:1px solid var(--bordure)
 }
 
 tbody td{
   padding:15px 20px;
   border-bottom:1px solid var(--bordure);
   font-size:0.9rem;
-  color:var(--texte);
+  color:rgb(29, 2, 2);
 }
 
-tbody tr:last-child td{ border-bottom:none; }
-tbody tr{ transition:var(--transition); }
-tbody tr:hover{ background:var(--fond-doux); }
-
-td.mono, span.mono{ font-family:'Courier New',monospace; color:var(--texte-attenue); }
+tbody tr:hover{ 
+  background: rgba(10, 104, 138, 0.727) !important; /* Très léger voile transparent */
+}
+td.mono, span.mono{ font-family:'Courier New',monospace; color:white; }/*couleur des ID*/
 
 /* Conteneur qui permet au tableau de défiler horizontalement sur petit écran
    sans casser la mise en page de la page entière. À mettre autour de <table>
@@ -237,7 +235,7 @@ td.mono, span.mono{ font-family:'Courier New',monospace; color:var(--texte-atten
 .tableau-scroll{
   width:100%;
   overflow-x:auto;
-  -webkit-overflow-scrolling:touch;
+  -webkit-overflow-scrolling:touch;/*L'effet "momentum" : En ajoutant -webkit-overflow-scrolling: touch;, vous activez le défilement fluide natif d'iOS. Lorsque l'utilisateur fait glisser son doigt et le lâche, le contenu continue de glisser tout seul en ralentissant progressivement (comme sur une page web normale).*/
 }
 
    /*BADGES*/
@@ -253,12 +251,11 @@ td.mono, span.mono{ font-family:'Courier New',monospace; color:var(--texte-atten
 }
 .badge.ok{ background:var(--fond-succes); color:var(--texte-succes); }
 
-/* =========================
-   PROFIL UTILISATEUR & DÉCONNEXION (partagés admin / professeur / élève)
-========================= */
+/*    PROFIL UTILISATEUR & DÉCONNEXION (partagés admin / professeur / élève)     */
+
 .profil-utilisateur{
   display:flex; align-items:center; gap:14px;
-  background:var(--fond-carte);
+  background:rgba(255, 255, 255, 0.784);
   padding:8px 18px;
   border-radius:999px;
   border:1px solid var(--bordure);
@@ -275,7 +272,7 @@ td.mono, span.mono{ font-family:'Courier New',monospace; color:var(--texte-atten
   border-radius:999px !important;
   box-shadow:0 8px 18px -8px var(--lueur-teal);
 }
-.bouton-deconnexion:hover, #deconnexion:hover{ transform:translateY(-2px); }
+.bouton-deconnexion:hover, #deconnexion:hover{ transform:translateY(-3px); }
 
 /* =========================
    ÉTAT VIDE
