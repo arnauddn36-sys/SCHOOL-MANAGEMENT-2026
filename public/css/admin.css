@@ -1,220 +1,251 @@
 /* =====================================================================
-   ADMIN.CSS — TABLEAU DE BORD ADMINISTRATEUR (bleu clair professionnel)
+   ADMIN.CSS — TABLEAU DE BORD ADMINISTRATEUR (Glassmorphism Pur)
 ===================================================================== */
 
 body {
-  background: linear-gradient(rgba(154, 175, 241, 0), rgba(233, 233, 235, 0)), 
-              url('../IMAGES/4567a837b545d22b9dcde81ccd98b70e.gif') no-repeat center center fixed;
-  background-size: cover;
   padding: 20px;
   min-height: 100vh;
+  position: relative;
+  color: #ffffff;
 }
 
-.disposition-admin{
-  display:flex;
-  min-height:calc(100vh - 40px);
-  border-radius:var(--rayon-lg);
-  overflow:hidden;
-  box-shadow:0 30px 60px -30px rgba(240, 240, 243, 0.915);
-  background: transparent !important;
+#video-fond {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -1;
+}
+
+/* Master Container : Effet verre global */
+.disposition-admin {
+  display: flex;
+  min-height: calc(100vh - 40px);
+  border-radius: var(--rayon-lg);
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.06) !important;
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
 }
 
 /* =========================
    BARRE LATÉRALE
 ========================= */
-.barre-laterale-admin{
-  width:290px;
-  min-width:270px;
-  background:linear-gradient(165deg, #4cc4d983, #3bb2c7);
-  color:#f4f0f0;
-  padding:30px 22px;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  
+.barre-laterale-admin {
+  width: 290px;
+  min-width: 270px;
+  background: rgba(255, 255, 255, 0.08);
+  border-right: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  padding: 30px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.marque-barre-laterale{
-  display:flex; align-items:center; gap:12px;
-  font-family:'Poppins',sans-serif;
-  font-size:1.2rem; font-weight:800;
-  letter-spacing:0.5px;
-  margin-bottom:36px;
-  
+.marque-barre-laterale {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  margin-bottom: 36px;
+  color: #ffffff;
 }
+
+.etiquette-barre-laterale {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 12px;
+  padding-left: 6px;
+}
+
+.menu-admin ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.menu-admin button {
+  width: 100%;
+  text-align: left;
+  justify-content: flex-start;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.85);
+  box-shadow: none;
+  font-weight: 600;
+  padding: 12px 16px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.3s ease;
+}
+
+.menu-admin button:hover {
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
+
+.menu-admin button.actif {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
 /* =========================
-   titre ( menu ) sous school management
+   ZONE PRINCIPALE
 ========================= */
-.etiquette-barre-laterale{
-  font-size:0.7rem;
-  font-weight:700;
-  text-transform:uppercase;
-  letter-spacing:0.1em;
-  color:rgba(225, 216, 216, 0.878);
-  margin-bottom:12px;
-  padding-left:6px;
+.zone-principale-admin {
+  flex: 1;
+  background: transparent !important;
+  padding: 26px 36px 40px;
+  overflow-y: auto;
 }
 
-
-
-.menu-admin ul{ list-style:none; display:flex; flex-direction:column; gap:6px; }
-
-
-/*menu boutons (utilisateurs, élèves, professeurs, matières, notes, absences)*/
-
-
-.menu-admin button{
-  width:100%;
-  text-align:left;
-  justify-content:flex-start;
-  background:transparent;
-  color:rgba(245, 241, 241, 0.907);
-  box-shadow:none;
-  font-weight:600;
-  padding:12px 16px;
-  border-radius:12px;
-  display:flex; align-items:center; gap:12px;
-}
-/* Couleur des boutons du menu au survol */
-
-.menu-admin button:hover{ background:#4cc4d9e1 ; transform:none; color:#420505b5; }
-
-/*barre de navigation active selectionnée*/
-
-.menu-admin button.actif{
-  background:#d5d2d2;
-  color:var(--primaire-fonce);
-
-  /* Couleur du bouton actif du menu(ombre) */
-
-  box-shadow:0 10px 22px -8px rgba(232, 227, 227, 0.314);
+.barre-superieure {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 26px;
 }
 
 /* =========================
-   ZONE PRINCIPALE (Effet Glass)
+   CONTENU & PANNEAUX
 ========================= */
-.zone-principale-admin{
-  flex:1;
-  background: #4cc4d92e !important;
+.contenu-admin,
+#contenu {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.barre-outils-panneau {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.1) !important;
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
-  border: 1px solid rgba(251, 247, 247, 0.467) !important;
-  padding:26px 36px 40px;
-  overflow-y:auto;
-}
-
-.barre-superieure{
-  display:flex;
-  justify-content:flex-end;
-  margin-bottom:26px;
-  
-  
-}
-
-/* =========================
-   CONTENU
-========================= */
-.contenu-admin, #contenu{
-  display:flex;
-  flex-direction:column;
-  gap:120px;
-}
-/*grande barre d'outils du panneau (statistiques, utilisateurs, élèves, professeurs, matières, notes, absences)*/
-.barre-outils-panneau{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:12px;
-  background: #4cc4d93e !important;
-  backdrop-filter: blur(6px) !important; /*cela  permet de rendre flou mes arrières plans*/
-  -webkit-backdrop-filter: blur(6px) !important;/*ça permet le bon fonctionnement de l'effet flou sur tous les navigateurs*/
-  border: 3px solid #4cc4d977  !important;
-  padding:20px 26px;
-  border-radius:var(--rayon-lg);
-  box-shadow:var(--ombre-carte);
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  padding: 20px 26px;
+  border-radius: var(--rayon-lg);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
 /* =========================
    STATISTIQUES
 ========================= */
-.grille-statistiques{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));/*c'est le responsive de mes grilles, il s'adapte a tous les ecrant*/
-  gap:18px;
+.grille-statistiques {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 18px;
 }
 
-.carte-statistique{
-  background:#4cc4d9d1  !important;
-  backdrop-filter: blur(6px) !important;
-  -webkit-backdrop-filter: blur(6px) !important;
-  border: 4px solid #4cc4d983 !important;
-  border-radius:var(--rayon-lg);
-  box-shadow:var(--ombre-carte);
-  padding:22px;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  transition:var(--transition);
-  position:relative;
-  overflow:hidden;
-}
-.carte-statistique::before{
-  content:'';
-  position:absolute; top:0; left:0; right:0; height:3px;
-/* Transition brutale à 50% */
-/* Transition brutale à 50% */
-background: linear-gradient(50deg, rgba(237, 232, 230, 0.598) 50%, rgba(19, 49, 219, 0.461) 50%);
+.carte-statistique {
+  background: rgba(255, 255, 255, 0.12) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  border-radius: var(--rayon-lg);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: transform 0.2s ease, background 0.2s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.titre-statistique{
-  font-size:0.75rem;
-  font-weight:700;
-  text-transform:uppercase;
-  letter-spacing:0.05em;
- color:rgb(38, 4, 4);
+.carte-statistique:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.18) !important;
 }
 
-.valeur-statistique{
-  font-family:'Poppins',sans-serif;
-  font-size:2rem;
-  font-weight:800;
-  color:rgb(73, 69, 69);
+.carte-statistique::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.8), transparent);
+}
+
+.titre-statistique {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.valeur-statistique {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #ffffff;
 }
 
 /* =========================
    ACTIONS DE LIGNE
 ========================= */
-.actions-ligne{ display:flex; gap:8px; }
-.actions-ligne button{ padding:7px 14px; font-size:0.78rem; }
-
-/* Couleurs des onglets du menu par module */
-.menu-admin button[data-panel="statistiques"] i{ color:#ffd166; }
-.menu-admin button[data-panel="utilisateurs"] i{ color:#8ecae6; }
-.menu-admin button[data-panel="eleves"] i{ color:#95d5b2; }
-.menu-admin button[data-panel="professeurs"] i{ color:#ffb4a2; }
-.menu-admin button[data-panel="matieres"] i{ color:#e0aaff; }
-.menu-admin button[data-panel="notes"] i{ color:#ffd6a5; }
-.menu-admin button[data-panel="absences"] i{ color:#ff8fa3; }
-.menu-admin button.actif i{ color:var(--primaire) !important; }
-
- /*  RESPONSIVE */
-
- 
-@media (max-width:1024px){
-  .disposition-admin{ flex-direction:column; border-radius:var(--rayon-lg); }
-  .barre-laterale-admin{ width:100%; min-width:100%; flex-direction:row; align-items:center; justify-content:space-between; padding:16px 20px; }
-  .marque-barre-laterale{ margin-bottom:0; }
-  .barre-laterale-admin > div:first-child{ display:flex; align-items:center; gap:20px; }
-  .menu-admin ul{ flex-direction:row; overflow-x:auto; gap:6px; }
-  .menu-admin li{ flex-shrink:0; }
-  .zone-principale-admin{ padding:20px; }
+.actions-ligne {
+  display: flex;
+  gap: 8px;
 }
 
-@media (max-width:600px){
-  body{ padding:0; }
-  .disposition-admin{ border-radius:0; min-height:100vh; }
-  .grille-statistiques{ grid-template-columns:1fr; }
-  .barre-outils-panneau{ flex-direction:column; align-items:stretch; }
-  table{ display:block; overflow-x:auto; white-space:nowrap; }
+.actions-ligne button {
+  padding: 7px 14px;
+  font-size: 0.78rem;
+}
+
+/* Icones Onglets */
+.menu-admin button[data-panel="statistiques"] i { color: #ffd166; }
+.menu-admin button[data-panel="utilisateurs"] i { color: #8ecae6; }
+.menu-admin button[data-panel="eleves"] i { color: #95d5b2; }
+.menu-admin button[data-panel="professeurs"] i { color: #ffb4a2; }
+.menu-admin button[data-panel="matieres"] i { color: #e0aaff; }
+.menu-admin button[data-panel="notes"] i { color: #ffd6a5; }
+.menu-admin button[data-panel="absences"] i { color: #ff8fa3; }
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .disposition-admin { flex-direction: column; }
+  .barre-laterale-admin {
+    width: 100%;
+    min-width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  }
+  .marque-barre-laterale { margin-bottom: 0; }
+  .menu-admin ul { flex-direction: row; overflow-x: auto; gap: 6px; }
+  .menu-admin li { flex-shrink: 0; }
+  .zone-principale-admin { padding: 20px; }
+}
+
+@media (max-width: 600px) {
+  body { padding: 0; }
+  .disposition-admin { border-radius: 0; min-height: 100vh; }
+  .grille-statistiques { grid-template-columns: 1fr; }
+  .barre-outils-panneau { flex-direction: column; align-items: stretch; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
 }

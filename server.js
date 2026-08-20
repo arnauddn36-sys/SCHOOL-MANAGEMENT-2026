@@ -39,7 +39,7 @@ application.use(helmet({
             styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://cdnjs.cloudflare.com"],
             fontSrc: ["'self'", "https://fonts.gstatic.com", "https://cdnjs.cloudflare.com"],
             scriptSrc: ["'self'"],
-           imgSrc: ["'self'", "data:", "https://i.pinimg.com"]
+            imgSrc: ["'self'", "data:", "https://i.pinimg.com"]
         }
     }
 }));
@@ -50,9 +50,9 @@ application.use(helmet({
 // Limite chaque IP à 5 tentatives de connexion par tranche de 15 minutes.
 // Protège /api/auth/login contre les attaques par force brute sur les mots de passe.
 const limiteurConnexion = rateLimit({
-    windowMs: 15 * 60 * 1000, // Fenêtre de 15 minutes
+    windowMs: 5 * 60 * 1000, // Fenêtre de 5 minutes
     max: 5,                    // 5 tentatives maximum par IP dans cette fenêtre
-    message: { message: "Trop de tentatives de connexion. Réessayez dans 15 minutes." },
+    message: { message: "Trop de tentatives de connexion. Réessayez dans 5 minutes." },
     standardHeaders: true,     // Renvoie les infos de quota dans les en-têtes RateLimit-*
     legacyHeaders: false
 });

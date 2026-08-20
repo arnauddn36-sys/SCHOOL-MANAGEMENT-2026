@@ -19,10 +19,11 @@ if (utilisateur) {
     document.getElementById("deconnexion").addEventListener("click", deconnexion); // Déconnexion
 
     // Association entre les boutons du menu et les panneaux à afficher
-    // Pour "eleves", on passe lectureSeule = true : le professeur voit uniquement
-    // la liste, sans les boutons Ajouter / Modifier / Supprimer (réservés à l'admin).
     const panneaux = {
-        eleves: (conteneur) => afficherPanneauEleves(conteneur, true),
+        eleves: async (conteneur) => {
+            await afficherPanneauEleves(conteneur, true);
+            initialiserRechercheMatricule(); // Réattache les événements de recherche après le chargement du panneau
+        },
         notes: afficherPanneauNotes,
         absences: afficherPanneauAbsences
     };
@@ -32,6 +33,50 @@ if (utilisateur) {
     });
 
     chargerProfil(); // Chargement du profil professeur au démarrage de la page
+    initialiserRechercheMatricule(); // Initialisation au chargement direct
+}
+
+// Fonction pour filtrer le tableau des élèves par matricule
+function filtrerParMatricule() {
+    const inputRecherche = document.getElementById('recherche');
+    const tableauEleves = document.getElementById('tableau-eleves') || document.querySelector('table');
+
+    if (!inputRecherche || !tableauEleves) return;
+
+    const terme = inputRecherche.value.toLowerCase().trim();
+    const lignes = tableauEleves.querySelectorAll('tbody tr');
+
+    lignes.forEach(ligne => {
+        // Cible la cellule du matricule (td.mono) ou la toute première colonne par défaut
+        const celluleMatricule = ligne.querySelector('td.mono') || ligne.cells[0];
+
+        if (celluleMatricule) {
+            const matricule = celluleMatricule.textContent.toLowerCase().trim();
+
+            if (matricule.includes(terme)) {
+                ligne.style.display = '';
+            } else {
+                ligne.style.display = 'none';
+            }
+        }
+    });
+}
+
+// Initialisation des écouteurs de la barre de recherche
+function initialiserRechercheMatricule() {
+    const inputRecherche = document.getElementById('recherche');
+    const formRecherche = document.querySelector('.barre-recherche-form');
+
+    if (formRecherche) {
+        formRecherche.onsubmit = (e) => {
+            e.preventDefault(); // Empêche le rechargement de la page
+            filtrerParMatricule();
+        };
+    }
+
+    if (inputRecherche) {
+        inputRecherche.oninput = filtrerParMatricule;
+    }
 }
 
 // Charge et affiche les informations du professeur connecté (nom + matières enseignées)

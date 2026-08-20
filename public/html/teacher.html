@@ -1,65 +1,72 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Dashboard Professeur — SCHOOL MANAGEMENT</title>
-
-    <!-- FontAwesome pour les icônes néon -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    <title>Espace Professeur - School Management</title>
     <link rel="stylesheet" href="../css/global.css">
     <link rel="stylesheet" href="../css/teacher.css">
-
+    <!-- FontAwesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-
 <body class="corps-role">
 
-    <header class="entete-role entete-role--professeur">
-        <div class="marque-role">
-            <i class="fa-solid fa-graduation-cap"></i>
-            <span>SCHOOL MANAGEMENT</span>
-        </div>
+    <!-- Vidéo de fond en arrière-plan -->
+    <video autoplay loop muted playsinline id="video-fond">
+        <source src="../IMAGES/im.mp4" type="video/mp4">
+    </video>
 
-        <div class="profil-utilisateur">
-            <i class="fa-solid fa-chalkboard-user"></i>
-            <span id="nomProfesseur" class="nom-utilisateur">Professeur</span>
-            <button id="deconnexion" class="bouton-deconnexion">
-                <i class="fa-solid fa-power-off"></i> Déconnexion
-            </button>
-        </div>
-    </header>
+    <div class="conteneur-role">
+        <!-- EN-TÊTE / BARRE SUPÉRIEURE -->
+        <header class="entete-role">
+            <div class="marque-role">
+                <i class="fas fa-graduation-cap"></i>
+                <span>SCHOOL MANAGEMENT</span>
+            </div>
+            
+            <div class="profil-utilisateur">
+                <i class="fas fa-user-circle"></i>
+                <span class="nom-utilisateur" id="nomProfesseur">Chargement...</span>
+                <button type="button" id="deconnexion" class="bouton-deconnexion">
+                    <i class="fas fa-power-off"></i> Déconnexion
+                </button>
+            </div>
+        </header>
 
-    <main class="conteneur-role">
-
-        <!-- Informations professeur -->
+        <!-- CARTE DE BIENVENUE -->
         <section class="info-professeur">
-            <h2><i class="fa-solid fa-hand-sparkles"></i> Bienvenue <span id="nomProfesseurCarte">Professeur</span></h2>
+            <h2><i class="fas fa-hand-sparkles"></i> Bienvenue <span id="nomProfesseurCarte">Professeur</span></h2>
             <p>Utilisez le menu ci-dessous pour consulter vos élèves, gérer les notes et les absences.</p>
         </section>
 
-        <!-- Actions professeur : chaque bouton porte un data-panel utilisé par teacher.js -->
+        <!-- MENU DE NAVIGATION -->
         <section class="menu-professeur">
             <h2>Gestion pédagogique</h2>
             <div class="puces-menu">
-                <button data-panel="eleves"><i class="fa-solid fa-user-graduate"></i> Voir les élèves</button>
-                <button data-panel="notes"><i class="fa-solid fa-file-pen"></i> Gérer les notes</button>
-                <button data-panel="absences"><i class="fa-solid fa-user-clock"></i> Gérer les absences</button>
+                <button type="button" data-panel="eleves"><i class="fas fa-user-graduate"></i> Voir les élèves</button>
+                <button type="button" data-panel="notes"><i class="fas fa-file-invoice"></i> Gérer les notes</button>
+                <button type="button" data-panel="absences"><i class="fas fa-user-clock"></i> Gérer les absences</button>
             </div>
         </section>
 
-        <!-- CONTENU DYNAMIQUE : rempli par le panneau sélectionné -->
-        <section class="panneau" id="contenu">
-            <div class="etat-vide">Choisissez une action ci-dessus pour commencer.</div>
-        </section>
+        <!-- BARRE DE RECHERCHE PAR MATRICULE -->
+        <form class="barre-recherche-form" role="search" onsubmit="return false;">
+            <label for="recherche" class="masque-visuellement">Rechercher un élève par matricule</label>
+            <input type="text" id="recherche" name="recherche" placeholder="Rechercher par matricule (ex: MAT-2026-01)...">
+            <button type="submit" id="btn-rechercher">
+                <i class="fas fa-search"></i> Rechercher
+            </button>
+        </form>
 
-    </main>
+        <!-- ZONE D'AFFICHAGE DU CONTENU DYNAMIQUE -->
+        <main id="contenu" class="panneau">
+            <div class="etat-vide">
+                Choisissez une action ci-dessus pour commencer.
+            </div>
+        </main>
+    </div>
 
+    <!-- SCRIPT JS -->
     <script type="module" src="../js/teacher.js"></script>
-
 </body>
-
 </html>

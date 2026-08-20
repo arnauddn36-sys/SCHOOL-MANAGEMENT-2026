@@ -37,7 +37,7 @@ export function connexion(requete, reponse) {
         if (!utilisateur) {
 
             return reponse.status(401).json({
-                message: "Informations de connexion incorrectes"
+                message: "Informations incorrectes,ressaisisez avec les bonnes informations"
             });
 
         }
