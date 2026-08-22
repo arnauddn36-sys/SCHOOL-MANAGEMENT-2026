@@ -6,15 +6,12 @@ const bd = new Database("database.db"); // Ouvre (ou crée) le fichier database.
 
 bd.pragma("foreign_keys = ON"); // Active la vérification des clés étrangères
 
-// ==========================
 // CRÉATION DES TABLES
-// ==========================
-// IF NOT EXISTS : la structure n'est créée qu'une seule fois, à la toute
-// première exécution. Les redémarrages suivants n'y touchent plus,
-// donc les données existantes ne sont jamais effacées.
+
+
+
 
 // UTILISATEURS
-// Table centrale de connexion : chaque compte (admin, professeur, élève) est un utilisateur.
 bd.exec(`
 CREATE TABLE IF NOT EXISTS users(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -27,7 +24,6 @@ CREATE TABLE IF NOT EXISTS users(
 `);
 
 // ÉLÈVES
-// user_id relie (optionnellement) un élève à son compte de connexion (role = student).
 bd.exec(`
 CREATE TABLE IF NOT EXISTS students(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -42,7 +38,6 @@ CREATE TABLE IF NOT EXISTS students(
 `);
 
 // PROFESSEURS
-// user_id relie (optionnellement) un professeur à son compte de connexion (role = teacher).
 bd.exec(`
 CREATE TABLE IF NOT EXISTS teachers(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -95,14 +90,10 @@ CREATE TABLE IF NOT EXISTS absences(
 );
 `);
 
-// ==========================
+
 // ADMIN UNIQUE PAR DÉFAUT
-// ==========================
-// Crée un seul compte admin, une seule fois (jamais recréé si un admin existe
-// déjà). Utile notamment sur Render (plan gratuit) où le Shell n'est pas
-// disponible pour insérer un premier compte manuellement.
-// Le mot de passe ci-dessous est déjà haché avec bcrypt (10 tours) et
-// correspond à "Admin123!" — change-le si tu veux, via bcrypt.hashSync().
+
+
 const nombreAdmins = bd.prepare(`
     SELECT COUNT(*) AS total FROM users WHERE role = 'admin'
 `).get();
