@@ -62,7 +62,7 @@ img, table{ max-width:100%; height:auto; }
 
 /* Barre de défilement fine et discrète, dans la couleur de la marque */
 ::-webkit-scrollbar{ width:8px; height:8px; }
-::-webkit-scrollbar-thumb{ background:var(--primaire); border-radius:99px; opacity:.5; }
+::-webkit-scrollbar-thumb{ background:rgba(255, 255, 255, 0.769); border-radius:49px; opacity:.5; }
 ::-webkit-scrollbar-track{ background:transparent; }
 
 @media (prefers-reduced-motion: reduce){
@@ -101,9 +101,18 @@ button{
   transition:var(--transition);
 }
 
-button:hover{ transform:translateY(-2px); box-shadow:0 14px 26px -10px var(--lueur-primaire); }
-button:active{ transform:translateY(0); }
+button:hover { 
+  background: rgba(255, 255, 255, 0.134) !important; 
+  border-color: rgba(255, 255, 255, 0.5) !important;  
+  color: #ffffff !important;                         
+  transform: translateY(-2px); 
+  box-shadow: 0 14px 26px -10px var(--lueur-primaire); 
+}
 
+button:active { 
+  background: rgba(255, 255, 255, 0.18) !important; 
+  transform: translateY(0); 
+}
 button.secondaire{
   color:rgb(249, 246, 246);
   border:1.5px solid var(--primaire);
@@ -119,7 +128,7 @@ button.danger{
 
 /*FORMULAIRES*/
 form{
-  background:var(--fond-carte); /* ✅ Corrigé (--fond-cart -> --fond-carte) */
+  background:var(--fond-carte); 
   border:1px solid var(--bordure);
   border-radius:var(--rayon-lg);
   box-shadow:var(--ombre-carte);
@@ -136,7 +145,7 @@ label{
   font-weight:700;
   text-transform:uppercase;
   letter-spacing:0.04em;
-  color:var(--primaire);
+  color:rgba(255, 255, 255, 0.818);
   margin-bottom:-8px;
 }
 
@@ -144,17 +153,17 @@ input, select{
   font-family:'Inter',sans-serif;
   padding:12px 14px;
   border-radius:var(--rayon-sm);
-  border:1.5px solid var(--bordure); /* ✅ Corrigé (--bordur -> --bordure) */
-  background:var(--fond-doux);
+  border:1.5px solid var(--bordure); 
+  background-color: rgba(221, 210, 210, 0);
   font-size:0.92rem;
-  color:var(--texte);
+  color:rgba(0, 0, 0, 0.786);
   transition:var(--transition);
   width:100%;
 }
 
 input:focus, select:focus{
   border-color:var(--secondaire);
-  background:#fff;
+  background:#905e5e00;
   box-shadow:0 0 0 4px var(--lueur-primaire);
 }
 
@@ -174,7 +183,7 @@ input:focus, select:focus{
 .card::before{
   content:'';
   position:absolute; top:0; left:0; right:0; height:3px;
-  background:linear-gradient(90deg,var(--primaire),var(--accent-teal));
+  background:linear-gradient(30deg,rgba(17, 193, 146, 0.873),rgba(211, 58, 12, 0.88));
   transform:scaleX(0);
   transform-origin:left;
   transition:transform .35s ease;
@@ -202,10 +211,10 @@ table{
   box-shadow:var(--ombre-carte);
 }
 
-thead{ background:rgba(230, 224, 224, 0.517); }
+thead{ background:rgba(43, 43, 124, 0.468); }
 
 thead th{
-  color: rgb(4, 13, 33);
+  color: rgb(235, 236, 240);
   text-align:left;
   padding:16px 20px;
   font-size:0.72rem;
@@ -219,11 +228,11 @@ tbody td{
   padding:15px 20px;
   border-bottom:1px solid var(--bordure);
   font-size:0.9rem;
-  color:rgb(29, 2, 2);
+  color:rgb(231, 225, 225);
 }
 
 tbody tr:hover{ 
-  background: rgba(10, 104, 138, 0.727) !important; /* Très léger voile transparent */
+  background: rgba(159, 180, 187, 0.365) !important; /* Très léger voile transparent */
 }
 td.mono, span.mono{ font-family:'Courier New',monospace; color:white; }/*couleur des ID*/
 
@@ -255,17 +264,17 @@ td.mono, span.mono{ font-family:'Courier New',monospace; color:white; }/*couleur
 
 .profil-utilisateur{
   display:flex; align-items:center; gap:14px;
-  background:rgba(255, 255, 255, 0.784);
+  background:rgba(255, 255, 255, 0);
   padding:8px 18px;
   border-radius:999px;
   border:1px solid var(--bordure);
   box-shadow:var(--ombre-carte);
 }
-.profil-utilisateur i{ font-size:1.25rem; color:var(--primaire); }
-.nom-utilisateur{ font-weight:700; font-size:0.9rem; color:var(--texte); }
+.profil-utilisateur i{ font-size:1.25rem; color:white; }
+.nom-utilisateur{ font-weight:700; font-size:0.9rem; color:rgba(235, 230, 230, 0.914); }
 
 .bouton-deconnexion, #deconnexion{
-  background:linear-gradient(135deg,var(--accent-teal) 0%,var(--secondaire) 100%) !important;
+  background:linear-gradient(135deg,rgba(7, 105, 234, 0.517) 0%,rgba(208, 7, 7, 0.299) 100%) !important;
   color:#fff !important;
   font-weight:700 !important;
   padding:8px 18px !important;
@@ -274,9 +283,9 @@ td.mono, span.mono{ font-family:'Courier New',monospace; color:white; }/*couleur
 }
 .bouton-deconnexion:hover, #deconnexion:hover{ transform:translateY(-3px); }
 
-/* =========================
-   ÉTAT VIDE
-========================= */
+   /*ÉTAT VIDE*/
+
+
 .etat-vide{
   background:var(--fond-carte);
   border:1.5px dashed var(--bordure);
@@ -286,9 +295,9 @@ td.mono, span.mono{ font-family:'Courier New',monospace; color:white; }/*couleur
   color:var(--texte-attenue);
 }
 
-/* =========================
-   ACCESSIBILITÉ
-========================= */
+   /*ACCESSIBILITÉ*/
+
+
 /* Cache visuellement un élément tout en le gardant lisible par les lecteurs d'écran
    (utilisé sur les <label> du formulaire de connexion, qui a déjà des icônes visibles) */
 .masque-visuellement{
@@ -301,8 +310,7 @@ td.mono, span.mono{ font-family:'Courier New',monospace; color:white; }/*couleur
   border:0;
 }
 
-/* =========================================================
-   RESPONSIVE — TOUS LES ÉCRANS
+   /*   RESPONSIVE — TOUS LES ÉCRANS  
    Approche "desktop-first" : le style de base ci-dessus est pensé
    pour le grand écran, puis on adapte en descendant par palier.
 
@@ -311,8 +319,7 @@ td.mono, span.mono{ font-family:'Courier New',monospace; color:white; }/*couleur
    - 1024–1439px : desktop standard (style de base, aucun changement)
    - 768–1023px : tablette
    - 480–767px  : mobile (portrait standard)
-   - <480px     : très petit mobile
-========================================================= */
+   - <480px     : très petit mobile   */
 
 /* ---------- Très grand écran : on aère un peu plus le contenu ---------- */
 @media (min-width:1440px){

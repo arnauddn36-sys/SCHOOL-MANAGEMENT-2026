@@ -9,13 +9,17 @@
     <!-- FontAwesome pour les icônes -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <link rel="stylesheet" href="../css/global.css">
-    <link rel="stylesheet" href="../css/login.css">
+    <!-- Seul le fichier CSS d'inscription est chargé -->
+    <link rel="stylesheet" href="../css/register.css">
+    
 </head>
 
-<body class="enveloppe-connexion">
+<body class="enveloppe-inscription">
+     <video autoplay muted loop id="video-fond">
+  <source src="../IMAGES/14378228_1920_1080_24fps (2).mp4" type="video/mp4">
+</video>
 
-    <main class="conteneur-connexion">
+    <main class="conteneur-inscription">
 
         <!-- EN-TÊTE AU-DESSUS DE LA CARTE D'INSCRIPTION -->
         <header class="en-tete-accueil">
@@ -36,7 +40,7 @@
         </header>
 
         <!-- CARTE D'INSCRIPTION -->
-        <section class="carte-connexion">
+        <section class="carte-inscription">
 
             <div class="avatar-utilisateur">
                 <i class="fa-solid fa-user-graduate"></i>
@@ -44,10 +48,10 @@
 
             <div class="en-tete-marque">
                 <h1>SCHOOL MANAGEMENT</h1>
-                <h2>Créer votre compte élève</h2>
+                <h3>Créer votre compte élève</h3>
             </div>
 
-            <form id="formulaireInscription" class="formulaire-neon" autocomplete="off">
+            <form id="formulaireInscription" class="formulaire-inscription" autocomplete="off">
 
                 <div class="champ-saisie">
                     <label for="nom" class="masque-visuellement">Votre nom</label>
@@ -106,11 +110,11 @@
                 <button type="submit" class="bouton-valider">Créer mon compte</button>
 
                 <p style="text-align:center; margin-top:16px; font-size:0.85rem;">
-                    Déjà inscrit ? <a href="/html/index.html" style="color:var(--primaire); font-weight:700;">Se connecter</a>
+                    Déjà inscrit ? <a href="/html/index.html" style="color:#4cc4d9; font-weight:700;">Se connecter</a>
                 </p>
 
                 <p style="text-align:center; margin-top:8px; font-size:0.85rem;">
-                    <a href="/html/accueil.html" style="color:var(--texte-attenue); font-weight:600;">&larr; Retour à l'accueil</a>
+                    <a href="/html/accueil.html" style="color:rgba(255, 255, 255, 0.7); font-weight:600;">&larr; Retour à l'accueil</a>
                 </p>
 
             </form>
