@@ -1,4 +1,4 @@
-import bd from "../db/database.js";
+import pool from "../db/database.js";
 import bcrypt from "bcrypt";
 
 const TOURS_DE_SEL = 10;
@@ -6,190 +6,151 @@ const TOURS_DE_SEL = 10;
 // ==========================
 // Ajouter un utilisateur
 // ==========================
-export function ajouterUtilisateur(nom, prenom, email, motDePasse, role) {
+export async function ajouterUtilisateur(nom, prenom, email, motDePasse, role) {
+    try {
+        // Vérification de l'unicité par nom, prénom et email
+        const verif = await pool.query(
+            `SELECT * FROM users WHERE LOWER(nom) = LOWER($1) AND LOWER(prenom) = LOWER($2) AND email = $3`,
+            [nom.trim(), prenom.trim(), email.trim().toLowerCase()]
+        );
 
-    // Vérification de l'unicité par nom, prénom et email
-    const utilisateurExistant = bd.prepare(`
-        SELECT *
-        FROM users
-        WHERE nom = ? AND prenom = ? AND email = ?
-    `).get(nom, prenom, email.trim().toLowerCase());
+        if (verif.rows.length > 0) {
+            console.log("Un utilisateur avec ces informations existe déjà.");
+            return false;
+        }
 
-    if (utilisateurExistant) {
-        console.log("Un utilisateur avec ces informations existe déjà.");
+        const motDePasseHache = await bcrypt.hash(motDePasse, TOURS_DE_SEL);
+
+        const resultat = await pool.query(
+            `INSERT INTO users (nom, prenom, email, password, role)
+             VALUES ($1, $2, $3, $4, $5) RETURNING id`,
+            [nom.trim(), prenom.trim(), email.trim().toLowerCase(), motDePasseHache, role]
+        );
+
+        return resultat.rows[0].id;
+    } catch (erreur) {
+        console.error("Erreur dans ajouterUtilisateur :", erreur);
         return false;
     }
-
-    const motDePasseHache = bcrypt.hashSync(motDePasse, TOURS_DE_SEL);
-
-    const resultat = bd.prepare(`
-        INSERT INTO users (nom, prenom, email, password, role)
-        VALUES (?, ?, ?, ?, ?)
-    `).run(
-        nom,
-        prenom,
-        email.trim().toLowerCase(),
-        motDePasseHache,
-        role
-    );
-
-    return resultat.lastInsertRowid;
 }
 
 // ==========================
 // Récupérer un utilisateur par ID
 // ==========================
-export function obtenirUtilisateurParId(id) {
-    const utilisateur = bd.prepare(`
-        SELECT *
-        FROM users
-        WHERE id = ?
-    `).get(id);
+export async function obtenirUtilisateurParId(id) {
+    try {
+        const resultat = await pool.query(`SELECT * FROM users WHERE id = $1`, [id]);
 
-    if (!utilisateur) {
-        console.log(`Aucun utilisateur trouvé avec l'ID ${id}`);
+        if (resultat.rows.length === 0) {
+            console.log(`Aucun utilisateur trouvé avec l'ID ${id}`);
+            return null;
+        }
+
+        return resultat.rows[0];
+    } catch (erreur) {
+        console.error("Erreur dans obtenirUtilisateurParId :", erreur);
         return null;
     }
-
-    return utilisateur;
 }
 
 // ==========================
 // Liste de tous les utilisateurs
 // ==========================
-export function listerUtilisateurs() {
-    return bd.prepare(`SELECT * FROM users`).all();
+export async function listerUtilisateurs() {
+    try {
+        const resultat = await pool.query(`SELECT * FROM users`);
+        return resultat.rows;
+    } catch (erreur) {
+        console.error("Erreur dans listerUtilisateurs :", erreur);
+        return [];
+    }
 }
 
 // ==========================
 // Modifier un utilisateur
 // ==========================
-export function modifierUtilisateur(
-    id,
-    nom,
-    prenom,
-    email,
-    motDePasse,
-    role
-) {
-    const utilisateurExistant = bd.prepare(`
-        SELECT *
-        FROM users
-        WHERE email = ?
-        AND id != ?
-    `).get(email.trim().toLowerCase(), id);
+export async function modifierUtilisateur(id, nom, prenom, email, motDePasse, role) {
+    try {
+        const utilisateurExistant = await pool.query(
+            `SELECT * FROM users WHERE email = $1 AND id != $2`,
+            [email.trim().toLowerCase(), id]
+        );
 
-    if (utilisateurExistant) {
+        if (utilisateurExistant.rows.length > 0) {
+            return false;
+        }
+
+        const motDePasseHache = await bcrypt.hash(motDePasse, TOURS_DE_SEL);
+
+        const resultat = await pool.query(
+            `UPDATE users
+             SET nom = $1, prenom = $2, email = $3, password = $4, role = $5
+             WHERE id = $6`,
+            [nom.trim(), prenom.trim(), email.trim().toLowerCase(), motDePasseHache, role, id]
+        );
+
+        return resultat.rowCount > 0;
+    } catch (erreur) {
+        console.error("Erreur dans modifierUtilisateur :", erreur);
         return false;
     }
-
-    const motDePasseHache = bcrypt.hashSync(motDePasse, TOURS_DE_SEL);
-
-    const resultat = bd.prepare(`
-        UPDATE users
-        SET nom = ?,
-            prenom = ?,
-            email = ?,
-            password = ?,
-            role = ?
-        WHERE id = ?
-    `).run(
-        nom,
-        prenom,
-        email.trim().toLowerCase(),
-        motDePasseHache,
-        role,
-        id
-    );
-
-    if (resultat.changes === 0) {
-
-        return false;
-
-    }
-
-    return true;
-
 }
 
 // ==========================
 // Supprimer un utilisateur
 // ==========================
+export async function supprimerUtilisateur(id) {
+    try {
+        const utilisateurRes = await pool.query(`SELECT * FROM users WHERE id = $1`, [id]);
 
-export function supprimerUtilisateur(id) {
-
-    // Chercher l'utilisateur
-    const utilisateur = bd.prepare(`
-        SELECT *
-        FROM users
-        WHERE id = ?
-    `).get(id);
-
-    if (!utilisateur) {
-
-        return false;
-
-    }
-
-    // Protection du dernier administrateur
-    if (utilisateur.role === "admin") {
-
-        const administrateurs = bd.prepare(`
-            SELECT COUNT(*) AS total
-            FROM users
-            WHERE role = 'admin'
-        `).get();
-
-        if (administrateurs.total <= 1) {
+        if (utilisateurRes.rows.length === 0) {
             return false;
         }
-    }
 
-    const resultat = bd.prepare(`
-        DELETE FROM users
-        WHERE id = ?
-    `).run(id);
+        const utilisateur = utilisateurRes.rows[0];
 
-    if (resultat.changes === 0) {
+        // Protection du dernier administrateur
+        if (utilisateur.role === "admin") {
+            const adminRes = await pool.query(`SELECT COUNT(*) AS total FROM users WHERE role = 'admin'`);
+            if (parseInt(adminRes.rows[0].total) <= 1) {
+                return false;
+            }
+        }
+
+        const resultat = await pool.query(`DELETE FROM users WHERE id = $1`, [id]);
+
+        return resultat.rowCount > 0;
+    } catch (erreur) {
+        console.error("Erreur dans supprimerUtilisateur :", erreur);
         return false;
     }
-
-    return true;
 }
 
 // ==========================
-// Connexion utilisateur (Nom + Prénom + Email + Mot de passe)
+// Connexion utilisateur
 // ==========================
-export function trouverUtilisateurParConnexion(
-    nom,
-    prenom,
-    email,
-    motDePasse
-) {
-    // On recherche l'utilisateur en vérifiant simultanément le nom, le prénom et l'email
-    const utilisateur = bd.prepare(`
-        SELECT *
-        FROM users
-        WHERE nom = ? AND prenom = ? AND email = ?
-    `).get(
-        nom.trim(),
-        prenom.trim(),
-        email.trim().toLowerCase()
-    );
+export async function trouverUtilisateurParConnexion(nom, prenom, email, motDePasse) {
+    try {
+        const resultat = await pool.query(
+            `SELECT * FROM users WHERE LOWER(nom) = LOWER($1) AND LOWER(prenom) = LOWER($2) AND email = $3`,
+            [nom.trim(), prenom.trim(), email.trim().toLowerCase()]
+        );
 
-    if (!utilisateur) {
-        return null; // Aucun utilisateur ne correspond à ces 3 critères
-    }
+        if (resultat.rows.length === 0) {
+            return null;
+        }
 
-    // Vérification sécurisée du mot de passe avec bcrypt
-    const motDePasseValide = bcrypt.compareSync(motDePasse, utilisateur.password);
+        const utilisateur = resultat.rows[0];
 
-    if (!motDePasseValide) {
+        const motDePasseValide = await bcrypt.compare(motDePasse, utilisateur.password);
 
+        if (!motDePasseValide) {
+            return null;
+        }
+
+        return utilisateur;
+    } catch (erreur) {
+        console.error("Erreur dans trouverUtilisateurParConnexion :", erreur);
         return null;
-
     }
-
-    return utilisateur;
-
 }

@@ -20,6 +20,11 @@ import { journaliser } from "./utils/logger.js";
 // Création du serveur Express
 const application = express();
 
+const app = express();
+
+
+app.set('trust proxy', 1); // <--- Ajoute cette ligne pour corriger l'erreur express-rate-limit
+
 // Gestion du chemin du projet
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
