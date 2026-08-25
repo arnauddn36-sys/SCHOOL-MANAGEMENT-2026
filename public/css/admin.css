@@ -2,11 +2,23 @@
    ADMIN.CSS — TABLEAU DE BORD ADMINISTRATEUR (Glassmorphism Pur)
 ===================================================================== */
 
+/* RESET DE BASE & POLICE EN CAS D'ABSENCE DE GLOBAL.CSS */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: hidden;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
 body {
   padding: 20px;
   min-height: 100vh;
   position: relative;
   color: #ffffff;
+  font-family: 'Poppins', system-ui, -apple-system, sans-serif;
 }
 
 #video-fond {
@@ -23,7 +35,7 @@ body {
 .disposition-admin {
   display: flex;
   min-height: calc(100vh - 40px);
-  border-radius: var(--rayon-lg);
+  border-radius: var(--rayon-lg, 16px);
   overflow: hidden;
   background: rgba(255, 255, 255, 0.06) !important;
   backdrop-filter: blur(20px) saturate(160%);
@@ -45,6 +57,8 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  max-height: 100vh;
+  overflow-y: auto;
 }
 
 .marque-barre-laterale {
@@ -74,6 +88,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  padding: 0;
+  margin: 0;
 }
 
 .menu-admin button {
@@ -86,6 +102,8 @@ body {
   font-weight: 600;
   padding: 12px 16px;
   border-radius: 12px;
+  border: none;
+  cursor: pointer;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -101,6 +119,7 @@ body {
   background: rgba(255, 255, 255, 0.25);
   color: #ffffff;
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
@@ -142,7 +161,7 @@ body {
   -webkit-backdrop-filter: blur(12px) !important;
   border: 1px solid rgba(255, 255, 255, 0.2) !important;
   padding: 20px 26px;
-  border-radius: var(--rayon-lg);
+  border-radius: var(--rayon-lg, 16px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
@@ -160,7 +179,7 @@ body {
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
   border: 1px solid rgba(255, 255, 255, 0.25) !important;
-  border-radius: var(--rayon-lg);
+  border-radius: var(--rayon-lg, 16px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   padding: 22px;
   display: flex;
@@ -202,6 +221,35 @@ body {
 }
 
 /* =========================
+   TABLEAUX RESPONSIVES
+========================= */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 20px;
+  border-radius: 12px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse !important;
+  white-space: nowrap;
+}
+
+table th, 
+table td {
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff;
+}
+
+table th {
+  background: rgba(255, 255, 255, 0.12);
+  font-weight: 700;
+}
+
+/* =========================
    ACTIONS DE LIGNE
 ========================= */
 .actions-ligne {
@@ -223,29 +271,67 @@ body {
 .menu-admin button[data-panel="notes"] i { color: #ffd6a5; }
 .menu-admin button[data-panel="absences"] i { color: #ff8fa3; }
 
-/* RESPONSIVE */
+/* =========================
+   RESPONSIVE TABLETTE ET MOBILE
+========================= */
 @media (max-width: 1024px) {
-  .disposition-admin { flex-direction: column; }
+  .disposition-admin { 
+    flex-direction: column; 
+  }
+  
   .barre-laterale-admin {
     width: 100%;
     min-width: 100%;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+    max-height: none;
+    flex-direction: column;
+    align-items: stretch;
     padding: 16px 20px;
     border-right: none;
     border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   }
-  .marque-barre-laterale { margin-bottom: 0; }
-  .menu-admin ul { flex-direction: row; overflow-x: auto; gap: 6px; }
-  .menu-admin li { flex-shrink: 0; }
-  .zone-principale-admin { padding: 20px; }
+  
+  .marque-barre-laterale { 
+    margin-bottom: 16px; 
+    justify-content: center;
+  }
+  
+  .menu-admin ul { 
+    flex-direction: row; 
+    overflow-x: auto !important; 
+    -webkit-overflow-scrolling: touch;
+    gap: 8px; 
+    padding-bottom: 8px;
+  }
+  
+  .menu-admin li { 
+    flex-shrink: 0; 
+  }
+
+  .menu-admin button {
+    white-space: nowrap;
+  }
+  
+  .zone-principale-admin { 
+    padding: 20px; 
+  }
 }
 
 @media (max-width: 600px) {
-  body { padding: 0; }
-  .disposition-admin { border-radius: 0; min-height: 100vh; }
-  .grille-statistiques { grid-template-columns: 1fr; }
-  .barre-outils-panneau { flex-direction: column; align-items: stretch; }
-  table { display: block; overflow-x: auto; white-space: nowrap; }
+  body { 
+    padding: 0; 
+  }
+  
+  .disposition-admin { 
+    border-radius: 0; 
+    min-height: 100vh; 
+  }
+  
+  .grille-statistiques { 
+    grid-template-columns: 1fr; 
+  }
+  
+  .barre-outils-panneau { 
+    flex-direction: column; 
+    align-items: stretch; 
+  }
 }
