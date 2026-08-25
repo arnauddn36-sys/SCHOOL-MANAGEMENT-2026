@@ -1,117 +1,103 @@
-import bd from "../db/database.js";
+// services/subjectService.js
+
+import pool from "../db/database.js";
 
 // ==========================
 // Ajouter une matière
 // ==========================
+export async function ajouterMatiere(nom) {
+    try {
+        const resultat = await pool.query(
+            `INSERT INTO subjects (nom) VALUES ($1) RETURNING id`,
+            [nom]
+        );
 
-export function ajouterMatiere(nom){
-
-    const resultat = bd.prepare(`
-
-        INSERT INTO subjects(
-            nom
-        )
-
-        VALUES(?)
-
-    `).run(
-        nom
-    );
-
-    return resultat.lastInsertRowid;
-
+        return resultat.rows[0].id;
+    } catch (erreur) {
+        console.error("Erreur dans ajouterMatiere :", erreur);
+        throw erreur;
+    }
 }
 
 // ==========================
 // Lister les matières
 // ==========================
-
-export function listerMatieres(){
-
-    const matieres = bd.prepare(`
-
-        SELECT *
-
-        FROM subjects
-
-    `).all();
-
-    return matieres;
-
+export async function listerMatieres() {
+    try {
+        const resultat = await pool.query(`SELECT * FROM subjects`);
+        return resultat.rows;
+    } catch (erreur) {
+        console.error("Erreur dans listerMatieres :", erreur);
+        return [];
+    }
 }
 
 // ==========================
 // Récupérer une matière par ID
 // ==========================
+export async function obtenirMatiereParId(id) {
+    try {
+        const resultat = await pool.query(
+            `SELECT * FROM subjects WHERE id = $1`,
+            [id]
+        );
 
-export function obtenirMatiereParId(id){
+        if (resultat.rows.length === 0) {
+            return null;
+        }
 
-    const matiere = bd.prepare(`
-
-        SELECT *
-
-        FROM subjects
-
-        WHERE id = ?
-
-    `).get(id);
-
-    return matiere;
-
+        return resultat.rows[0];
+    } catch (erreur) {
+        console.error("Erreur dans obtenirMatiereParId :", erreur);
+        return null;
+    }
 }
 
 // ==========================
 // Modifier une matière
 // ==========================
+export async function modifierMatiere(id, nom) {
+    try {
+        const resultat = await pool.query(
+            `UPDATE subjects SET nom = $1 WHERE id = $2`,
+            [nom, id]
+        );
 
-export function modifierMatiere(id, nom){
-
-    const resultat = bd.prepare(`
-
-        UPDATE subjects
-
-        SET nom = ?
-
-        WHERE id = ?
-
-    `).run(
-
-        nom,
-
-        id
-
-    );
-
-    return resultat.changes;
-
+        return resultat.rowCount;
+    } catch (erreur) {
+        console.error("Erreur dans modifierMatiere :", erreur);
+        return 0;
+    }
 }
 
 // ==========================
 // Supprimer une matière
 // ==========================
+export async function supprimerMatiere(id) {
+    const client = await pool.connect();
+    try {
+        // On utilise une transaction pour s'assurer que tout se supprime proprement
+        await client.query("BEGIN");
 
-export function supprimerMatiere(id){
+        // Supprimer les associations professeur-matière
+        await client.query(
+            `DELETE FROM teacher_subjects WHERE subject_id = $1`,
+            [id]
+        );
 
-    // Supprimer les associations professeur-matière
+        // Supprimer la matière
+        const resultat = await client.query(
+            `DELETE FROM subjects WHERE id = $1`,
+            [id]
+        );
 
-    bd.prepare(`
-
-        DELETE FROM teacher_subjects
-
-        WHERE subject_id = ?
-
-    `).run(id);
-
-    // Supprimer la matière
-
-    const resultat = bd.prepare(`
-
-        DELETE FROM subjects
-
-        WHERE id = ?
-
-    `).run(id);
-
-    return resultat.changes;
-
+        await client.query("COMMIT");
+        return resultat.rowCount;
+    } catch (erreur) {
+        await client.query("ROLLBACK");
+        console.error("Erreur dans supprimerMatiere :", erreur);
+        return 0;
+    } finally {
+        client.release();
+    }
 }

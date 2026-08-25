@@ -1,89 +1,130 @@
 // services/studentService.js
-// Toute la logique d'accès à la base de données pour les élèves.
-// Chaque fonction retourne des données (au lieu de faire console.log) car elles
-// sont maintenant consommées par les contrôleurs de l'API Express.
+// Logique d'accès à la base de données pour les élèves avec PostgreSQL.
 
-import bd from "../db/database.js"; // Connexion à la base SQLite
+import pool from "../db/database.js";
 
 // ==========================
 // Ajouter un élève
 // ==========================
-export function ajouterEleve(matricule, nom, prenom, age, classe, idUtilisateur = null) {
+export async function ajouterEleve(matricule, nom, prenom, age, classe, idUtilisateur = null) {
+    try {
+        const resultat = await pool.query(
+            `INSERT INTO students(matricule, nom, prenom, age, classe, user_id)
+             VALUES($1, $2, $3, $4, $5, $6) RETURNING id`,
+            [matricule, nom, prenom, age, classe, idUtilisateur]
+        );
 
-    const resultat = bd.prepare(`
-        INSERT INTO students(matricule, nom, prenom, age, classe, user_id)
-        VALUES(?, ?, ?, ?, ?, ?)
-    `).run(matricule, nom, prenom, age, classe, idUtilisateur);
-
-    return resultat.lastInsertRowid; // On renvoie l'id généré pour l'élève créé
+        return resultat.rows[0].id; // On renvoie l'ID généré pour l'élève créé
+    } catch (erreur) {
+        console.error("Erreur dans ajouterEleve :", erreur);
+        throw erreur;
+    }
 }
 
 // ==========================
 // Lister tous les élèves
 // ==========================
-export function listerEleves() {
-
-    return bd.prepare(`
-        SELECT * FROM students
-    `).all(); // .all() renvoie toutes les lignes sous forme de tableau d'objets
+export async function listerEleves() {
+    try {
+        const resultat = await pool.query(`SELECT * FROM students`);
+        return resultat.rows;
+    } catch (erreur) {
+        console.error("Erreur dans listerEleves :", erreur);
+        return [];
+    }
 }
 
 // ==========================
 // Récupérer un élève par son id
 // ==========================
-export function obtenirEleveParId(id) {
+export async function obtenirEleveParId(id) {
+    try {
+        const resultat = await pool.query(
+            `SELECT * FROM students WHERE id = $1`,
+            [id]
+        );
 
-    return bd.prepare(`
-        SELECT * FROM students WHERE id = ?
-    `).get(id); // .get() renvoie une seule ligne (ou undefined si absente)
+        if (resultat.rows.length === 0) {
+            return null;
+        }
+
+        return resultat.rows[0];
+    } catch (erreur) {
+        console.error("Erreur dans obtenirEleveParId :", erreur);
+        return null;
+    }
 }
 
 // ==========================
 // Récupérer l'élève lié à un compte utilisateur (espace "Mon profil")
 // ==========================
-export function obtenirEleveParUtilisateur(idUtilisateur) {
+export async function obtenirEleveParUtilisateur(idUtilisateur) {
+    try {
+        const resultat = await pool.query(
+            `SELECT * FROM students WHERE user_id = $1`,
+            [idUtilisateur]
+        );
 
-    return bd.prepare(`
-        SELECT * FROM students WHERE user_id = ?
-    `).get(idUtilisateur);
+        if (resultat.rows.length === 0) {
+            return null;
+        }
+
+        return resultat.rows[0];
+    } catch (erreur) {
+        console.error("Erreur dans obtenirEleveParUtilisateur :", erreur);
+        return null;
+    }
 }
 
 // ==========================
 // Modifier un élève
 // ==========================
-export function modifierEleve(id, matricule, nom, prenom, age, classe) {
+export async function modifierEleve(id, matricule, nom, prenom, age, classe) {
+    try {
+        const resultat = await pool.query(
+            `UPDATE students
+             SET matricule = $1, nom = $2, prenom = $3, age = $4, classe = $5
+             WHERE id = $6`,
+            [matricule, nom, prenom, age, classe, id]
+        );
 
-    const resultat = bd.prepare(`
-        UPDATE students
-        SET matricule = ?, nom = ?, prenom = ?, age = ?, classe = ?
-        WHERE id = ?
-    `).run(matricule, nom, prenom, age, classe, id);
-
-    return resultat.changes; // Nombre de lignes modifiées (0 si l'id n'existe pas)
+        return resultat.rowCount; // Nombre de lignes modifiées (0 si l'id n'existe pas)
+    } catch (erreur) {
+        console.error("Erreur dans modifierEleve :", erreur);
+        return 0;
+    }
 }
 
 // ==========================
 // Supprimer un élève
 // ==========================
-export function supprimerEleve(id) {
+export async function supprimerEleve(id) {
+    try {
+        const resultat = await pool.query(
+            `DELETE FROM students WHERE id = $1`,
+            [id]
+        );
 
-    const resultat = bd.prepare(`
-        DELETE FROM students WHERE id = ?
-    `).run(id);
-
-    return resultat.changes; // Nombre de lignes supprimées (0 si l'id n'existe pas)
+        return resultat.rowCount; // Nombre de lignes supprimées (0 si l'id n'existe pas)
+    } catch (erreur) {
+        console.error("Erreur dans supprimerEleve :", erreur);
+        return 0;
+    }
 }
+
 // ==========================
-// Vérifier si un matricule existe déjà (utilisé avant l'inscription,
-// pour ne pas créer un compte utilisateur "orphelin" si le matricule
-// officiel est déjà pris par un autre élève)
+// Vérifier si un matricule existe déjà
 // ==========================
-export function matriculeExisteDeja(matricule) {
+export async function matriculeExisteDeja(matricule) {
+    try {
+        const resultat = await pool.query(
+            `SELECT id FROM students WHERE matricule = $1`,
+            [matricule]
+        );
 
-    const eleve = bd.prepare(`
-        SELECT id FROM students WHERE matricule = ?
-    `).get(matricule);
-
-    return Boolean(eleve); // true si un élève existe déjà avec ce matricule
-
+        return resultat.rows.length > 0; // true si un élève existe déjà avec ce matricule
+    } catch (erreur) {
+        console.error("Erreur dans matriculeExisteDeja :", erreur);
+        return false;
+    }
 }

@@ -11,9 +11,9 @@ import {
 // ==========================
 // Afficher les utilisateurs
 // ==========================
-export function obtenirUtilisateurs(requete, reponse) {
+export async function obtenirUtilisateurs(requete, reponse) {
     try {
-        const utilisateurs = listerUtilisateurs();
+        const utilisateurs = await listerUtilisateurs();
         reponse.json(utilisateurs);
     } catch (erreur) {
         console.error(
@@ -29,10 +29,10 @@ export function obtenirUtilisateurs(requete, reponse) {
 // ==========================
 // Afficher un utilisateur par ID
 // ==========================
-export function obtenirUtilisateurUnique(requete, reponse) {
+export async function obtenirUtilisateurUnique(requete, reponse) {
     try {
         const id = requete.params.id;
-        const utilisateur = obtenirUtilisateurParId(id);
+        const utilisateur = await obtenirUtilisateurParId(id);
 
         if (!utilisateur) {
             return reponse.status(404).json({
@@ -55,7 +55,7 @@ export function obtenirUtilisateurUnique(requete, reponse) {
 // ==========================
 // Ajouter un utilisateur
 // ==========================
-export function creerUtilisateur(requete, reponse) {
+export async function creerUtilisateur(requete, reponse) {
     try {
         const {
             nom,
@@ -73,7 +73,7 @@ export function creerUtilisateur(requete, reponse) {
         }
 
         // Transmission de l'email au service d'ajout
-        const resultat = ajouterUtilisateur(
+        const resultat = await ajouterUtilisateur(
             nom,
             prenom,
             email,
@@ -83,7 +83,7 @@ export function creerUtilisateur(requete, reponse) {
 
         if (!resultat) {
             return reponse.status(400).json({
-                message: " cet email est déjà utilisé, saisissez-en un autre !"
+                message: "cet email est déjà utilisé, saisissez-en un autre !"
             });
         }
 
@@ -105,7 +105,7 @@ export function creerUtilisateur(requete, reponse) {
 // ==========================
 // Modifier un utilisateur
 // ==========================
-export function mettreAJourUtilisateur(requete, reponse) {
+export async function mettreAJourUtilisateur(requete, reponse) {
     try {
         const id = requete.params.id;
         const {
@@ -117,7 +117,7 @@ export function mettreAJourUtilisateur(requete, reponse) {
         } = requete.body;
 
         // Transmission de l'email au service de modification
-        const resultat = modifierUtilisateur(
+        const resultat = await modifierUtilisateur(
             id,
             nom,
             prenom,
@@ -150,10 +150,10 @@ export function mettreAJourUtilisateur(requete, reponse) {
 // ==========================
 // Supprimer un utilisateur
 // ==========================
-export function retirerUtilisateur(requete, reponse) {
+export async function retirerUtilisateur(requete, reponse) {
     try {
         const id = requete.params.id;
-        const resultat = supprimerUtilisateur(id);
+        const resultat = await supprimerUtilisateur(id);
 
         if (!resultat) {
             return reponse.status(400).json({

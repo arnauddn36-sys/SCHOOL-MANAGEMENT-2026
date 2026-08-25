@@ -1,83 +1,61 @@
-import bd from "../db/database.js";
+// services/teacherSubjectService.js (ou le fichier correspondant)
+
+import pool from "../db/database.js";
 
 // ==========================
 // Ajouter une matière à un professeur
 // ==========================
+export async function attribuerMatiere(idProfesseur, idMatiere) {
+    try {
+        const resultat = await pool.query(
+            `INSERT INTO teacher_subjects(teacher_id, subject_id)
+             VALUES($1, $2) RETURNING id`,
+            [idProfesseur, idMatiere]
+        );
 
-export function attribuerMatiere(idProfesseur, idMatiere){
-
-    const resultat = bd.prepare(`
-
-        INSERT INTO teacher_subjects(
-            teacher_id,
-            subject_id
-        )
-
-        VALUES(?, ?)
-
-    `)
-    .run(
-        idProfesseur,
-        idMatiere
-    );
-
-    return resultat.lastInsertRowid;
-
+        return resultat.rows[0].id;
+    } catch (erreur) {
+        console.error("Erreur dans attribuerMatiere :", erreur);
+        throw erreur;
+    }
 }
 
 // ==========================
 // Voir les matières d'un professeur
 // ==========================
+export async function obtenirMatieresProfesseur(idProfesseur) {
+    try {
+        const resultat = await pool.query(
+            `SELECT
+                subjects.id,
+                subjects.nom
+             FROM subjects
+             JOIN teacher_subjects ON subjects.id = teacher_subjects.subject_id
+             WHERE teacher_subjects.teacher_id = $1`,
+            [idProfesseur]
+        );
 
-export function obtenirMatieresProfesseur(idProfesseur){
-
-    const matieres = bd.prepare(`
-
-        SELECT
-
-            subjects.id,
-            subjects.nom
-
-        FROM subjects
-
-
-        JOIN teacher_subjects
-
-        ON subjects.id = teacher_subjects.subject_id
-
-
-        WHERE teacher_subjects.teacher_id = ?
-
-    `)
-    .all(idProfesseur);
-
-    return matieres;
-
+        return resultat.rows;
+    } catch (erreur) {
+        console.error("Erreur dans obtenirMatieresProfesseur :", erreur);
+        return [];
+    }
 }
 
 // ==========================
 // Retirer une matière
 // ==========================
+export async function retirerMatiere(idProfesseur, idMatiere) {
+    try {
+        const resultat = await pool.query(
+            `DELETE FROM teacher_subjects
+             WHERE teacher_id = $1 AND subject_id = $2`,
+            [idProfesseur, idMatiere]
+        );
 
-export function retirerMatiere(
-    idProfesseur,
-    idMatiere
-){
-
-    const resultat = bd.prepare(`
-
-        DELETE FROM teacher_subjects
-
-        WHERE teacher_id = ?
-
-        AND subject_id = ?
-
-    `)
-    .run(
-        idProfesseur,
-        idMatiere
-    );
-
-    return resultat.changes;
-
+        return resultat.rowCount;
+    } catch (erreur) {
+        console.error("Erreur dans retirerMatiere :", erreur);
+        return 0;
+    }
 }

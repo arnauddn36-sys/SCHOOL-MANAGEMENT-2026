@@ -16,18 +16,12 @@ import { listerAbsencesParEleve } from "../services/absenceService.js";
 // ==========================
 // Afficher les élèves
 // ==========================
-export function obtenirEleves(requete, reponse) {
-
+export async function obtenirEleves(requete, reponse) {
     try {
-
-        const eleves = listerEleves();
-
+        const eleves = await listerEleves();
         reponse.json(eleves);
-
     } catch (erreur) {
-
         console.error("Erreur récupération élèves :", erreur);
-
         reponse.status(500).json({
             message: "Erreur serveur"
         });
@@ -37,13 +31,10 @@ export function obtenirEleves(requete, reponse) {
 // ==========================
 // Afficher un élève par ID
 // ==========================
-export function obtenirEleveUnique(requete, reponse) {
-
+export async function obtenirEleveUnique(requete, reponse) {
     try {
-
         const id = requete.params.id;
-
-        const eleve = obtenirEleveParId(id);
+        const eleve = await obtenirEleveParId(id);
 
         if (!eleve) {
             return reponse.status(404).json({
@@ -52,11 +43,8 @@ export function obtenirEleveUnique(requete, reponse) {
         }
 
         reponse.json(eleve);
-
     } catch (erreur) {
-
         console.error("Erreur récupération élève :", erreur);
-
         reponse.status(500).json({
             message: "Erreur serveur"
         });
@@ -67,11 +55,9 @@ export function obtenirEleveUnique(requete, reponse) {
 // Afficher le profil de l'élève connecté (via son user_id)
 // avec ses notes et absences pour l'espace élève
 // ==========================
-export function obtenirMonProfilEleve(requete, reponse) {
-
+export async function obtenirMonProfilEleve(requete, reponse) {
     try {
-
-        const eleve = obtenirEleveParUtilisateur(requete.userId);
+        const eleve = await obtenirEleveParUtilisateur(requete.userId);
 
         if (!eleve) {
             return reponse.status(404).json({
@@ -79,15 +65,12 @@ export function obtenirMonProfilEleve(requete, reponse) {
             });
         }
 
-        const notes = listerNotesParEleve(eleve.id);        // Notes de l'élève
-        const absences = listerAbsencesParEleve(eleve.id);   // Absences de l'élève
+        const notes = await listerNotesParEleve(eleve.id);        // Notes de l'élève
+        const absences = await listerAbsencesParEleve(eleve.id);   // Absences de l'élève
 
         reponse.json({ ...eleve, grades: notes, absences });
-
     } catch (erreur) {
-
         console.error("Erreur récupération profil élève :", erreur);
-
         reponse.status(500).json({
             message: "Erreur serveur"
         });
@@ -97,10 +80,8 @@ export function obtenirMonProfilEleve(requete, reponse) {
 // ==========================
 // Ajouter un élève
 // ==========================
-export function creerEleve(requete, reponse) {
-
+export async function creerEleve(requete, reponse) {
     try {
-
         const { matricule, nom, prenom, age, classe } = requete.body;
 
         if (!matricule || !nom || !prenom || !age || !classe) {
@@ -109,16 +90,13 @@ export function creerEleve(requete, reponse) {
             });
         }
 
-        ajouterEleve(matricule, nom, prenom, age, classe);
+        await ajouterEleve(matricule, nom, prenom, age, classe);
 
         reponse.json({
             message: "Élève ajouté avec succès"
         });
-
     } catch (erreur) {
-
         console.error("Erreur ajout élève :", erreur);
-
         reponse.status(500).json({
             message: "Erreur serveur (matricule peut-être déjà utilisé)"
         });
@@ -128,16 +106,14 @@ export function creerEleve(requete, reponse) {
 // ==========================
 // Modifier un élève
 // ==========================
-export function mettreAJourEleve(requete, reponse) {
-
+export async function mettreAJourEleve(requete, reponse) {
     try {
-
         const id = requete.params.id;
         const { matricule, nom, prenom, age, classe } = requete.body;
 
-        const modifications = modifierEleve(id, matricule, nom, prenom, age, classe);
+        const modifications = await modifierEleve(id, matricule, nom, prenom, age, classe);
 
-        if (modifications === 0) {
+        if (!modifications) {
             return reponse.status(404).json({
                 message: "Élève introuvable"
             });
@@ -146,11 +122,8 @@ export function mettreAJourEleve(requete, reponse) {
         reponse.json({
             message: "Élève modifié avec succès"
         });
-
     } catch (erreur) {
-
         console.error("Erreur modification élève :", erreur);
-
         reponse.status(500).json({
             message: "Erreur serveur"
         });
@@ -160,15 +133,12 @@ export function mettreAJourEleve(requete, reponse) {
 // ==========================
 // Supprimer un élève
 // ==========================
-export function retirerEleve(requete, reponse) {
-
+export async function retirerEleve(requete, reponse) {
     try {
-
         const id = requete.params.id;
+        const suppressions = await supprimerEleve(id);
 
-        const suppressions = supprimerEleve(id);
-
-        if (suppressions === 0) {
+        if (!suppressions) {
             return reponse.status(404).json({
                 message: "Élève introuvable"
             });
@@ -177,11 +147,8 @@ export function retirerEleve(requete, reponse) {
         reponse.json({
             message: "Élève supprimé avec succès"
         });
-
     } catch (erreur) {
-
         console.error("Erreur suppression élève :", erreur);
-
         reponse.status(500).json({
             message: "Erreur serveur"
         });

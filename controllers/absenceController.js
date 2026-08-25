@@ -14,18 +14,12 @@ import { dateDuJourISO } from "../config/date.js";
 // ==========================
 // Afficher toutes les absences
 // ==========================
-export function obtenirAbsences(requete, reponse) {
-
+export async function obtenirAbsences(requete, reponse) {
     try {
-
-        const absences = listerAbsences();
-
+        const absences = await listerAbsences();
         reponse.json(absences);
-
     } catch (erreur) {
-
         console.error("Erreur récupération absences :", erreur);
-
         reponse.status(500).json({
             message: "Erreur serveur"
         });
@@ -35,20 +29,13 @@ export function obtenirAbsences(requete, reponse) {
 // ==========================
 // Afficher les absences d'un élève précis
 // ==========================
-export function obtenirAbsencesEleve(requete, reponse) {
-
+export async function obtenirAbsencesEleve(requete, reponse) {
     try {
-
         const idEleve = requete.params.id;
-
-        const absences = listerAbsencesParEleve(idEleve);
-
+        const absences = await listerAbsencesParEleve(idEleve);
         reponse.json(absences);
-
     } catch (erreur) {
-
         console.error("Erreur récupération absences élève :", erreur);
-
         reponse.status(500).json({
             message: "Erreur serveur"
         });
@@ -58,10 +45,8 @@ export function obtenirAbsencesEleve(requete, reponse) {
 // ==========================
 // Ajouter une absence
 // ==========================
-export function creerAbsence(requete, reponse) {
-
+export async function creerAbsence(requete, reponse) {
     try {
-
         const { student_id: idEleve, date, status: statut } = requete.body;
 
         if (!idEleve || !statut) {
@@ -71,16 +56,13 @@ export function creerAbsence(requete, reponse) {
         }
 
         // Si aucune date n'est fournie, on utilise la date du jour par défaut
-        ajouterAbsence(idEleve, date || dateDuJourISO(), statut);
+        await ajouterAbsence(idEleve, date || dateDuJourISO(), statut);
 
         reponse.json({
             message: "Absence ajoutée avec succès"
         });
-
     } catch (erreur) {
-
         console.error("Erreur ajout absence :", erreur);
-
         reponse.status(500).json({
             message: "Erreur serveur"
         });
@@ -90,16 +72,14 @@ export function creerAbsence(requete, reponse) {
 // ==========================
 // Modifier une absence
 // ==========================
-export function mettreAJourAbsence(requete, reponse) {
-
+export async function mettreAJourAbsence(requete, reponse) {
     try {
-
         const id = requete.params.id;
         const { student_id: idEleve, date, status: statut } = requete.body;
 
-        const modifications = modifierAbsence(id, idEleve, date, statut);
+        const modifications = await modifierAbsence(id, idEleve, date, statut);
 
-        if (modifications === 0) {
+        if (!modifications) {
             return reponse.status(404).json({
                 message: "Absence introuvable"
             });
@@ -108,11 +88,8 @@ export function mettreAJourAbsence(requete, reponse) {
         reponse.json({
             message: "Absence modifiée avec succès"
         });
-
     } catch (erreur) {
-
         console.error("Erreur modification absence :", erreur);
-
         reponse.status(500).json({
             message: "Erreur serveur"
         });
@@ -122,15 +99,12 @@ export function mettreAJourAbsence(requete, reponse) {
 // ==========================
 // Supprimer une absence
 // ==========================
-export function retirerAbsence(requete, reponse) {
-
+export async function retirerAbsence(requete, reponse) {
     try {
-
         const id = requete.params.id;
+        const suppressions = await supprimerAbsence(id);
 
-        const suppressions = supprimerAbsence(id);
-
-        if (suppressions === 0) {
+        if (!suppressions) {
             return reponse.status(404).json({
                 message: "Absence introuvable"
             });
@@ -139,11 +113,8 @@ export function retirerAbsence(requete, reponse) {
         reponse.json({
             message: "Absence supprimée avec succès"
         });
-
     } catch (erreur) {
-
         console.error("Erreur suppression absence :", erreur);
-
         reponse.status(500).json({
             message: "Erreur serveur"
         });

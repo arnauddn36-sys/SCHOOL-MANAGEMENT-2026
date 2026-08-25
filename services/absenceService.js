@@ -1,84 +1,122 @@
 // services/absenceService.js
-// Logique d'accès à la base de données pour les absences.
+// Logique d'accès à la base de données pour les absences avec PostgreSQL.
 
-import bd from "../db/database.js"; // Connexion à la base SQLite
+import pool from "../db/database.js"; // Connexion au pool PostgreSQL
 
 // ==========================
 // Ajouter une absence
 // ==========================
-export function ajouterAbsence(idEleve, date, statut) {
+export async function ajouterAbsence(idEleve, date, statut) {
+    try {
+        const resultat = await pool.query(
+            `INSERT INTO absences (student_id, date, status)
+             VALUES ($1, $2, $3) RETURNING id`,
+            [idEleve, date, statut]
+        );
 
-    const resultat = bd.prepare(`
-        INSERT INTO absences (student_id, date, status)
-        VALUES (?, ?, ?)
-    `).run(idEleve, date, statut);
-
-    return resultat.lastInsertRowid; // Id de l'absence créée
+        return resultat.rows[0].id; // ID de l'absence créée
+    } catch (erreur) {
+        console.error("Erreur dans ajouterAbsence :", erreur);
+        throw erreur;
+    }
 }
 
 // ==========================
 // Lister toutes les absences (avec le nom de l'élève concerné)
 // ==========================
-export function listerAbsences() {
+export async function listerAbsences() {
+    try {
+        const resultat = await pool.query(`
+            SELECT
+                absences.id,
+                absences.date,
+                absences.status,
+                students.nom,
+                students.prenom
+            FROM absences
+            JOIN students ON absences.student_id = students.id
+            ORDER BY absences.date DESC
+        `);
 
-    return bd.prepare(`
-        SELECT
-            absences.id,
-            absences.date,
-            absences.status,
-            students.nom,
-            students.prenom
-        FROM absences
-        JOIN students ON absences.student_id = students.id
-        ORDER BY absences.date DESC
-    `).all();
+        return resultat.rows;
+    } catch (erreur) {
+        console.error("Erreur dans listerAbsences :", erreur);
+        return [];
+    }
 }
 
 // ==========================
 // Lister les absences d'un élève précis (espace élève / professeur)
 // ==========================
-export function listerAbsencesParEleve(idEleve) {
+export async function listerAbsencesParEleve(idEleve) {
+    try {
+        const resultat = await pool.query(`
+            SELECT id, date, status
+            FROM absences
+            WHERE student_id = $1
+            ORDER BY date DESC
+        `, [idEleve]);
 
-    return bd.prepare(`
-        SELECT id, date, status
-        FROM absences
-        WHERE student_id = ?
-        ORDER BY date DESC
-    `).all(idEleve);
+        return resultat.rows;
+    } catch (erreur) {
+        console.error("Erreur dans listerAbsencesParEleve :", erreur);
+        return [];
+    }
 }
 
 // ==========================
 // Récupérer une absence par son id
 // ==========================
-export function obtenirAbsenceParId(id) {
+export async function obtenirAbsenceParId(id) {
+    try {
+        const resultat = await pool.query(
+            `SELECT * FROM absences WHERE id = $1`,
+            [id]
+        );
 
-    return bd.prepare(`
-        SELECT * FROM absences WHERE id = ?
-    `).get(id);
+        if (resultat.rows.length === 0) {
+            return null;
+        }
+
+        return resultat.rows[0];
+    } catch (erreur) {
+        console.error("Erreur dans obtenirAbsenceParId :", erreur);
+        return null;
+    }
 }
 
 // ==========================
 // Modifier une absence
 // ==========================
-export function modifierAbsence(id, idEleve, date, statut) {
+export async function modifierAbsence(id, idEleve, date, statut) {
+    try {
+        const resultat = await pool.query(
+            `UPDATE absences
+             SET student_id = $1, date = $2, status = $3
+             WHERE id = $4`,
+            [idEleve, date, statut, id]
+        );
 
-    const resultat = bd.prepare(`
-        UPDATE absences
-        SET student_id = ?, date = ?, status = ?
-        WHERE id = ?
-    `).run(idEleve, date, statut, id);
-
-    return resultat.changes; // Nombre de lignes modifiées
+        return resultat.rowCount; // Nombre de lignes modifiées
+    } catch (erreur) {
+        console.error("Erreur dans modifierAbsence :", erreur);
+        return 0;
+    }
 }
 
 // ==========================
 // Supprimer une absence
 // ==========================
-export function supprimerAbsence(id) {
+export async function supprimerAbsence(id) {
+    try {
+        const resultat = await pool.query(
+            `DELETE FROM absences WHERE id = $1`,
+            [id]
+        );
 
-    const resultat = bd.prepare(`
-        DELETE FROM absences WHERE id = ?
-    `).run(id);
-
-    return resultat.changes; // Nombre de lignes supprimées
+        return resultat.rowCount; // Nombre de lignes supprimées
+    } catch (erreur) {
+        console.error("Erreur dans supprimerAbsence :", erreur);
+        return 0;
+    }
 }

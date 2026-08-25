@@ -1,159 +1,90 @@
 // controllers/subjectController.js
 
 import {
-
     listerMatieres,
     ajouterMatiere,
     modifierMatiere,
     supprimerMatiere
-
 } from "../services/subjectService.js";
 
 // ==========================
 // Afficher les matières
 // ==========================
-
-export function obtenirMatieres(requete,reponse){
-
-    try{
-
-        const matieres = listerMatieres();
-
+export async function obtenirMatieres(requete, reponse) {
+    try {
+        const matieres = await listerMatieres();
         reponse.json(matieres);
-
-    }catch(erreur){
-
+    } catch (erreur) {
         console.error(erreur);
-
         reponse.status(500).json({
-
-            message:"Erreur serveur"
-
+            message: "Erreur serveur"
         });
-
     }
-
 }
 
 // ==========================
 // Ajouter une matière
 // ==========================
+export async function creerMatiere(requete, reponse) {
+    try {
+        const { nom } = requete.body;
 
-export function creerMatiere(requete,reponse){
-
-    try{
-
-        const {
-
-            nom
-
-        } = requete.body;
-
-        if(!nom){
-
+        if (!nom) {
             return reponse.status(400).json({
-
-                message:"Nom obligatoire"
-
+                message: "Nom obligatoire"
             });
-
         }
 
-        ajouterMatiere(
-            nom
-        );
+        await ajouterMatiere(nom);
 
         reponse.json({
-
-            message:"Matière ajoutée avec succès"
-
+            message: "Matière ajoutée avec succès"
         });
-
-    }catch(erreur){
-
+    } catch (erreur) {
         console.error(erreur);
-
         reponse.status(500).json({
-
-            message:"Erreur serveur"
-
+            message: "Erreur serveur"
         });
-
     }
-
 }
 
 // ==========================
 // Modifier une matière
 // ==========================
+export async function mettreAJourMatiere(requete, reponse) {
+    try {
+        const id = requete.params.id;
+        const { nom } = requete.body;
 
-export function mettreAJourMatiere(requete,reponse){
-
-    try{
-
-        const id =
-        requete.params.id;
-
-        const {
-
-            nom
-
-        } = requete.body;
-
-        modifierMatiere(
-            id,
-            nom
-        );
+        await modifierMatiere(id, nom);
 
         reponse.json({
-
-            message:"Matière modifiée avec succès"
-
+            message: "Matière modifiée avec succès"
         });
-
-    }catch(erreur){
-
+    } catch (erreur) {
         console.error(erreur);
-
         reponse.status(500).json({
-
-            message:"Erreur serveur"
-
+            message: "Erreur serveur"
         });
-
     }
-
 }
 
 // ==========================
 // Supprimer une matière
 // ==========================
+export async function retirerMatiere(requete, reponse) {
+    try {
+        const id = requete.params.id;
 
-export function retirerMatiere(requete,reponse){
-
-    try{
-
-        const id =
-        requete.params.id;
-
-        supprimerMatiere(id);
+        await supprimerMatiere(id);
 
         reponse.json({
-
-            message:"Matière supprimée avec succès"
-
+            message: "Matière supprimée avec succès"
         });
-
-    }catch(erreur){
-
+    } catch (erreur) {
         console.error(erreur);
-
         reponse.status(500).json({
-
-            message:"Erreur serveur"
-
+            message: "Erreur serveur"
         });
-
     }
-
 }

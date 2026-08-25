@@ -1,3 +1,6 @@
+// controllers/gradeController.js
+// Reçoit les requêtes HTTP liées aux notes et appelle le service correspondant.
+
 import {
     listerNotes,
     listerNotesParEleve,
@@ -7,93 +10,60 @@ import {
 } from "../services/gradeService.js";
 
 // Liste des notes
-
-export function obtenirNotes(requete,reponse){
-
-    try{
-
-        const notes = listerNotes();
-
+export async function obtenirNotes(requete, reponse) {
+    try {
+        const notes = await listerNotes();
         reponse.json(notes);
-
-    }catch(erreur){
-
+    } catch (erreur) {
         console.error(erreur);
-
         reponse.status(500).json({
-            message:"Erreur serveur"
+            message: "Erreur serveur"
         });
-
     }
-
 }
 
 // Notes d'un élève précis
-
-export function obtenirNotesEleve(requete,reponse){
-
-    try{
-
-        const notes = listerNotesParEleve(requete.params.id);
-
+export async function obtenirNotesEleve(requete, reponse) {
+    try {
+        const notes = await listerNotesParEleve(requete.params.id);
         reponse.json(notes);
-
-    }catch(erreur){
-
+    } catch (erreur) {
         console.error(erreur);
-
         reponse.status(500).json({
-            message:"Erreur serveur"
+            message: "Erreur serveur"
         });
-
     }
-
 }
 
 // Ajouter une note
-
-export function creerNote(requete,reponse){
-
-    try{
-
+export async function creerNote(requete, reponse) {
+    try {
         const {
             student_id: idEleve,
             subject_id: idMatiere,
             note
         } = requete.body;
 
-        ajouterNote(
+        await ajouterNote(
             idEleve,
             idMatiere,
             note
         );
 
         reponse.json({
-
-            message:"Note ajoutée avec succès"
-
+            message: "Note ajoutée avec succès"
         });
-
-    }catch(erreur){
-
+    } catch (erreur) {
         console.error(erreur);
-
         reponse.status(500).json({
-
-            message:"Erreur serveur"
-
+            message: "Erreur serveur"
         });
-
     }
-
 }
 
 // Modifier
-
-export function mettreAJourNote(requete,reponse){
-
-    try{
-
+export async function mettreAJourNote(requete, reponse) {
+    try {
         const id = requete.params.id;
 
         const {
@@ -102,7 +72,7 @@ export function mettreAJourNote(requete,reponse){
             note
         } = requete.body;
 
-        modifierNote(
+        await modifierNote(
             id,
             idEleve,
             idMatiere,
@@ -110,45 +80,30 @@ export function mettreAJourNote(requete,reponse){
         );
 
         reponse.json({
-
-            message:"Note modifiée"
-
+            message: "Note modifiée"
         });
-
-    }catch(erreur){
-
+    } catch (erreur) {
+        console.error(erreur);
         reponse.status(500).json({
-            message:"Erreur serveur"
+            message: "Erreur serveur"
         });
-
     }
-
 }
 
 // Supprimer
-
-export function retirerNote(requete,reponse){
-
-    try{
-
+export async function retirerNote(requete, reponse) {
+    try {
         const id = requete.params.id;
 
-        supprimerNote(id);
+        await supprimerNote(id);
 
         reponse.json({
-
-            message:"Note supprimée"
-
+            message: "Note supprimée"
         });
-
-    }catch(erreur){
-
+    } catch (erreur) {
+        console.error(erreur);
         reponse.status(500).json({
-
-            message:"Erreur serveur"
-
+            message: "Erreur serveur"
         });
-
     }
-
 }
