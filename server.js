@@ -29,9 +29,9 @@ app.set('trust proxy', 1); // <--- Ajoute cette ligne pour corriger l'erreur exp
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// ==========================
 // SÉCURITÉ HTTP (helmet)
-// ==========================
+
+
 // Ajoute automatiquement une série d'en-têtes de sécurité (anti-clickjacking,
 // anti-sniffing MIME, masque la techno utilisée, etc.).
 // On personnalise la Content-Security-Policy par défaut car elle bloquerait
