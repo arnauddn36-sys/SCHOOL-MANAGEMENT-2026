@@ -141,29 +141,32 @@ form{
 }
 
 label{
+  position: relative;
   font-size:0.78rem;
   font-weight:700;
   text-transform:uppercase;
   letter-spacing:0.04em;
-  color:rgba(255, 255, 255, 0.818);
+  color:rgba(255, 255, 255, 0.228);
   margin-bottom:-8px;
+  
 }
 
 input, select{
+  position: relative;
   font-family:'Inter',sans-serif;
   padding:12px 14px;
   border-radius:var(--rayon-sm);
-  border:1.5px solid var(--bordure); 
-  background-color: rgba(221, 210, 210, 0);
-  font-size:0.92rem;
-  color:rgba(0, 0, 0, 0.786);
+  background-color: rgba(244, 240, 240, 0.881);
+  font-size:0.52rem;
   transition:var(--transition);
-  width:100%;
+  width:95%;
+  right:10%;
+  top:5px;
 }
 
 input:focus, select:focus{
   border-color:var(--secondaire);
-  background:#905e5e00;
+  background:#ece9e9eb;
   box-shadow:0 0 0 4px var(--lueur-primaire);
 }
 
