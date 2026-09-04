@@ -5,11 +5,11 @@ import pool from "../db/database.js";
 // ==========================
 // Ajouter une matière
 // ==========================
-export async function ajouterMatiere(nom) {
+export async function ajouterMatiere(nom, coefficient = 1) {
     try {
         const resultat = await pool.query(
-            `INSERT INTO subjects (nom) VALUES ($1) RETURNING id`,
-            [nom]
+            `INSERT INTO subjects (nom, coefficient) VALUES ($1, $2) RETURNING id`,
+            [nom, Number(coefficient) || 1]
         );
 
         return resultat.rows[0].id;
@@ -24,7 +24,7 @@ export async function ajouterMatiere(nom) {
 // ==========================
 export async function listerMatieres() {
     try {
-        const resultat = await pool.query(`SELECT * FROM subjects`);
+        const resultat = await pool.query(`SELECT * FROM subjects ORDER BY id ASC`);
         return resultat.rows;
     } catch (erreur) {
         console.error("Erreur dans listerMatieres :", erreur);
@@ -56,11 +56,11 @@ export async function obtenirMatiereParId(id) {
 // ==========================
 // Modifier une matière
 // ==========================
-export async function modifierMatiere(id, nom) {
+export async function modifierMatiere(id, nom, coefficient) {
     try {
         const resultat = await pool.query(
-            `UPDATE subjects SET nom = $1 WHERE id = $2`,
-            [nom, id]
+            `UPDATE subjects SET nom = $1, coefficient = $2 WHERE id = $3`,
+            [nom, Number(coefficient) || 1, id]
         );
 
         return resultat.rowCount;
@@ -76,7 +76,6 @@ export async function modifierMatiere(id, nom) {
 export async function supprimerMatiere(id) {
     const client = await pool.connect();
     try {
-        // On utilise une transaction pour s'assurer que tout se supprime proprement
         await client.query("BEGIN");
 
         // Supprimer les associations professeur-matière
