@@ -1,21 +1,10 @@
-
-/* RESET DE BASE & POLICE */
-* {
-  box-sizing: border-box;
-}
-
-html, body {
-  overflow-x: hidden;
-  overflow-y: auto !important;
-  -webkit-overflow-scrolling: touch;
-}
+   /*ADMIN.CSS — TABLEAU DE BORD ADMINISTRATEUR */
 
 body {
   padding: 20px;
   min-height: 100vh;
   position: relative;
   color: #ffffff;
-  font-family: 'Poppins', system-ui, -apple-system, sans-serif;
 }
 
 #video-fond {
@@ -32,7 +21,7 @@ body {
 .disposition-admin {
   display: flex;
   min-height: calc(100vh - 40px);
-  border-radius: var(--rayon-lg, 16px);
+  border-radius: var(--rayon-lg);
   overflow: hidden;
   background: rgba(255, 255, 255, 0.06) !important;
   backdrop-filter: blur(20px) saturate(160%);
@@ -41,7 +30,7 @@ body {
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
 }
 
-   /*  BARRE LATÉRALE  */
+  /* BARRE LATÉRALE */
 
 
 .barre-laterale-admin {
@@ -54,8 +43,6 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  max-height: 100vh;
-  overflow-y: auto;
 }
 
 .marque-barre-laterale {
@@ -85,8 +72,6 @@ body {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding: 0;
-  margin: 0;
 }
 
 .menu-admin button {
@@ -99,8 +84,6 @@ body {
   font-weight: 600;
   padding: 12px 16px;
   border-radius: 12px;
-  border: none;
-  cursor: pointer;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -116,16 +99,16 @@ body {
   background: rgba(255, 255, 255, 0.25);
   color: #ffffff;
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
-   /*  ZONE PRINCIPALE  */
-
-
+  /*  ZONE PRINCIPALE */
 .zone-principale-admin {
   flex: 1;
+  min-width: 0; /* essentiel : sans ça, un enfant flex ne peut jamais devenir
+                   plus petit que son contenu, ce qui empêche tout défilement
+                   interne et pousse la page entière à déborder à l'horizontale. */
   background: transparent !important;
   padding: 26px 36px 40px;
   overflow-y: auto;
@@ -137,22 +120,31 @@ body {
   margin-bottom: 26px;
 }
 
-   /*  CONTENU & PANNEAUX  */
 
+/* CONTENU & PANNEAUX */
 
 .contenu-admin,
 #contenu {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 30px;
+  min-width: 0;
 }
 
-.barre-outils-panneau,
-.carte-formulaire,
-form {
-  width: 100% !important;
-  max-width: 100% !important;
-  box-sizing: border-box !important;
+/* Les tableaux sont injectés directement ici par le JS, sans wrapper dédié.
+   On rend ce conteneur scrollable horizontalement : le <table> garde son
+   display normal (aucun risque de casser thead/tbody/tr), c'est simplement
+   son parent qui défile si le tableau est plus large que l'écran. */
+#contenu{
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+#contenu table{
+  min-width: 600px; /* empêche les colonnes de s'écraser au lieu de déborder proprement */
+}
+
+.barre-outils-panneau {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -163,13 +155,13 @@ form {
   -webkit-backdrop-filter: blur(12px) !important;
   border: 1px solid rgba(255, 255, 255, 0.2) !important;
   padding: 20px 26px;
-  border-radius: var(--rayon-lg, 16px);
+  border-radius: var(--rayon-lg);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
-   /*  STATISTIQUES  */
-
-
+/* =========================
+   STATISTIQUES
+========================= */
 .grille-statistiques {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
@@ -181,7 +173,7 @@ form {
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
   border: 1px solid rgba(255, 255, 255, 0.25) !important;
-  border-radius: var(--rayon-lg, 16px);
+  border-radius: var(--rayon-lg);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   padding: 22px;
   display: flex;
@@ -223,57 +215,9 @@ form {
 }
 
 /* =========================
-   TABLEAUX RESPONSIVES & CADRES EN VERRE
+   ACTIONS DE LIGNE
 ========================= */
-.table-responsive {
-  width: 100% !important;
-  max-height: 60vh; /* Permet à la dernière ligne de toucher le bas du cadre */
-  overflow-y: auto !important; /* Active le scroll vertical */
-  overflow-x: auto !important; /* Active le scroll horizontal */
-  -webkit-overflow-scrolling: touch;
-  margin-top: 10px;
-  margin-bottom: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.25) !important;
-  border-radius: 16px !important;
-  background: rgba(255, 255, 255, 0.08) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-}
-
-table {
-  width: 100% !important;
-  border-collapse: collapse !important;
-  white-space: nowrap;
-  margin: 0 !important;
-}
-
-table th, 
-table td {
-  padding: 12px 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
-  border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
-  color: #ffffff;
-}
-
-table th {
-  background: rgba(20, 30, 50, 0.7); /* Fond légèrement plus sombre pour détacher l'en-tête */
-  font-weight: 700;
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-table tr:last-child td {
-  border-bottom: none !important; /* Évite les coupures visuelles en bas */
-}
-
-   /*  ACTIONS DE LIGNE  */
-
-
-   .actions-ligne {
+.actions-ligne {
   display: flex;
   gap: 8px;
 }
@@ -292,68 +236,63 @@ table tr:last-child td {
 .menu-admin button[data-panel="notes"] i { color: #ffd6a5; }
 .menu-admin button[data-panel="absences"] i { color: #ff8fa3; }
 
-   /* RESPONSIVE TABLETTE ET MOBILE  */
-
-   
+/* RESPONSIVE */
 @media (max-width: 1024px) {
-  .disposition-admin { 
-    flex-direction: column; 
-  }
-  
+  .disposition-admin { flex-direction: column; }
+
   .barre-laterale-admin {
     width: 100%;
     min-width: 100%;
-    max-height: none;
-    flex-direction: column;
-    align-items: stretch;
+    flex-direction: row;
+    align-items: center;
+    /* On ne met plus justify-content:space-between ici : avec un menu qui
+       peut être plus large que l'écran, space-between forçait le menu à
+       s'étirer au-delà du nécessaire au lieu de rester contraint et
+       scrollable. gap remplace proprement l'espacement. */
+    gap: 20px;
     padding: 16px 20px;
     border-right: none;
     border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   }
-  
-  .marque-barre-laterale { 
-    margin-bottom: 16px; 
-    justify-content: center;
-  }
-  
-  .menu-admin ul { 
-    flex-direction: row; 
-    overflow-x: auto !important; 
-    -webkit-overflow-scrolling: touch;
-    gap: 8px; 
-    padding-bottom: 8px;
-  }
-  
-  .menu-admin li { 
-    flex-shrink: 0; 
+
+  .marque-barre-laterale {
+    margin-bottom: 0;
+    flex-shrink: 0; /* le logo garde toujours sa taille, jamais écrasé par le menu */
   }
 
-  .menu-admin button {
-    white-space: nowrap;
+  .menu-admin{
+    flex: 1;
+    min-width: 0; /* essentiel : autorise le menu à devenir plus petit que
+                     son contenu, ce qui active enfin son propre scroll
+                     interne au lieu de pousser toute la page en largeur */
+    overflow: hidden; /* le vrai scroll se fait sur le ul à l'intérieur */
   }
-  
-  .zone-principale-admin { 
-    padding: 20px; 
+
+  .menu-admin ul {
+    flex-direction: row;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 6px;
+    padding-bottom: 4px; /* évite que la barre de scroll colle aux boutons */
+    padding-right: 12px; /* marge après le dernier bouton (Absences), pour
+                             qu'il ne soit jamais collé pile au bord */
   }
+
+  .menu-admin li { flex-shrink: 0; }
+
+  .zone-principale-admin { padding: 20px; }
 }
 
 @media (max-width: 600px) {
-  body { 
-    padding: 0; 
-  }
-  
-  .disposition-admin { 
-    border-radius: 0; 
-    min-height: 100vh; 
-  }
-  
-  .grille-statistiques { 
-    grid-template-columns: 1fr; 
-  }
-  
-  .barre-outils-panneau,
-  form { 
-    flex-direction: column; 
-    align-items: stretch; 
+  body { padding: 0; }
+  .disposition-admin { border-radius: 0; min-height: 100vh; }
+  .grille-statistiques { grid-template-columns: 1fr; }
+  .barre-outils-panneau { flex-direction: column; align-items: stretch; }
+
+  /* Le tableau garde sa structure normale (thead/tbody/tr intacts) ;
+     #contenu (défini plus haut) gère déjà le scroll horizontal. On réduit
+     juste le seuil min-width pour les très petits écrans. */
+  #contenu table{
+    min-width: 480px;
   }
 }

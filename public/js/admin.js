@@ -10,6 +10,7 @@ import { afficherPanneauMatieres } from "./panels/subjectsPanel.js";
 import { afficherPanneauNotes } from "./panels/gradesPanel.js";
 import { afficherPanneauAbsences } from "./panels/absencesPanel.js";
 import { afficherPanneauStatistiques } from "./panels/statsPanel.js";
+import { afficherPanneauBulletins } from "./panels/bulletinsPanel.js";
 
 // On vérifie que la personne connectée est bien un administrateur, sinon redirection
 const utilisateur = exigerRole("admin");
@@ -30,7 +31,8 @@ if (utilisateur) {
         matieres: afficherPanneauMatieres,
         notes: afficherPanneauNotes,
         absences: afficherPanneauAbsences,
-        statistiques: afficherPanneauStatistiques
+        statistiques: afficherPanneauStatistiques,
+        bulletins: afficherPanneauBulletins
     };
 
     // Ouvre un panneau donné et met à jour le bouton actif dans le menu
@@ -42,16 +44,41 @@ if (utilisateur) {
         });
 
         // On ajoute la classe "actif" uniquement au bouton cliqué
-        document.querySelector(`.menu-admin button[data-panel="${nomPanneau}"]`)
-            .classList.add("actif");
+        const boutonCible = document.querySelector(`.menu-admin button[data-panel="${nomPanneau}"]`);
+        if (boutonCible) {
+            boutonCible.classList.add("actif");
+        }
 
-        panneaux[nomPanneau](contenu); // On affiche le panneau correspondant
+        if (panneaux[nomPanneau]) {
+            panneaux[nomPanneau](contenu); // On affiche le panneau correspondant
+        }
     }
 
     // On relie chaque bouton du menu à l'ouverture de son panneau
     document.querySelectorAll(".menu-admin button[data-panel]").forEach(bouton => {
         bouton.addEventListener("click", () => ouvrirPanneau(bouton.dataset.panel));
     });
+
+    // -------------------------------------------------------------
+    // LOGIQUE DE RECHERCHE DYNAMIQUE (ADMIN)
+    // -------------------------------------------------------------
+    const inputRecherche = document.getElementById("rechercheAdmin");
+    if (inputRecherche) {
+        inputRecherche.addEventListener("input", (e) => {
+            const terme = e.target.value.toLowerCase().trim();
+            // Sélectionne toutes les lignes du tableau actuellement affiché
+            const lignes = contenu.querySelectorAll("tbody tr");
+
+            lignes.forEach(ligne => {
+                const texteLigne = ligne.textContent.toLowerCase();
+                if (texteLigne.includes(terme)) {
+                    ligne.style.display = ""; // Affiche la ligne si elle correspond
+                } else {
+                    ligne.style.display = "none"; // Masque sinon
+                }
+            });
+        });
+    }
 
     // Bouton de déconnexion dans le header
     document.getElementById("deconnexion").addEventListener("click", deconnexion);

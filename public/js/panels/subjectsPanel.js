@@ -1,150 +1,132 @@
 // public/js/panels/subjectsPanel.js
-// Panneau "Gestion des matières" du tableau de bord administrateur.
+// Panneau de gestion des matières (admin)
 
 import { api } from "../api.js";
 import { afficherNotification, echapperHtml, confirmerAction } from "../ui.js";
 
-// Point d'entrée du panneau : appelé quand l'admin clique sur "Matières"
 export async function afficherPanneauMatieres(conteneur) {
-
     try {
-
-        const matieres = await api.get("/api/subjects"); // Récupère toutes les matières
-        afficherListe(conteneur, matieres);                 // Affiche la liste
-
+        const matieres = await api.get("/api/subjects");
+        afficherListeMatieres(conteneur, matieres);
     } catch (erreur) {
-
         afficherNotification("Impossible de charger les matières", "error");
     }
 }
 
-// Affiche le tableau des matières
-function afficherListe(conteneur, matieres) {
-
+function afficherListeMatieres(conteneur, matieres) {
     conteneur.innerHTML = `
-
         <div class="barre-outils-panneau">
-            <h2>Gestion des matières</h2>
-            <button id="boutonAjouterMatiere">+ Ajouter une matière</button>
+            <h2>Gestion des Matières</h2>
+            <button id="boutonAjouterMatiere" class="glass-btn">+ Ajouter une matière</button>
         </div>
 
         ${matieres.length === 0 ? `
             <div class="etat-vide">Aucune matière enregistrée pour le moment.</div>
         ` : `
-            <table>
+            <table class="glass-table">
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Nom</th>
+                        <th>Nom de la matière</th>
+                        <th>Coefficient</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    ${matieres.map(ligneTableau).join("")}
+                    ${matieres.map(m => `
+                        <tr>
+                            <td>${m.id}</td>
+                            <td>${echapperHtml(m.nom)}</td>
+                            <td><strong>${m.coefficient || 1}</strong></td>
+                            <td>
+                                <div class="actions-ligne">
+                                    <button class="glass-btn secondaire modifier-matiere" data-id="${m.id}">Modifier</button>
+                                    <button class="glass-btn danger supprimer-matiere" data-id="${m.id}">Supprimer</button>
+                                </div>
+                            </td>
+                        </tr>
+                    `).join("")}
                 </tbody>
             </table>
         `}
     `;
 
-    conteneur.querySelector("#boutonAjouterMatiere")
-        .addEventListener("click", () => afficherFormulaire(conteneur));
-
-    conteneur.querySelectorAll(".modifier-matiere").forEach(bouton => {
-        bouton.addEventListener("click", () => afficherFormulaire(conteneur, trouverMatiere(matieres, bouton.dataset.id)));
+    // Écouteurs d'événements
+    conteneur.querySelector("#boutonAjouterMatiere").addEventListener("click", () => {
+        afficherFormulaireMatiere(conteneur);
     });
 
-    conteneur.querySelectorAll(".supprimer-matiere").forEach(bouton => {
-        bouton.addEventListener("click", () => gererSuppression(conteneur, bouton.dataset.id));
+    conteneur.querySelectorAll(".modifier-matiere").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const matiere = matieres.find(m => String(m.id) === String(btn.dataset.id));
+            afficherFormulaireMatiere(conteneur, matiere);
+        });
+    });
+
+    conteneur.querySelectorAll(".supprimer-matiere").forEach(btn => {
+        btn.addEventListener("click", () => supprimerMatiere(conteneur, btn.dataset.id));
     });
 }
 
-// Construit une ligne de tableau pour une matière
-function ligneTableau(matiere) {
-    return `
-        <tr>
-            <td class="mono">${matiere.id}</td>
-            <td>${echapperHtml(matiere.nom)}</td>
-            <td>
-                <div class="actions-ligne">
-                    <button class="secondaire modifier-matiere" data-id="${matiere.id}">Modifier</button>
-                    <button class="danger supprimer-matiere" data-id="${matiere.id}">Supprimer</button>
-                </div>
-            </td>
-        </tr>
-    `;
-}
-
-// Retrouve une matière dans la liste déjà chargée
-function trouverMatiere(matieres, id) {
-    return matieres.find(matiere => String(matiere.id) === String(id));
-}
-
-// Affiche le formulaire d'ajout ou de modification
-function afficherFormulaire(conteneur, matiereExistante = null) {
-
+function afficherFormulaireMatiere(conteneur, matiereExistante = null) {
     const estModification = Boolean(matiereExistante);
 
     conteneur.innerHTML = `
-
         <div class="barre-outils-panneau">
             <h2>${estModification ? "Modifier la matière" : "Ajouter une matière"}</h2>
-            <button class="secondaire" id="boutonAnnulerMatiere">Annuler</button>
+            <button class="glass-btn secondaire" id="boutonAnnulerMatiere">Annuler</button>
         </div>
 
-        <form id="formulaireMatiere">
+        <form id="formulaireMatiere" class="glass-card" style="max-width: 500px; padding: 20px;">
+            <div style="margin-bottom: 15px;">
+                <label for="nomMatiere" style="display: block; margin-bottom: 5px;">Nom de la matière</label>
+                <input type="text" id="nomMatiere" class="glass-input" value="${estModification ? echapperHtml(matiereExistante.nom) : ""}" required style="width: 100%;">
+            </div>
 
-            <label for="matiereNom">Nom de la matière</label>
-            <input type="text" id="matiereNom" value="${estModification ? echapperHtml(matiereExistante.nom) : ""}" required>
+            <div style="margin-bottom: 20px;">
+                <label for="coefMatiere" style="display: block; margin-bottom: 5px;">Coefficient</label>
+                <input type="number" id="coefMatiere" class="glass-input" min="1" max="10" value="${estModification ? (matiereExistante.coefficient || 1) : 1}" required style="width: 100%;">
+            </div>
 
-            <button type="submit">${estModification ? "Enregistrer" : "Ajouter"}</button>
-
+            <button type="submit" class="glass-btn">${estModification ? "Enregistrer les modifications" : "Ajouter la matière"}</button>
         </form>
     `;
 
-    conteneur.querySelector("#boutonAnnulerMatiere")
-        .addEventListener("click", () => afficherPanneauMatieres(conteneur));
+    conteneur.querySelector("#boutonAnnulerMatiere").addEventListener("click", () => {
+        afficherPanneauMatieres(conteneur);
+    });
 
-    conteneur.querySelector("#formulaireMatiere")
-        .addEventListener("submit", (evenement) => gererEnvoi(evenement, conteneur, estModification ? matiereExistante.id : null));
+    conteneur.querySelector("#formulaireMatiere").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        
+        const donnees = {
+            nom: document.getElementById("nomMatiere").value.trim(),
+            coefficient: Number(document.getElementById("coefMatiere").value) || 1
+        };
+
+        try {
+            if (estModification) {
+                await api.put(`/api/subjects/${matiereExistante.id}`, donnees);
+                afficherNotification("Matière modifiée avec succès", "success");
+            } else {
+                await api.post("/api/subjects", donnees);
+                afficherNotification("Matière ajoutée avec succès", "success");
+            }
+            afficherPanneauMatieres(conteneur);
+        } catch (erreur) {
+            afficherNotification(erreur.message || "Erreur lors de l'enregistrement", "error");
+        }
+    });
 }
 
-// Envoie le formulaire au serveur (POST pour créer, PUT pour modifier)
-async function gererEnvoi(evenement, conteneur, idExistant) {
-
-    evenement.preventDefault();
-
-    const donnees = {
-        nom: document.getElementById("matiereNom").value.trim()
-    };
+async function supprimerMatiere(conteneur, id) {
+    if (!confirmerAction("Voulez-vous vraiment supprimer cette matière ?")) return;
 
     try {
-
-        const resultat = idExistant
-            ? await api.put(`/api/subjects/${idExistant}`, donnees)
-            : await api.post("/api/subjects", donnees);
-
-        afficherNotification(resultat.message);
-        await afficherPanneauMatieres(conteneur);
-
+        await api.delete(`/api/subjects/${id}`);
+        afficherNotification("Matière supprimée avec succès", "success");
+        afficherPanneauMatieres(conteneur);
     } catch (erreur) {
-        afficherNotification(erreur.message, "error");
-    }
-}
-
-// Supprime une matière après confirmation
-async function gererSuppression(conteneur, id) {
-
-    if (!confirmerAction("Supprimer définitivement cette matière ?")) {
-        return;
-    }
-
-    try {
-
-        const resultat = await api.delete(`/api/subjects/${id}`);
-        afficherNotification(resultat.message);
-        await afficherPanneauMatieres(conteneur);
-
-    } catch (erreur) {
-        afficherNotification(erreur.message, "error");
+        afficherNotification(erreur.message || "Erreur lors de la suppression", "error");
     }
 }
