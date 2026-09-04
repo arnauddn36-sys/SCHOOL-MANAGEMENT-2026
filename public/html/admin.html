@@ -46,8 +46,7 @@
                         <li><button data-panel="matieres"><i class="fa-solid fa-book"></i> Matières</button></li>
                         <li><button data-panel="notes"><i class="fa-solid fa-file-pen"></i> Notes</button></li>
                         <li><button data-panel="absences"><i class="fa-solid fa-user-clock"></i> Absences</button></li>
-                        <!-- Ajout du menu Bulletins -->
-                        <li><button data-panel="bulletins"><i class="fa-solid fa-file-lines"></i> Bulletins</button></li>
+
                     </ul>
                 </nav>
             </div>
@@ -56,14 +55,8 @@
         <!-- ZONE PRINCIPALE -->
         <main class="zone-principale-admin">
 
-            <!-- EN-TÊTE SUPÉRIEUR (RECHERCHE + PROFIL + DÉCONNEXION) -->
+            <!-- EN-TÊTE SUPÉRIEUR (PROFIL + DÉCONNEXION EN HAUT À DROITE) -->
             <header class="barre-superieure">
-                <!-- Champ de recherche rapide global admin -->
-                <div class="champ-recherche-wrapper">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" id="rechercheAdmin" placeholder="Rechercher dans le tableau..." class="input-recherche">
-                </div>
-
                 <div class="profil-utilisateur">
                     <i class="fa-solid fa-circle-user"></i>
                     <span id="nomAdmin" class="nom-utilisateur">Administrateur</span>
@@ -73,7 +66,7 @@
                 </div>
             </header>
 
-            <!-- CONTENU PRINCIPAL (VIDE POUR PERMETTRE L'INJECTION DYNAMIQUE PAR LES PANNEAUX) -->
+            <!-- CONTENU PRINCIPAL (OCCUPE 100% DE LA LARGEUR DISPONIBLE) -->
             <section class="contenu-admin" id="contenu"></section>
 
         </main>

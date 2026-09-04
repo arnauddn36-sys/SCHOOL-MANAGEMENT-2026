@@ -1,22 +1,31 @@
 // public/js/panels/studentsPanel.js
-// Panneau "Gestion des élèves" — utilisé par le dashboard admin et enseignant
+// Panneau "Gestion des élèves" — utilisé par le dashboard admin (CRUD complet)
+// et par le dashboard enseignant (lecture seule : liste uniquement).
 
 import { api } from "../api.js";
 import { afficherNotification, echapperHtml, confirmerAction } from "../ui.js";
 
-// Fonction principale exportée avec le nom exact attendu par admin.js et teacher.js
+// Point d'entrée du panneau.
+// lectureSeule = true  -> pour l'enseignant : affiche uniquement la liste, sans boutons d'action.
+// lectureSeule = false -> pour l'admin : CRUD complet (ajouter / modifier / supprimer).
 export async function afficherPanneauEleves(conteneur, lectureSeule = false) {
+
     try {
-        const eleves = await api.get("/api/students");
-        afficherListe(conteneur, eleves, lectureSeule);
+
+        const eleves = await api.get("/api/students"); // Récupère tous les élèves
+        afficherListe(conteneur, eleves, lectureSeule);    // Affiche la liste
+
     } catch (erreur) {
+
         afficherNotification("Impossible de charger les élèves", "error");
     }
 }
 
 // Affiche le tableau des élèves
 function afficherListe(conteneur, eleves, lectureSeule) {
+
     conteneur.innerHTML = `
+
         <div class="barre-outils-panneau">
             <h2>${lectureSeule ? "Liste des élèves" : "Gestion des élèves"}</h2>
             ${lectureSeule ? "" : `<button id="boutonAjouterEleve">+ Ajouter un élève</button>`}
@@ -43,7 +52,10 @@ function afficherListe(conteneur, eleves, lectureSeule) {
         `}
     `;
 
-    if (lectureSeule) return;
+    // En lecture seule, on n'attache aucun écouteur d'ajout/modification/suppression
+    if (lectureSeule) {
+        return;
+    }
 
     conteneur.querySelector("#boutonAjouterEleve")
         .addEventListener("click", () => afficherFormulaire(conteneur));
@@ -57,6 +69,7 @@ function afficherListe(conteneur, eleves, lectureSeule) {
     });
 }
 
+// Construit une ligne de tableau pour un élève
 function ligneTableau(eleve, lectureSeule) {
     return `
         <tr>
@@ -77,20 +90,25 @@ function ligneTableau(eleve, lectureSeule) {
     `;
 }
 
+// Retrouve un élève dans la liste déjà chargée
 function trouverEleve(eleves, id) {
     return eleves.find(eleve => String(eleve.id) === String(id));
 }
 
+// Affiche le formulaire d'ajout ou de modification (admin uniquement)
 function afficherFormulaire(conteneur, eleveExistant = null) {
+
     const estModification = Boolean(eleveExistant);
 
     conteneur.innerHTML = `
+
         <div class="barre-outils-panneau">
             <h2>${estModification ? "Modifier l'élève" : "Ajouter un élève"}</h2>
             <button class="secondaire" id="boutonAnnulerEleve">Annuler</button>
         </div>
 
         <form id="formulaireEleve">
+
             <label for="eleveMatricule">Matricule</label>
             <input type="text" id="eleveMatricule" value="${estModification ? echapperHtml(eleveExistant.matricule) : ""}" required>
 
@@ -107,6 +125,7 @@ function afficherFormulaire(conteneur, eleveExistant = null) {
             <input type="text" id="eleveClasse" value="${estModification ? echapperHtml(eleveExistant.classe) : ""}" required>
 
             <button type="submit">${estModification ? "Enregistrer" : "Ajouter"}</button>
+
         </form>
     `;
 
@@ -117,7 +136,9 @@ function afficherFormulaire(conteneur, eleveExistant = null) {
         .addEventListener("submit", (evenement) => gererEnvoi(evenement, conteneur, estModification ? eleveExistant.id : null));
 }
 
+// Envoie le formulaire au serveur (POST pour créer, PUT pour modifier)
 async function gererEnvoi(evenement, conteneur, idExistant) {
+
     evenement.preventDefault();
 
     const donnees = {
@@ -129,26 +150,32 @@ async function gererEnvoi(evenement, conteneur, idExistant) {
     };
 
     try {
+
         const resultat = idExistant
             ? await api.put(`/api/students/${idExistant}`, donnees)
             : await api.post("/api/students", donnees);
 
         afficherNotification(resultat.message);
         await afficherPanneauEleves(conteneur);
+
     } catch (erreur) {
         afficherNotification(erreur.message, "error");
     }
 }
 
+// Supprime un élève après confirmation (admin uniquement)
 async function gererSuppression(conteneur, id) {
+
     if (!confirmerAction("Supprimer définitivement cet élève ?")) {
         return;
     }
 
     try {
+
         const resultat = await api.delete(`/api/students/${id}`);
         afficherNotification(resultat.message);
         await afficherPanneauEleves(conteneur);
+
     } catch (erreur) {
         afficherNotification(erreur.message, "error");
     }

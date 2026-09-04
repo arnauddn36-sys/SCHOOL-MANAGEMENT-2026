@@ -113,22 +113,6 @@ body.corps-role {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
-/* Les tableaux (notes, absences) défilent horizontalement DANS leur carte
-   plutôt que de déborder de l'écran ou de forcer les colonnes à s'écraser.
-   Le <table> garde son display normal — jamais display:block sur un
-   <table>, ça casse thead/tbody/tr (comportement en bloc empilé au lieu
-   de lignes/colonnes, ce qui donnait ce rendu déformé sur mobile). */
-.carte-notes,
-.carte-absences{
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.carte-notes table,
-.carte-absences table{
-  min-width: 480px;
-}
-
 .identite-eleve h2,
 .carte-notes h2,
 .carte-absences h2 {

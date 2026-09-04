@@ -16,14 +16,14 @@ import routesNotes from "./routes/gradeRoutes.js";
 import routesEleves from "./routes/studentRoutes.js";
 import routesAbsences from "./routes/absenceRoutes.js";
 import { journaliser } from "./utils/logger.js";
-import bulletinRoutes from "./routes/bulletinRoutes.js";
-
 
 // Création du serveur Express
 const application = express();
 
+const app = express();
 
-application.set('trust proxy', 1); // <--- Ajoute cette ligne pour corriger l'erreur express-rate-limit
+
+app.set('trust proxy', 1); // <--- Ajoute cette ligne pour corriger l'erreur express-rate-limit
 
 // Gestion du chemin du projet
 const __filename = fileURLToPath(import.meta.url);
@@ -49,10 +49,10 @@ application.use(helmet({
     }
 }));
 
+// ==========================
 // LIMITATION DES TENTATIVES DE CONNEXION (anti brute-force)
-
+// ==========================
 // Limite chaque IP à 5 tentatives de connexion par tranche de 15 minutes.
-
 // Protège /api/auth/login contre les attaques par force brute sur les mots de passe.
 const limiteurConnexion = rateLimit({
     windowMs: 5 * 60 * 1000, // Fenêtre de 5 minutes
@@ -114,10 +114,6 @@ application.use("/api/students", routesEleves);
 
 application.use("/api/absences", routesAbsences);
 
-// Routes des bulletins
-application.use("/api/bulletins", bulletinRoutes);
-
-
 // Route racine : sert la page d'accueil (accueil.html), qui dirige ensuite
 // vers la connexion ou l'inscription via ses deux boutons.
 application.get("/", (requete, reponse) => {
@@ -128,6 +124,7 @@ application.get("/", (requete, reponse) => {
 
 });
 
+// Lancement du serveur
 const PORT = process.env.PORT || 3000;
 
 application.listen(PORT, "0.0.0.0", () => {

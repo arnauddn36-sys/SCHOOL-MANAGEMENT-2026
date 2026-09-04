@@ -113,20 +113,6 @@ body.corps-role {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
-/* Le panneau contient les tableaux (notes/absences des élèves) injectés
-   dynamiquement en JS. On le rend scrollable horizontalement plutôt que
-   de laisser le tableau déborder de l'écran ou forcer ses colonnes à
-   s'écraser. Le <table> garde son display normal (jamais display:block
-   sur un <table> : ça casse thead/tbody/tr). */
-.panneau{
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.panneau table{
-  min-width: 480px;
-}
-
 .info-professeur h2,
 .menu-professeur h2,
 .panneau h2 {
@@ -274,8 +260,9 @@ body.corps-role {
   box-shadow: 0 8px 20px rgba(76, 196, 217, 0.4);
 }
 
-/*   PANNEAU DE CONTENU DYNAMIQUE*/
-
+/* =========================
+   PANNEAU DE CONTENU DYNAMIQUE
+========================= */
 .panneau {
   min-height: 250px;
 }

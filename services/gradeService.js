@@ -2,15 +2,15 @@
 
 import pool from "../db/database.js";
 
-// Ajouter une note (avec période optionnelle)
-
-
-export async function ajouterNote(idEleve, idMatiere, note, periode = 'Trimestre 1') {
+// ==========================
+// Ajouter une note
+// ==========================
+export async function ajouterNote(idEleve, idMatiere, note) {
     try {
         const resultat = await pool.query(
-            `INSERT INTO grades(student_id, subject_id, note, periode)
-             VALUES ($1, $2, $3, $4) RETURNING id`,
-            [idEleve, idMatiere, note, periode]
+            `INSERT INTO grades(student_id, subject_id, note)
+             VALUES ($1, $2, $3) RETURNING id`,
+            [idEleve, idMatiere, note]
         );
 
         return resultat.rows[0].id;
@@ -20,8 +20,9 @@ export async function ajouterNote(idEleve, idMatiere, note, periode = 'Trimestre
     }
 }
 
+// ==========================
 // Lister toutes les notes
-
+// ==========================
 export async function listerNotes() {
     try {
         const resultat = await pool.query(`
@@ -30,9 +31,7 @@ export async function listerNotes() {
                 students.nom,
                 students.prenom,
                 subjects.nom AS matiere,
-                subjects.coefficient,
-                grades.note,
-                grades.periode
+                grades.note
             FROM grades
             JOIN students ON grades.student_id = students.id
             JOIN subjects ON grades.subject_id = subjects.id
@@ -45,29 +44,21 @@ export async function listerNotes() {
     }
 }
 
-// Récupérer les notes d'un élève précis (par période optionnelle)
-
-export async function listerNotesParEleve(idEleve, periode = null) {
+// ==========================
+// Récupérer les notes d'un élève précis
+// ==========================
+export async function listerNotesParEleve(idEleve) {
     try {
-        let query = `
+        const resultat = await pool.query(`
             SELECT
                 grades.id,
                 subjects.nom AS matiere,
-                subjects.coefficient,
-                grades.note,
-                grades.periode
+                grades.note
             FROM grades
             JOIN subjects ON grades.subject_id = subjects.id
             WHERE grades.student_id = $1
-        `;
-        let params = [idEleve];
+        `, [idEleve]);
 
-        if (periode) {
-            query += ` AND grades.periode = $2`;
-            params.push(periode);
-        }
-
-        const resultat = await pool.query(query, params);
         return resultat.rows;
     } catch (erreur) {
         console.error("Erreur dans listerNotesParEleve :", erreur);
@@ -75,34 +66,9 @@ export async function listerNotesParEleve(idEleve, periode = null) {
     }
 }
 
-// Calculer la moyenne pondérée d'un élève pour une période
-
-export async function calculerMoyennePonderee(idEleve, periode) {
-    try {
-        const notes = await listerNotesParEleve(idEleve, periode);
-        
-        let sommeNotesPonderees = 0;
-        let sommeCoefficients = 0;
-
-        notes.forEach(n => {
-            const valeur = parseFloat(n.note || 0);
-            const coefficient = parseFloat(n.coefficient || 1);
-
-            sommeNotesPonderees += valeur * coefficient;
-            sommeCoefficients += coefficient;
-        });
-
-        if (sommeCoefficients === 0) return 0;
-
-        return (sommeNotesPonderees / sommeCoefficients).toFixed(2);
-    } catch (erreur) {
-        console.error("Erreur dans calculerMoyennePonderee :", erreur);
-        return 0;
-    }
-}
-
+// ==========================
 // Récupérer une note
-
+// ==========================
 export async function obtenirNoteParId(id) {
     try {
         const resultat = await pool.query(
@@ -121,15 +87,16 @@ export async function obtenirNoteParId(id) {
     }
 }
 
+// ==========================
 // Modifier une note
-
-export async function modifierNote(id, idEleve, idMatiere, note, periode) {
+// ==========================
+export async function modifierNote(id, idEleve, idMatiere, note) {
     try {
         const resultat = await pool.query(
             `UPDATE grades
-             SET student_id = $1, subject_id = $2, note = $3, periode = $4
-             WHERE id = $5`,
-            [idEleve, idMatiere, note, periode, id]
+             SET student_id = $1, subject_id = $2, note = $3
+             WHERE id = $4`,
+            [idEleve, idMatiere, note, id]
         );
 
         return resultat.rowCount;
@@ -139,7 +106,9 @@ export async function modifierNote(id, idEleve, idMatiere, note, periode) {
     }
 }
 
+// ==========================
 // Supprimer une note
+// ==========================
 export async function supprimerNote(id) {
     try {
         const resultat = await pool.query(

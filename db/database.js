@@ -17,9 +17,9 @@ const pool = new Pool({
 });
 
 // Événement de connexion
-//pool.on("connect", () => {
-  //console.log("Connecté au pool PostgreSQL (Supabase)");
-//});
+pool.on("connect", () => {
+  console.log("Connecté au pool PostgreSQL (Supabase)");
+});
 
 pool.on("error", (err) => {
   console.error(" Erreur du pool Supabase :", err);
