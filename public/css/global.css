@@ -58,14 +58,11 @@ h3{ font-size:1rem; }
 
 p{ color:var(--texte-attenue); }
 
-img{ max-width:100%; height:auto; }
-table{ max-width:none; } /* ⚠️ NE PAS remettre max-width:100% ici : ça empêche
-   le tableau de déborder pour permettre le défilement horizontal, et force
-   le navigateur à écraser les colonnes (texte illisible/compressé). */
+img, table{ max-width:100%; height:auto; }
 
 /* Barre de défilement fine et discrète, dans la couleur de la marque */
 ::-webkit-scrollbar{ width:8px; height:8px; }
-::-webkit-scrollbar-thumb{ background:var(--primaire); border-radius:99px; opacity:.5; }
+::-webkit-scrollbar-thumb{ background:rgba(255, 255, 255, 0.769); border-radius:49px; opacity:.5; }
 ::-webkit-scrollbar-track{ background:transparent; }
 
 @media (prefers-reduced-motion: reduce){
@@ -95,7 +92,7 @@ button{
   padding:11px 22px;
   border-radius:999px;
   cursor:pointer;
-  background:linear-gradient(135deg,var(--primaire) 0%,var(--secondaire) 100%);
+  background:linear-gradient(135deg,rgba(200, 196, 196, 0.453) 0%,rgba(24, 183, 223, 0.945) 100%);
   color:#fff;
   font-size:0.85rem;
   font-weight:700;
@@ -104,12 +101,20 @@ button{
   transition:var(--transition);
 }
 
-button:hover{ transform:translateY(-2px); box-shadow:0 14px 26px -10px var(--lueur-primaire); }
-button:active{ transform:translateY(0); }
+button:hover { 
+  background: rgba(255, 255, 255, 0.134) !important; 
+  border-color: rgba(255, 255, 255, 0.5) !important;  
+  color: #ffffff !important;                         
+  transform: translateY(-2px); 
+  box-shadow: 0 14px 26px -10px var(--lueur-primaire); 
+}
 
+button:active { 
+  background: rgba(255, 255, 255, 0.18) !important; 
+  transform: translateY(0); 
+}
 button.secondaire{
-  background:#fff;
-  color:var(--primaire);
+  color:rgb(249, 246, 246);
   border:1.5px solid var(--primaire);
   box-shadow:none;
 }
@@ -117,13 +122,13 @@ button.secondaire{
 button.secondaire:hover{ background:var(--fond-doux); }
 
 button.danger{
-  background:linear-gradient(135deg,#f26565 0%,var(--danger) 100%);
-  box-shadow:0 10px 20px -10px rgba(239,68,68,0.45);
+  background-color: #900a0a;
+  box-shadow:0 10px 20px -10px rgba(68, 239, 97, 0);
 }
 
 /*FORMULAIRES*/
 form{
-  background:var(--fond-carte);
+  background:var(--fond-carte); 
   border:1px solid var(--bordure);
   border-radius:var(--rayon-lg);
   box-shadow:var(--ombre-carte);
@@ -140,7 +145,7 @@ label{
   font-weight:700;
   text-transform:uppercase;
   letter-spacing:0.04em;
-  color:var(--primaire);
+  color:rgba(255, 255, 255, 0.818);
   margin-bottom:-8px;
 }
 
@@ -148,17 +153,17 @@ input, select{
   font-family:'Inter',sans-serif;
   padding:12px 14px;
   border-radius:var(--rayon-sm);
-  border:1.5px solid var(--bordure);
-  background:var(--fond-doux);
+  border:1.5px solid var(--bordure); 
+  background-color: rgba(221, 210, 210, 0);
   font-size:0.92rem;
-  color:var(--texte);
+  color:rgba(0, 0, 0, 0.786);
   transition:var(--transition);
   width:100%;
 }
 
 input:focus, select:focus{
   border-color:var(--secondaire);
-  background:#fff;
+  background:#905e5e00;
   box-shadow:0 0 0 4px var(--lueur-primaire);
 }
 
@@ -178,7 +183,7 @@ input:focus, select:focus{
 .card::before{
   content:'';
   position:absolute; top:0; left:0; right:0; height:3px;
-  background:linear-gradient(90deg,var(--primaire),var(--accent-teal));
+  background:linear-gradient(30deg,rgba(17, 193, 146, 0.873),rgba(211, 58, 12, 0.88));
   transform:scaleX(0);
   transform-origin:left;
   transition:transform .35s ease;
@@ -206,31 +211,30 @@ table{
   box-shadow:var(--ombre-carte);
 }
 
-thead{ background:var(--fond-doux); }
+thead{ background:rgba(43, 43, 124, 0.468); }
 
 thead th{
-  color:var(--primaire-fonce);
+  color: rgb(235, 236, 240);
   text-align:left;
   padding:16px 20px;
   font-size:0.72rem;
   text-transform:uppercase;
   letter-spacing:0.06em;
   font-weight:800;
-  border-bottom:1px solid var(--bordure);
+  border-bottom:1px solid var(--bordure)
 }
 
 tbody td{
   padding:15px 20px;
   border-bottom:1px solid var(--bordure);
   font-size:0.9rem;
-  color:var(--texte);
+  color:rgb(231, 225, 225);
 }
 
-tbody tr:last-child td{ border-bottom:none; }
-tbody tr{ transition:var(--transition); }
-tbody tr:hover{ background:var(--fond-doux); }
-
-td.mono, span.mono{ font-family:'Courier New',monospace; color:var(--texte-attenue); }
+tbody tr:hover{ 
+  background: rgba(159, 180, 187, 0.365) !important; /* Très léger voile transparent */
+}
+td.mono, span.mono{ font-family:'Courier New',monospace; color:white; }/*couleur des ID*/
 
 /* Conteneur qui permet au tableau de défiler horizontalement sur petit écran
    sans casser la mise en page de la page entière. À mettre autour de <table>
@@ -240,12 +244,10 @@ td.mono, span.mono{ font-family:'Courier New',monospace; color:var(--texte-atten
 .tableau-scroll{
   width:100%;
   overflow-x:auto;
-  -webkit-overflow-scrolling:touch;
+  -webkit-overflow-scrolling:touch;/*L'effet "momentum" : En ajoutant -webkit-overflow-scrolling: touch;, vous activez le défilement fluide natif d'iOS. Lorsque l'utilisateur fait glisser son doigt et le lâche, le contenu continue de glisser tout seul en ralentissant progressivement (comme sur une page web normale).*/
 }
 
-/* =========================
-   BADGES
-========================= */
+   /*BADGES*/
 .badge{
   display:inline-flex;
   align-items:center;
@@ -258,33 +260,32 @@ td.mono, span.mono{ font-family:'Courier New',monospace; color:var(--texte-atten
 }
 .badge.ok{ background:var(--fond-succes); color:var(--texte-succes); }
 
-/* =========================
-   PROFIL UTILISATEUR & DÉCONNEXION (partagés admin / professeur / élève)
-========================= */
+/*    PROFIL UTILISATEUR & DÉCONNEXION (partagés admin / professeur / élève)     */
+
 .profil-utilisateur{
   display:flex; align-items:center; gap:14px;
-  background:var(--fond-carte);
+  background:rgba(255, 255, 255, 0);
   padding:8px 18px;
   border-radius:999px;
   border:1px solid var(--bordure);
   box-shadow:var(--ombre-carte);
 }
-.profil-utilisateur i{ font-size:1.25rem; color:var(--primaire); }
-.nom-utilisateur{ font-weight:700; font-size:0.9rem; color:var(--texte); }
+.profil-utilisateur i{ font-size:1.25rem; color:white; }
+.nom-utilisateur{ font-weight:700; font-size:0.9rem; color:rgba(235, 230, 230, 0.914); }
 
 .bouton-deconnexion, #deconnexion{
-  background:linear-gradient(135deg,var(--accent-teal) 0%,var(--secondaire) 100%) !important;
+  background:linear-gradient(135deg,rgba(7, 105, 234, 0.517) 0%,rgba(208, 7, 7, 0.299) 100%) !important;
   color:#fff !important;
   font-weight:700 !important;
   padding:8px 18px !important;
   border-radius:999px !important;
   box-shadow:0 8px 18px -8px var(--lueur-teal);
 }
-.bouton-deconnexion:hover, #deconnexion:hover{ transform:translateY(-2px); }
+.bouton-deconnexion:hover, #deconnexion:hover{ transform:translateY(-3px); }
 
-/* =========================
-   ÉTAT VIDE
-========================= */
+   /*ÉTAT VIDE*/
+
+
 .etat-vide{
   background:var(--fond-carte);
   border:1.5px dashed var(--bordure);
@@ -294,9 +295,9 @@ td.mono, span.mono{ font-family:'Courier New',monospace; color:var(--texte-atten
   color:var(--texte-attenue);
 }
 
-/* =========================
-   ACCESSIBILITÉ
-========================= */
+   /*ACCESSIBILITÉ*/
+
+
 /* Cache visuellement un élément tout en le gardant lisible par les lecteurs d'écran
    (utilisé sur les <label> du formulaire de connexion, qui a déjà des icônes visibles) */
 .masque-visuellement{
@@ -309,8 +310,7 @@ td.mono, span.mono{ font-family:'Courier New',monospace; color:var(--texte-atten
   border:0;
 }
 
-/* =========================================================
-   RESPONSIVE — TOUS LES ÉCRANS
+   /*   RESPONSIVE — TOUS LES ÉCRANS  
    Approche "desktop-first" : le style de base ci-dessus est pensé
    pour le grand écran, puis on adapte en descendant par palier.
 
@@ -319,8 +319,7 @@ td.mono, span.mono{ font-family:'Courier New',monospace; color:var(--texte-atten
    - 1024–1439px : desktop standard (style de base, aucun changement)
    - 768–1023px : tablette
    - 480–767px  : mobile (portrait standard)
-   - <480px     : très petit mobile
-========================================================= */
+   - <480px     : très petit mobile   */
 
 /* ---------- Très grand écran : on aère un peu plus le contenu ---------- */
 @media (min-width:1440px){
@@ -373,14 +372,12 @@ td.mono, span.mono{ font-family:'Courier New',monospace; color:var(--texte-atten
 
   form{ padding:20px; border-radius:var(--rayon-md); }
 
-  /* Le tableau défile horizontalement à l'intérieur de son wrapper
-     .tableau-scroll (déjà défini plus haut avec overflow-x:auto). On ne
-     touche JAMAIS au display du <table> lui-même : le changer en "block"
-     casse thead/tbody/tr (ils perdent leur comportement de tableau et
-     s'empilent verticalement — c'est ce qui causait le texte déformé).
-     Le tableau garde donc son display normal ; c'est son PARENT qui scroll. */
-  .tableau-scroll table{
-    min-width:600px; /* empêche les colonnes de s'écraser au lieu de déborder */
+  /* Fallback si le tableau n'est pas encore enveloppé dans .tableau-scroll :
+     le tableau lui-même défile horizontalement plutôt que de déborder de l'écran. */
+  table{
+    display:block;
+    overflow-x:auto;
+    white-space:nowrap;
   }
 
   .profil-utilisateur{ padding:6px 12px; gap:8px; }
