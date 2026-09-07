@@ -34,6 +34,7 @@ function afficherListe(conteneur, absences) {
             <table>
                 <thead>
                     <tr>
+                        <th>ID</th>
                         <th>Élève</th>
                         <th>Date</th>
                         <th>Statut</th>
@@ -48,7 +49,11 @@ function afficherListe(conteneur, absences) {
     `;
 
     conteneur.querySelector("#boutonAjouterAbsence")
-        .addEventListener("click", () => afficherFormulaire(conteneur));
+        .addEventListener("click", () => afficherFormulaireAjout(conteneur));
+
+    conteneur.querySelectorAll(".modifier-absence").forEach(bouton => {
+        bouton.addEventListener("click", () => afficherFormulaireModification(conteneur, bouton.dataset.id));
+    });
 
     conteneur.querySelectorAll(".supprimer-absence").forEach(bouton => {
         bouton.addEventListener("click", () => gererSuppression(conteneur, bouton.dataset.id));
@@ -62,11 +67,13 @@ function ligneTableau(absence) {
 
     return `
         <tr>
+            <td class="mono">${absence.id}</td>
             <td>${echapperHtml(absence.nom)} ${echapperHtml(absence.prenom)}</td>
             <td class="mono">${absence.date}</td>
             <td><span class="badge ${estJustifiee ? "ok" : ""}">${echapperHtml(absence.status)}</span></td>
             <td>
                 <div class="actions-ligne">
+                    <button class="secondaire modifier-absence" data-id="${absence.id}">Modifier</button>
                     <button class="danger supprimer-absence" data-id="${absence.id}">Supprimer</button>
                 </div>
             </td>
@@ -75,7 +82,7 @@ function ligneTableau(absence) {
 }
 
 // Affiche le formulaire d'ajout d'une absence
-async function afficherFormulaire(conteneur) {
+async function afficherFormulaireAjout(conteneur) {
 
     try {
 
@@ -115,7 +122,7 @@ async function afficherFormulaire(conteneur) {
             .addEventListener("click", () => afficherPanneauAbsences(conteneur));
 
         conteneur.querySelector("#formulaireAbsence")
-            .addEventListener("submit", (evenement) => gererEnvoi(evenement, conteneur));
+            .addEventListener("submit", (evenement) => gererEnvoiAjout(evenement, conteneur));
 
     } catch (erreur) {
         afficherNotification("Impossible de charger les élèves", "error");
@@ -123,7 +130,7 @@ async function afficherFormulaire(conteneur) {
 }
 
 // Envoie le formulaire d'ajout au serveur
-async function gererEnvoi(evenement, conteneur) {
+async function gererEnvoiAjout(evenement, conteneur) {
 
     evenement.preventDefault();
 
@@ -137,6 +144,81 @@ async function gererEnvoi(evenement, conteneur) {
 
         const resultat = await api.post("/api/absences", donnees);
         afficherNotification(resultat.message);
+        await afficherPanneauAbsences(conteneur);
+
+    } catch (erreur) {
+        afficherNotification(erreur.message, "error");
+    }
+}
+
+// Affiche le formulaire de modification d'une absence existante
+async function afficherFormulaireModification(conteneur, id) {
+    try {
+        const [absences, eleves] = await Promise.all([
+            api.get("/api/absences"),
+            api.get("/api/students")
+        ]);
+
+        const absenceCourante = absences.find(a => String(a.id) === String(id));
+        if (!absenceCourante) {
+            afficherNotification("Absence introuvable", "error");
+            return;
+        }
+
+        // Nettoyage de la date (pour s'assurer qu'elle s'affiche correctement dans le type="date")
+        const dateformatee = absenceCourante.date ? absenceCourante.date.split('T')[0] : '';
+
+        conteneur.innerHTML = `
+            <div class="barre-outils-panneau">
+                <h2>Modifier l'absence</h2>
+                <button class="secondaire" id="boutonAnnulerAbsence">Annuler</button>
+            </div>
+
+            <form id="formulaireModificationAbsence">
+                <label for="absenceEleve">Élève</label>
+                <select id="absenceEleve">
+                    ${eleves.map(eleve =>
+                        `<option value="${eleve.id}" ${eleve.id === absenceCourante.student_id ? 'selected' : ''}>${echapperHtml(eleve.nom)} ${echapperHtml(eleve.prenom)}</option>`
+                    ).join("")}
+                </select>
+
+                <label for="absenceDate">Date</label>
+                <input type="date" id="absenceDate" value="${dateformatee}" required>
+
+                <label for="absenceStatut">Statut</label>
+                <select id="absenceStatut">
+                    <option value="Justifié" ${absenceCourante.status === 'Justifié' ? 'selected' : ''}>Justifié</option>
+                    <option value="Non-justifié" ${absenceCourante.status === 'Non-justifié' ? 'selected' : ''}>Non-justifié</option>
+                </select>
+
+                <button type="submit">Enregistrer les modifications</button>
+            </form>
+        `;
+
+        conteneur.querySelector("#boutonAnnulerAbsence")
+            .addEventListener("click", () => afficherPanneauAbsences(conteneur));
+
+        conteneur.querySelector("#formulaireModificationAbsence")
+            .addEventListener("submit", (evenement) => gererEnvoiModification(evenement, conteneur, id));
+
+    } catch (erreur) {
+        afficherNotification("Impossible de charger les données pour la modification", "error");
+    }
+}
+
+// Envoie les modifications d'une absence au serveur
+async function gererEnvoiModification(evenement, conteneur, id) {
+    evenement.preventDefault();
+
+    const donnees = {
+        student_id: Number(document.getElementById("absenceEleve").value),
+        date: document.getElementById("absenceDate").value,
+        status: document.getElementById("absenceStatut").value
+    };
+
+    try {
+        const resultat = await api.put(`/api/absences/${id}`, donnees);
+        afficherNotification(resultat.message || "Absence modifiée avec succès");
         await afficherPanneauAbsences(conteneur);
 
     } catch (erreur) {

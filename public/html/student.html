@@ -1,107 +1,196 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard Élève — SCHOOL MANAGEMENT</title>
 
     <!-- FontAwesome pour les icônes -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Google Fonts Poppins -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
 
-    <link rel="stylesheet" href="../css/global.css">
-    <link rel="stylesheet" href="../css/student.css">
-</head>
+    <link rel="stylesheet" href="../css/global.css" />
+    <link rel="stylesheet" href="../css/student.css" />
+  </head>
 
-<body class="corps-role">
-
-    <!-- 1. Conteneur d'arrière-plan fixe (La vidéo se calera en fond derrière tout) -->
-    <div class="student-bg-container">
-        <video autoplay muted loop playsinline class="student-video-bg">
-            <source src="../IMAGES/8675554-hd_1920_1080_30fps.mp4" type="video/mp4">
-            Votre navigateur ne supporte pas la lecture de vidéos.
-        </video>
-    </div>
-
-    <!-- 2. En-tête -->
-    <header class="entete-role entete-role--eleve">
+  <body class="corps-role">
+    <!-- Conteneur principal -->
+    <main class="conteneur-role">
+      <!-- En-tête / Barre supérieure -->
+      <header class="entete-role">
         <div class="marque-role">
-            <i class="fa-solid fa-graduation-cap"></i>
-            <span>SCHOOL MANAGEMENT</span>
+          <i class="fa-solid fa-graduation-cap"></i>
+          <span>SCHOOL MANAGEMENT</span>
         </div>
 
         <div class="profil-utilisateur">
-            <i class="fa-solid fa-user-graduate"></i>
-            <span id="nomEleve" class="nom-utilisateur">Élève</span>
-            <button id="deconnexion" class="bouton-deconnexion">
-                <i class="fa-solid fa-power-off"></i> Déconnexion
-            </button>
+          <i class="fa-solid fa-user-graduate"></i>
+          <span id="nomEleve" class="nom-utilisateur">Élève</span>
+          <button id="deconnexion" class="bouton-deconnexion">
+            <i class="fa-solid fa-power-off"></i> Déconnexion
+          </button>
         </div>
-    </header>
+      </header>
 
-    <!-- 3. Contenu principal -->
-    <main class="conteneur-role">
+      <!-- Bandeau de Bienvenue -->
+      <section class="bandeau-bienvenue">
+        <h1>Bonjour, <span id="nomEleveCarte">Élève</span> </h1>
+        <p>Bienvenue dans ton espace élève sécurisé — Suivi académique en temps réel.</p>
+      </section>
 
-        <!-- Fiche d'identité de l'élève -->
-        <section class="identite-eleve">
-            <h2><i class="fa-solid fa-hand-sparkles"></i> Bonjour <span id="nomEleveCarte">Élève</span></h2>
+      <!-- Indicateurs Clés (KPI) -->
+      <section class="grille-stats-eleve">
+        <div class="stat-eleve">
+          <i class="fa-solid fa-id-card"></i>
+          <div>
+            <span class="stat-titre">Matricule</span>
+            <span class="stat-valeur mono" id="statMatricule">---</span>
+          </div>
+        </div>
+        <div class="stat-eleve">
+          <i class="fa-solid fa-school"></i>
+          <div>
+            <span class="stat-titre">Classe</span>
+            <span class="stat-valeur" id="infoClasse">---</span>
+          </div>
+        </div>
+        <div class="stat-eleve">
+          <i class="fa-solid fa-user-clock"></i>
+          <div>
+            <span class="stat-titre">Absences</span>
+            <span class="stat-valeur" id="statAbsences">0</span>
+          </div>
+        </div>
+        <div class="stat-eleve">
+          <i class="fa-solid fa-chart-line"></i>
+          <div>
+            <span class="stat-titre"
+              >Moyenne (<span id="statPeriodeLabel">Trimestre 1</span>)</span
+            >
+            <span class="stat-valeur" id="statMoyenne">--/20</span>
+          </div>
+        </div>
+      </section>
 
-            <div class="grille-identite">
-                <div>
-                    <span class="etiquette-info">Nom</span>
-                    <span class="valeur-info" id="infoNom">---</span>
-                </div>
-                <div>
-                    <span class="etiquette-info">Prénom</span>
-                    <span class="valeur-info" id="infoPrenom">---</span>
-                </div>
-                <div>
-                    <span class="etiquette-info">Classe</span>
-                    <span class="valeur-info" id="infoClasse">---</span>
-                </div>
-                <div>
-                    <span class="etiquette-info">Matricule</span>
-                    <span class="valeur-info" id="infoMatricule">---</span>
-                </div>
+      <!-- Grille Principale en 2 colonnes -->
+      <div class="grille-principale-eleve">
+        <!-- Colonne Principale : Bulletin par trimestre -->
+        <div class="colonne-principale">
+          <section class="carte-notes carte-bulletin">
+            <div class="entete-carte-bulletin">
+              <h2><i class="fa-solid fa-file-pen"></i> Bulletin Trimestriel</h2>
+              <div class="onglets-periode">
+                <button class="onglet-periode actif" data-periode="Trimestre 1">
+                  Trimestre 1
+                </button>
+                <button class="onglet-periode" data-periode="Trimestre 2">
+                  Trimestre 2
+                </button>
+                <button class="onglet-periode" data-periode="Trimestre 3">
+                  Trimestre 3
+                </button>
+              </div>
             </div>
-        </section>
 
-        <!-- Tableau des notes -->
-        <section class="carte-notes">
-            <h2><i class="fa-solid fa-file-pen"></i> Mes notes</h2>
             <table>
-                <thead>
-                    <tr>
-                        <th>Matière</th>
-                        <th>Note</th>
-                    </tr>
-                </thead>
-                <tbody id="corpsNotes">
-                    <tr><td colspan="2">Chargement...</td></tr>
-                </tbody>
+              <thead>
+                <tr>
+                  <th>Matière</th>
+                  <th>Coeff</th>
+                  <th>Note</th>
+                </tr>
+              </thead>
+              <tbody id="corpsBulletinEleve">
+                <tr>
+                  <td colspan="3">Chargement...</td>
+                </tr>
+              </tbody>
             </table>
-        </section>
 
-        <!-- Tableau des absences -->
-        <section class="carte-absences">
+            <div class="pied-bulletin">
+              <div class="moyenne-globe">
+                <span class="chiffre" id="moyenneBulletinEleve">--</span>
+                <span class="sur20">sur 20</span>
+              </div>
+              <div class="bloc-appreciation">
+                <h3>
+                  <i class="fa-solid fa-comment-dots"></i> Appréciation du
+                  Conseil
+                </h3>
+                <p id="appreciationBulletinEleve">
+                  Aucune appréciation pour le moment.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <!-- Tableau des notes en direct (caché mais géré par le JS de secours) -->
+          <section class="carte-notes" style="display: none">
+            <h2>Notes en direct</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Matière</th>
+                  <th>Note</th>
+                </tr>
+              </thead>
+              <tbody id="corpsNotes"></tbody>
+            </table>
+          </section>
+        </div>
+
+        <!-- Colonne Latérale : Identité & Absences -->
+        <div class="colonne-laterale">
+          <section class="identite-eleve">
+            <h2><i class="fa-solid fa-user-gear"></i> Fiche d'identité</h2>
+            <div class="grille-identite">
+              <div>
+                <span class="etiquette-info">Nom</span>
+                <span class="valeur-info" id="infoNom">---</span>
+              </div>
+              <div>
+                <span class="etiquette-info">Prénom</span>
+                <span class="valeur-info" id="infoPrenom">---</span>
+              </div>
+              <div>
+                <span class="etiquette-info">Classe</span>
+                <span class="valeur-info" id="statClasse">---</span>
+              </div>
+              <div>
+                <span class="etiquette-info">Matricule</span>
+                <span class="valeur-info" id="infoMatricule">---</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- Tableau des absences -->
+          <section class="carte-absences">
             <h2><i class="fa-solid fa-user-clock"></i> Mes absences</h2>
             <table>
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Statut</th>
-                    </tr>
-                </thead>
-                <tbody id="corpsAbsences">
-                    <tr><td colspan="2">Chargement...</td></tr>
-                </tbody>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Statut</th>
+                </tr>
+              </thead>
+              <tbody id="corpsAbsences">
+                <tr>
+                  <td colspan="2">Chargement...</td>
+                </tr>
+              </tbody>
             </table>
-        </section>
-
+          </section>
+        </div>
+      </div>
     </main>
 
     <script type="module" src="../js/student.js"></script>
-
-</body>
-
+  </body>
 </html>

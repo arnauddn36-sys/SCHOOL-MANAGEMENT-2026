@@ -1,396 +1,1088 @@
 /* =====================================================================
-   TEACHER.CSS — TABLEAU DE BORD PROFESSEUR (Glassmorphism Pur)
+   TEACHER.CSS — DASHBOARD PROFESSEUR
+   Thème : Bleu & Blanc
+   Style : Premium / Professionnel / Moderne
 ===================================================================== */
 
-body.corps-role {
-  padding: 20px;
-  min-height: 100vh;
-  position: relative;
-  color: #ffffff;
-  font-family: 'Poppins', sans-serif;
-  background: transparent;
+/* =====================================================================
+   BASE
+===================================================================== */
+
+* {
+  box-sizing: border-box;
 }
 
-/* Positionnement de la vidéo de fond */
+html {
+  scroll-behavior: smooth;
+}
+
+body.corps-role {
+  margin: 0;
+  padding: 24px;
+  min-height: 100vh;
+
+  font-family: "Poppins", sans-serif;
+
+  color: #172033;
+
+  background: linear-gradient(135deg, #eef7ff 0%, #f7fbff 45%, #ffffff 100%);
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+/* =====================================================================
+   VIDÉO DE FOND
+===================================================================== */
+
 #video-fond {
   position: fixed;
+
   top: 0;
   left: 0;
+
   width: 100vw;
   height: 100vh;
+
   object-fit: cover;
-  z-index: -1;
+
+  z-index: -2;
+
+  opacity: 0;
+
+  pointer-events: none;
 }
 
-/* Conteneur principal */
+/* =====================================================================
+   CONTENEUR PRINCIPAL
+===================================================================== */
+
 .conteneur-role {
-  max-width: 1200px;
+  width: 100%;
+  max-width: 1500px;
+
+  min-height: calc(100vh - 48px);
+
   margin: 0 auto;
+
   display: flex;
   flex-direction: column;
-  gap: 24px;
+
+  background: #ffffff;
+
+  border-radius: 28px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 20px 55px rgba(15, 76, 129, 0.1),
+    0 5px 18px rgba(15, 76, 129, 0.05);
 }
 
-/* =========================
-   EN-TÊTE / BARRE SUPÉRIEURE
-========================= */
+/* =====================================================================
+   HEADER
+===================================================================== */
+
 .entete-role {
+  min-height: 82px;
+
+  padding: 18px 30px;
+
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 16px 28px;
-  border-radius: var(--rayon-lg, 16px);
-  background: rgba(255, 255, 255, 0.08) !important;
-  backdrop-filter: blur(20px) saturate(160%) !important;
-  -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-  margin-bottom: 24px;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #e5eef7;
 }
+
+/* =====================================================================
+   MARQUE
+===================================================================== */
 
 .marque-role {
   display: flex;
   align-items: center;
+
   gap: 12px;
-  font-size: 1.2rem;
+
+  color: #075985;
+
+  font-size: 18px;
   font-weight: 800;
-  letter-spacing: 0.5px;
-  color: #ffffff;
+
+  letter-spacing: 0.3px;
 }
 
 .marque-role i {
-  color: #4cc4d9;
+  width: 43px;
+  height: 43px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+
+  color: #ffffff;
+
+  background: linear-gradient(135deg, #0284c7, #0369a1);
+
+  font-size: 18px;
+
+  box-shadow: 0 8px 20px rgba(2, 132, 199, 0.22);
 }
+
+/* =====================================================================
+   PROFIL
+===================================================================== */
 
 .profil-utilisateur {
   display: flex;
   align-items: center;
-  gap: 14px;
-  background: rgba(255, 255, 255, 0.12);
-  padding: 8px 18px;
-  border-radius: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(10px);
+
+  gap: 10px;
+
+  padding: 6px 8px 6px 11px;
+
+  background: #f7fbff;
+
+  border: 1px solid #e0edf7;
+
+  border-radius: 14px;
+}
+
+.profil-utilisateur > i {
+  width: 35px;
+  height: 35px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  color: #0284c7;
+
+  background: #e5f5ff;
+
+  font-size: 17px;
 }
 
 .nom-utilisateur {
+  max-width: 220px;
+
+  color: #334155;
+
+  font-size: 13px;
   font-weight: 600;
-  color: #ffffff;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
 }
 
-.bouton-deconnexion {
-  background: rgba(220, 53, 69, 0.8) !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.3) !important;
-  padding: 8px 16px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.3s ease;
+/* =====================================================================
+   BOUTON DÉCONNEXION
+===================================================================== */
+
+.bouton-deconnexion,
+#deconnexion {
+  border: none;
+  outline: none;
+
+  padding: 9px 14px;
+
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+
+  gap: 7px;
+
+  border-radius: 9px;
+
+  color: #dc2626;
+
+  background: #fff5f5;
+
+  border: 1px solid #fee2e2;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.bouton-deconnexion:hover {
-  background: rgba(220, 53, 69, 1) !important;
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
-}
-
-/* =========================
-   BLOCS DE CONTENU (Bienvenue & Menu)
-========================= */
-.info-professeur,
-.menu-professeur,
-.panneau {
-  background: rgba(255, 255, 255, 0.08) !important;
-  backdrop-filter: blur(16px) saturate(160%) !important;
-  -webkit-backdrop-filter: blur(16px) saturate(160%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  border-radius: var(--rayon-lg, 16px);
-  padding: 26px 32px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-}
-
-.info-professeur h2,
-.menu-professeur h2,
-.panneau h2 {
-  font-size: 1.3rem;
-  font-weight: 700;
+.bouton-deconnexion:hover,
+#deconnexion:hover {
   color: #ffffff;
-  margin-bottom: 12px;
+
+  background: #dc2626;
+
+  border-color: #dc2626;
+
+  transform: translateY(-1px);
+
+  box-shadow: 0 6px 15px rgba(220, 38, 38, 0.18);
+}
+
+/* =====================================================================
+   CARTE BIENVENUE
+===================================================================== */
+
+.info-professeur {
+  position: relative;
+
+  margin: 28px 30px 0;
+
+  padding: 28px 30px;
+
+  overflow: hidden;
+
+  border-radius: 20px;
+
+  color: #ffffff;
+
+  background: linear-gradient(135deg, #075985 0%, #0284c7 52%, #38bdf8 100%);
+
+  box-shadow: 0 15px 35px rgba(2, 132, 199, 0.2);
+}
+
+.info-professeur::before {
+  content: "";
+
+  position: absolute;
+
+  width: 230px;
+  height: 230px;
+
+  right: -90px;
+  top: -130px;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.info-professeur::after {
+  content: "";
+
+  position: absolute;
+
+  width: 110px;
+  height: 110px;
+
+  right: 180px;
+  bottom: -70px;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.info-professeur h2 {
+  position: relative;
+  z-index: 1;
+
+  margin: 0 0 7px;
+
   display: flex;
   align-items: center;
-  gap: 12px;
+
+  gap: 10px;
+
+  color: #ffffff;
+
+  font-size: 23px;
+  font-weight: 700;
 }
 
-.info-professeur h2 i,
-.menu-professeur h2 i,
-.panneau h2 i {
-  color: #4cc4d9;
+.info-professeur h2 i {
+  font-size: 19px;
 }
 
 .info-professeur p {
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 0.95rem;
-  line-height: 1.5;
+  position: relative;
+  z-index: 1;
+
+  margin: 0;
+
+  max-width: 850px;
+
+  color: rgba(255, 255, 255, 0.86);
+
+  font-size: 12px;
+
+  line-height: 1.7;
 }
 
-/* =========================
-   MENU BOUTONS (Boutons Pédagogiques)
-========================= */
-.puces-menu {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-  margin-top: 16px;
+/* =====================================================================
+   MENU PÉDAGOGIQUE
+===================================================================== */
+
+.menu-professeur {
+  margin: 22px 30px 0;
+
+  padding: 22px;
+
+  background: #ffffff;
+
+  border: 1px solid #e1edf7;
+
+  border-radius: 18px;
+
+  box-shadow: 0 8px 25px rgba(15, 76, 129, 0.055);
 }
+
+.menu-professeur h2 {
+  margin: 0 0 17px;
+
+  color: #172033;
+
+  font-size: 15px;
+  font-weight: 700;
+}
+
+/* =====================================================================
+   CONTENEUR DES BOUTONS
+===================================================================== */
+
+.puces-menu {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 14px;
+}
+
+/* =====================================================================
+   BOUTONS PÉDAGOGIQUES — STYLE UNIQUE TEACHER
+===================================================================== */
 
 .puces-menu button {
-  background: rgba(255, 255, 255, 0.12) !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.25) !important;
-  padding: 12px 22px;
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  cursor: pointer;
-  display: inline-flex;
+  position: relative;
+
+  min-height: 62px;
+
+  padding: 13px 18px;
+
+  display: flex;
   align-items: center;
-  gap: 10px;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
+  justify-content: flex-start;
+
+  gap: 12px;
+
+  border: 1px solid #dbeaf5;
+
+  border-radius: 13px;
+
+  color: #24516e;
+
+  background: #f8fcff;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  overflow: hidden;
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.puces-menu button::before {
+  content: "";
+
+  width: 4px;
+  height: 0;
+
+  position: absolute;
+
+  left: 0;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  border-radius: 0 5px 5px 0;
+
+  background: #0284c7;
+
+  transition: height 0.25s ease;
 }
 
 .puces-menu button i {
-  color: #4cc4d9;
-  transition: color 0.3s ease;
+  width: 38px;
+  height: 38px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  color: #0284c7;
+
+  background: #e8f6ff;
+
+  font-size: 15px;
+
+  transition:
+    color 0.25s ease,
+    background 0.25s ease,
+    transform 0.25s ease;
 }
 
 .puces-menu button:hover {
-  background: rgba(255, 255, 255, 0.22) !important;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  border-color: rgba(255, 255, 255, 0.4) !important;
+  color: #075985;
+
+  background: #eef9ff;
+
+  border-color: #a9d9f4;
+
+  transform: translateY(-3px);
+
+  box-shadow: 0 10px 22px rgba(2, 132, 199, 0.1);
 }
 
-.puces-menu button.actif {
-  background: rgba(76, 196, 217, 0.35) !important;
-  border-color: rgba(76, 196, 217, 0.6) !important;
-  box-shadow: 0 8px 20px rgba(76, 196, 217, 0.3);
+.puces-menu button:hover::before {
+  height: 35px;
 }
 
-.puces-menu button.actif i {
+.puces-menu button:hover i {
   color: #ffffff;
+
+  background: #0284c7;
+
+  transform: scale(1.05);
 }
 
-/* =========================
-   BARRE DE RECHERCHE PAR MATRICULE (Glassmorphism)
-========================= */
-.entete-panneau {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 20px;
+.puces-menu button:active {
+  transform: translateY(-1px);
 }
 
-.entete-panneau h2 {
-  margin-bottom: 0;
-}
+/* =====================================================================
+   BARRE DE RECHERCHE
+===================================================================== */
 
 .barre-recherche-form {
+  margin: 22px 30px 0;
+
+  padding: 7px;
+
   display: flex;
-  gap: 12px;
   align-items: center;
-  width: 100%;
-  max-width: 420px;
-  margin: 0;
-  background: transparent;
-  border: none;
-  padding: 0;
-  box-shadow: none;
+
+  gap: 8px;
+
+  background: #f8fcff;
+
+  border: 1px solid #dcebf6;
+
+  border-radius: 13px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
 }
 
-.barre-recherche-form input[type="text"] {
+.barre-recherche-form:focus-within {
+  background: #ffffff;
+
+  border-color: #7dd3fc;
+
+  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.08);
+}
+
+.barre-recherche-form input {
   flex: 1;
-  background: rgba(255, 255, 255, 0.12) !important;
-  border: 1px solid rgba(255, 255, 255, 0.25) !important;
-  color: #ffffff !important;
-  padding: 12px 18px;
-  border-radius: 12px;
+
+  min-width: 0;
+
+  height: 43px;
+
+  padding: 0 14px;
+
+  border: none;
+
   outline: none;
-  font-size: 0.9rem;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
+
+  background: transparent;
+
+  color: #334155;
+
+  font-size: 12px;
 }
 
-.barre-recherche-form input[type="text"]::placeholder {
-  color: rgba(255, 255, 255, 0.6);
+.barre-recherche-form input::placeholder {
+  color: #94a3b8;
 }
 
-.barre-recherche-form input[type="text"]:focus {
-  border-color: #4cc4d9 !important;
-  box-shadow: 0 0 15px rgba(76, 196, 217, 0.4);
-  background: rgba(255, 255, 255, 0.18) !important;
-}
+/* =====================================================================
+   BOUTON RECHERCHE
+===================================================================== */
 
 .barre-recherche-form button {
-  background: rgba(76, 196, 217, 0.35) !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(76, 196, 217, 0.6) !important;
-  padding: 12px 20px;
-  border-radius: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  white-space: nowrap;
+  min-height: 43px;
+
+  padding: 0 20px;
+
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+
   gap: 8px;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
+
+  border: none;
+
+  border-radius: 9px;
+
+  color: #01090e;
+
+  background: linear-gradient(135deg, #0284c7, #0369a1);
+
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow: 0 5px 12px rgba(2, 132, 199, 0.16);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
 }
 
 .barre-recherche-form button:hover {
-  background: rgba(76, 196, 217, 0.55) !important;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(76, 196, 217, 0.4);
+  background: linear-gradient(135deg, #0369a1, #075985);
+
+  transform: translateY(-1px);
+
+  box-shadow: 0 8px 18px rgba(2, 132, 199, 0.22);
 }
 
-/* =========================
-   PANNEAU DE CONTENU DYNAMIQUE
-========================= */
-.panneau {
-  min-height: 250px;
+.barre-recherche-form button:active {
+  transform: translateY(0);
 }
+
+/* =====================================================================
+   LABEL ACCESSIBLE
+===================================================================== */
+
+.masque-visuellement {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  padding: 0;
+  margin: -1px;
+
+  overflow: hidden;
+
+  clip: rect(0, 0, 0, 0);
+
+  white-space: nowrap;
+
+  border: 0;
+}
+
+/* =====================================================================
+   PANNEAU PRINCIPAL ET EN-TÊTE D'ACTION (AJouté)
+===================================================================== */
+
+.panneau {
+  margin: 22px 30px 30px;
+
+  min-height: 260px;
+
+  background: #ffffff;
+
+  border: 1px solid #e1edf7;
+
+  border-radius: 18px;
+
+  overflow: hidden;
+
+  box-shadow: 0 8px 25px rgba(15, 76, 129, 0.055);
+}
+
+/* En-tête du panneau contenant le titre et le bouton d'ajout */
+.panneau-entete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  background: #fbfdff;
+  border-bottom: 1px solid #e1edf7;
+}
+
+.panneau-entete h2 {
+  margin: 0;
+  color: #172033;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* Style du bouton d'ajout principal (ex: "Ajouter une note") */
+.panneau-entete button,
+.btn-ajouter {
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #0284c7, #0369a1);
+  color: #ffffff;
+  border: none;
+  border-radius: 9px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.18);
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.panneau-entete button:hover,
+.btn-ajouter:hover {
+  background: linear-gradient(135deg, #0369a1, #075985);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 15px rgba(2, 132, 199, 0.25);
+}
+
+/* =====================================================================
+   ÉTAT VIDE
+===================================================================== */
 
 .etat-vide {
+  min-height: 260px;
+
+  padding: 40px 25px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   text-align: center;
-  padding: 40px 20px;
-  color: rgba(255, 255, 255, 0.65);
-  font-style: italic;
-  font-size: 1rem;
-  border: 2px dashed rgba(255, 255, 255, 0.2);
-  border-radius: 12px;
+
+  color: #8aa0b3;
+
+  background: linear-gradient(135deg, #fbfdff, #f5faff);
+
+  font-size: 13px;
 }
 
-/* =========================
-   TABLEAUX ET FORMULAIRES DYNAMIQUES
-========================= */
-table {
+/* =====================================================================
+   CONTENU DYNAMIQUE
+===================================================================== */
+
+.panneau h2 {
+  margin: 0;
+
+  color: #172033;
+
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.panneau h3 {
+  color: #24465d;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* =====================================================================
+   TABLEAUX DYNAMIQUES & BOUTONS D'ACTIONS
+===================================================================== */
+
+.panneau table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 8px;
-  margin-top: 16px;
+
+  border-collapse: collapse;
+
+  font-size: 12px;
 }
 
-th {
+.panneau thead {
+  background: #f5faff;
+}
+
+.panneau th {
+  padding: 14px 16px;
+
+  color: #58758a;
+
+  background: #f5faff;
+
+  border-bottom: 1px solid #dfedf6;
+
+  font-size: 10px;
+  font-weight: 700;
+
   text-align: left;
-  padding: 12px 18px;
-  font-size: 0.8rem;
+
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.7);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+
+  letter-spacing: 0.5px;
 }
 
-tbody tr {
-  background: rgba(255, 255, 255, 0.07);
-  transition: background 0.3s ease;
+.panneau td {
+  padding: 14px 16px;
+
+  color: #476174;
+
+  border-bottom: 1px solid #edf4f8;
+
+  font-size: 12px;
 }
 
-tbody tr:hover {
-  background: rgba(255, 255, 255, 0.15);
+.panneau tbody tr {
+  transition: background 0.2s ease;
 }
 
-td {
-  padding: 14px 18px;
-  color: #ffffff;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+.panneau tbody tr:hover {
+  background: #f7fcff;
 }
 
-tbody tr td:first-child {
-  border-left: 1px solid rgba(255, 255, 255, 0.1);
-  border-top-left-radius: 12px;
-  border-bottom-left-radius: 12px;
+.panneau tbody tr:last-child td {
+  border-bottom: none;
 }
 
-tbody tr td:last-child {
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
-  border-top-right-radius: 12px;
-  border-bottom-right-radius: 12px;
+/* Conteneur des actions de ligne */
+.actions-ligne {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-/* Formulaires dynamiques (saisie de notes/absences) */
-input,
-select,
-textarea {
-  background: rgba(255, 255, 255, 0.12) !important;
-  border: 1px solid rgba(255, 255, 255, 0.25) !important;
-  color: #ffffff !important;
-  padding: 10px 14px;
-  border-radius: 8px;
+/* Boutons d'actions compacts (Modifier / Supprimer) sur PC */
+td .actions-ligne button,
+table .actions-ligne button {
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 6px;
+  min-height: auto;
+  width: auto;
+  box-shadow: none;
+}
+
+/* =====================================================================
+   CHAMPS DYNAMIQUES
+===================================================================== */
+
+.panneau input,
+.panneau select,
+.panneau textarea {
+  min-height: 40px;
+
+  padding: 8px 11px;
+
+  border: 1px solid #dcebf5;
+
+  border-radius: 9px;
+
   outline: none;
-  backdrop-filter: blur(8px);
+
+  background: #ffffff;
+
+  color: #334155;
+
+  font-size: 12px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-input::placeholder,
-textarea::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+.panneau input:focus,
+.panneau select:focus,
+.panneau textarea:focus {
+  border-color: #38bdf8;
+
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.09);
 }
 
-input:focus,
-select:focus,
-textarea:focus {
-  border-color: #4cc4d9 !important;
-  box-shadow: 0 0 10px rgba(76, 196, 217, 0.4);
+/* =====================================================================
+   BOUTONS DYNAMIQUES GÉNÉRAUX
+===================================================================== */
+
+.panneau button {
+  font-family: inherit;
+  cursor: pointer;
 }
 
-select option {
-  background: #1e293b;
-  color: #ffffff;
+/* =====================================================================
+   SCROLLBAR
+===================================================================== */
+
+.panneau::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
-@media (max-width: 768px) {
-  .entete-role {
-    flex-direction: column;
-    gap: 16px;
-    align-items: stretch;
-    text-align: center;
+.panneau::-webkit-scrollbar-track {
+  background: #f5faff;
+}
+
+.panneau::-webkit-scrollbar-thumb {
+  background: #b9d9ea;
+
+  border-radius: 10px;
+}
+
+.panneau::-webkit-scrollbar-thumb:hover {
+  background: #8ec5df;
+}
+
+/* =====================================================================
+   RESPONSIVE — 1100 PX
+===================================================================== */
+
+@media (max-width: 1100px) {
+  body.corps-role {
+    padding: 15px;
   }
 
-  .profil-utilisateur {
-    justify-content: space-between;
+  .conteneur-role {
+    min-height: calc(100vh - 30px);
   }
 
   .puces-menu {
-    flex-direction: column;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* =====================================================================
+   RESPONSIVE — 768 PX (TABLETTES & MOBILES)
+===================================================================== */
+
+@media (max-width: 768px) {
+  body.corps-role {
+    padding: 0;
+  }
+
+  .conteneur-role {
+    min-height: 100vh;
+
+    border-radius: 0;
+
+    box-shadow: none;
+  }
+
+  .entete-role {
+    padding: 15px 20px;
+
+    min-height: 70px;
+  }
+
+  .marque-role {
+    font-size: 15px;
+  }
+
+  .marque-role i {
+    width: 38px;
+    height: 38px;
+  }
+
+  .profil-utilisateur > i {
+    display: none;
+  }
+
+  .nom-utilisateur {
+    max-width: 140px;
+  }
+
+  .info-professeur {
+    margin: 20px 20px 0;
+
+    padding: 23px;
+  }
+
+  .info-professeur h2 {
+    font-size: 20px;
+  }
+
+  .menu-professeur {
+    margin: 18px 20px 0;
+  }
+
+  .puces-menu {
+    grid-template-columns: 1fr;
   }
 
   .puces-menu button {
+    min-height: 55px;
+  }
+
+  .barre-recherche-form {
+    margin: 18px 20px 0;
+  }
+
+  .panneau {
+    margin: 18px 20px 20px;
+  }
+
+  /* Adaptation responsive de l'en-tête du panneau sur mobile */
+  .panneau-entete {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 15px;
+  }
+
+  .panneau-entete button,
+  .btn-ajouter {
     width: 100%;
     justify-content: center;
   }
 
-  .entete-panneau {
+  /* Adaptation responsive des boutons d'actions sur mobile */
+  td .actions-ligne {
     flex-direction: column;
-    align-items: stretch;
+    gap: 4px;
+  }
+
+  td .actions-ligne button {
+    width: 100%;
+    padding: 5px 8px;
+    font-size: 11px;
+  }
+}
+
+/* =====================================================================
+   RESPONSIVE — 480 PX
+===================================================================== */
+
+@media (max-width: 480px) {
+  .entete-role {
+    padding: 13px 15px;
+  }
+
+  .marque-role {
+    gap: 8px;
+
+    font-size: 13px;
+  }
+
+  .marque-role i {
+    width: 34px;
+    height: 34px;
+
+    border-radius: 9px;
+
+    font-size: 14px;
+  }
+
+  .nom-utilisateur {
+    display: none;
+  }
+
+  .bouton-deconnexion,
+  #deconnexion {
+    padding: 8px 10px;
+
+    font-size: 11px;
+  }
+
+  .info-professeur {
+    margin: 15px 15px 0;
+
+    padding: 19px;
+  }
+
+  .info-professeur h2 {
+    font-size: 18px;
+  }
+
+  .info-professeur p {
+    font-size: 11px;
+  }
+
+  .menu-professeur {
+    margin: 15px 15px 0;
+
+    padding: 17px;
+  }
+
+  .menu-professeur h2 {
+    font-size: 14px;
+  }
+
+  .puces-menu button {
+    min-height: 52px;
+
+    font-size: 11px;
   }
 
   .barre-recherche-form {
-    max-width: 100%;
+    margin: 15px 15px 0;
+
     flex-direction: column;
+
     align-items: stretch;
+
+    padding: 8px;
+  }
+
+  .barre-recherche-form input {
+    width: 100%;
+
+    height: 42px;
   }
 
   .barre-recherche-form button {
-    justify-content: center;
+    width: 100%;
   }
+
+  .panneau {
+    margin: 15px 15px 15px;
+
+    overflow-x: auto;
+  }
+
+  .etat-vide {
+    min-height: 220px;
+
+    padding: 30px 20px;
+
+    font-size: 12px;
+  }
+
+  .panneau table {
+    min-width: 550px;
+  }
+}
+
+/* =====================================================================
+   SÉLECTION
+===================================================================== */
+
+::selection {
+  color: #ffffff;
+
+  background: #0284c7;
 }

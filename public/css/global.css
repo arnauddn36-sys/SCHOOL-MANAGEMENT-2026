@@ -36,12 +36,7 @@
 /*RESET*/
 *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
 
-html{ scroll-behavior:smooth; }
-
-/* Taille de base de la police : on la réduit légèrement sur très petit écran
-   pour que tout le "rem" du fichier (h1, h2, boutons, tableaux...) rétrécisse
-   automatiquement avec elle, sans avoir à réécrire chaque règle. */
-html{ font-size:100%; }
+html{ scroll-behavior:smooth; font-size:100%; }
 
 body{
   font-family:'Inter',system-ui,sans-serif;
@@ -60,7 +55,7 @@ p{ color:var(--texte-attenue); }
 
 img, table{ max-width:100%; height:auto; }
 
-/* Barre de défilement fine et discrète, dans la couleur de la marque */
+/* Barre de défilement fine et discrète */
 ::-webkit-scrollbar{ width:8px; height:8px; }
 ::-webkit-scrollbar-thumb{ background:rgba(255, 255, 255, 0.769); border-radius:49px; opacity:.5; }
 ::-webkit-scrollbar-track{ background:transparent; }
@@ -69,7 +64,7 @@ img, table{ max-width:100%; height:auto; }
   *{ animation-duration:.01ms !important; transition-duration:.01ms !important; }
 }
 
-/* Contour de focus clavier visible, dans la couleur de la marque */
+/* Contour de focus clavier visible */
 a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible{
   outline:3px solid var(--secondaire);
   outline-offset:2px;
@@ -85,7 +80,6 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 }
 
 /*BOUTONS*/
-
 button{
   font-family:'Inter',sans-serif;
   border:none;
@@ -102,17 +96,18 @@ button{
 }
 
 button:hover { 
-  background: rgba(255, 255, 255, 0.134) !important; 
-  border-color: rgba(255, 255, 255, 0.5) !important;  
-  color: #ffffff !important;                         
+  background: rgba(8, 25, 160, 0.033) !important; 
+  border-color: rgba(113, 101, 151, 0.076) !important;  
+  color: #24216a !important;                         
   transform: translateY(-2px); 
   box-shadow: 0 14px 26px -10px var(--lueur-primaire); 
 }
 
 button:active { 
-  background: rgba(255, 255, 255, 0.18) !important; 
+  background: rgba(174, 175, 196, 0.483) !important; 
   transform: translateY(0); 
 }
+
 button.secondaire{
   color:rgb(249, 246, 246);
   border:1.5px solid var(--primaire);
@@ -141,33 +136,30 @@ form{
 }
 
 label{
-  position: relative;
   font-size:0.78rem;
   font-weight:700;
   text-transform:uppercase;
   letter-spacing:0.04em;
-  color:rgba(255, 255, 255, 0.228);
-  margin-bottom:-8px;
-  
+  color: rgba(255, 255, 255, 0.85); /* Corrigé : bien lisible sur fond sombre */
+  margin-bottom: 4px;
 }
 
 input, select{
-  position: relative;
   font-family:'Inter',sans-serif;
   padding:12px 14px;
   border-radius:var(--rayon-sm);
   background-color: rgba(244, 240, 240, 0.881);
-  font-size:0.52rem;
+  font-size: 0.9rem; /* Corrigé : taille de texte normale et lisible */
+  border: 1px solid var(--bordure);
   transition:var(--transition);
-  width:95%;
-  right:10%;
-  top:5px;
+  width: 100%; /* Corrigé : prend toute la largeur disponible du conteneur proprement */
 }
 
 input:focus, select:focus{
   border-color:var(--secondaire);
   background:#ece9e9eb;
   box-shadow:0 0 0 4px var(--lueur-primaire);
+  outline: none;
 }
 
 /*CARTES*/
@@ -182,7 +174,6 @@ input:focus, select:focus{
   transition:var(--transition);
 }
 
-/* Petite signature : un fin trait dégradé qui apparaît en haut de chaque carte au survol */
 .card::before{
   content:'';
   position:absolute; top:0; left:0; right:0; height:3px;
@@ -202,7 +193,6 @@ input:focus, select:focus{
 }
 
 /*TABLEAUX*/
-
 table{
   width:100%;
   border-collapse:separate;
@@ -224,7 +214,7 @@ thead th{
   text-transform:uppercase;
   letter-spacing:0.06em;
   font-weight:800;
-  border-bottom:1px solid var(--bordure)
+  border-bottom:1px solid var(--bordure);
 }
 
 tbody td{
@@ -235,22 +225,18 @@ tbody td{
 }
 
 tbody tr:hover{ 
-  background: rgba(159, 180, 187, 0.365) !important; /* Très léger voile transparent */
+  background: rgba(159, 180, 187, 0.365) !important;
 }
-td.mono, span.mono{ font-family:'Courier New',monospace; color:white; }/*couleur des ID*/
 
-/* Conteneur qui permet au tableau de défiler horizontalement sur petit écran
-   sans casser la mise en page de la page entière. À mettre autour de <table>
-   dans le HTML (ex: <div class="tableau-scroll"><table>...</table></div>).
-   Si ce wrapper n'existe pas encore dans le HTML, le fallback ci-dessous
-   (table { display:block; overflow-x:auto } en media query) prend le relais. */
+td.mono, span.mono{ font-family:'Courier New',monospace; color:white; }
+
 .tableau-scroll{
   width:100%;
   overflow-x:auto;
-  -webkit-overflow-scrolling:touch;/*L'effet "momentum" : En ajoutant -webkit-overflow-scrolling: touch;, vous activez le défilement fluide natif d'iOS. Lorsque l'utilisateur fait glisser son doigt et le lâche, le contenu continue de glisser tout seul en ralentissant progressivement (comme sur une page web normale).*/
+  -webkit-overflow-scrolling:touch;
 }
 
-   /*BADGES*/
+/*BADGES*/
 .badge{
   display:inline-flex;
   align-items:center;
@@ -263,8 +249,7 @@ td.mono, span.mono{ font-family:'Courier New',monospace; color:white; }/*couleur
 }
 .badge.ok{ background:var(--fond-succes); color:var(--texte-succes); }
 
-/*    PROFIL UTILISATEUR & DÉCONNEXION (partagés admin / professeur / élève)     */
-
+/*PROFIL UTILISATEUR & DÉCONNEXION*/
 .profil-utilisateur{
   display:flex; align-items:center; gap:14px;
   background:rgba(255, 255, 255, 0);
@@ -286,9 +271,7 @@ td.mono, span.mono{ font-family:'Courier New',monospace; color:white; }/*couleur
 }
 .bouton-deconnexion:hover, #deconnexion:hover{ transform:translateY(-3px); }
 
-   /*ÉTAT VIDE*/
-
-
+/*ÉTAT VIDE*/
 .etat-vide{
   background:var(--fond-carte);
   border:1.5px dashed var(--bordure);
@@ -298,11 +281,7 @@ td.mono, span.mono{ font-family:'Courier New',monospace; color:white; }/*couleur
   color:var(--texte-attenue);
 }
 
-   /*ACCESSIBILITÉ*/
-
-
-/* Cache visuellement un élément tout en le gardant lisible par les lecteurs d'écran
-   (utilisé sur les <label> du formulaire de connexion, qui a déjà des icônes visibles) */
+/*ACCESSIBILITÉ*/
 .masque-visuellement{
   position:absolute;
   width:1px; height:1px;
@@ -313,45 +292,25 @@ td.mono, span.mono{ font-family:'Courier New',monospace; color:white; }/*couleur
   border:0;
 }
 
-   /*   RESPONSIVE — TOUS LES ÉCRANS  
-   Approche "desktop-first" : le style de base ci-dessus est pensé
-   pour le grand écran, puis on adapte en descendant par palier.
-
-   Paliers utilisés :
-   - ≥1440px : très grand écran (moniteur large)
-   - 1024–1439px : desktop standard (style de base, aucun changement)
-   - 768–1023px : tablette
-   - 480–767px  : mobile (portrait standard)
-   - <480px     : très petit mobile   */
-
-/* ---------- Très grand écran : on aère un peu plus le contenu ---------- */
+/*RESPONSIVE*/
 @media (min-width:1440px){
   .container{ max-width:1360px; }
   h1{ font-size:1.9rem; }
 }
 
-/* ---------- Tablette (768px – 1023px) ---------- */
 @media (max-width:1023px){
   .container{ padding:0 20px; }
-
   .cards{ grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); }
-
   form{ max-width:100%; padding:26px; }
-
   thead th, tbody td{ padding:12px 14px; }
 }
 
-/* ---------- Mobile (480px – 767px) ---------- */
 @media (max-width:767px){
-
-  html{ font-size:93.75%; } /* réduit légèrement toutes les tailles en rem */
-
+  html{ font-size:93.75%; }
   .container{ padding:0 14px; }
-
   h1{ font-size:1.35rem; }
   h2{ font-size:1.05rem; }
 
-  /* Empile verticalement les menus et grilles au lieu de les mettre en ligne */
   .navigation-menu, .dashboard-grid, .puces-menu, .barre-outils-panneau{
     flex-direction:column;
     align-items:stretch;
@@ -360,11 +319,8 @@ td.mono, span.mono{ font-family:'Courier New',monospace; color:white; }/*couleur
   }
 
   .cards{ grid-template-columns:1fr; }
-
-  /* Boutons pleine largeur pour être faciles à toucher au doigt */
   button{ width:100%; padding:12px 18px; }
 
-  /* Sauf les actions groupées dans une ligne de tableau : elles restent compactes */
   .actions-ligne{
     display:flex;
     flex-direction:column;
@@ -375,8 +331,6 @@ td.mono, span.mono{ font-family:'Courier New',monospace; color:white; }/*couleur
 
   form{ padding:20px; border-radius:var(--rayon-md); }
 
-  /* Fallback si le tableau n'est pas encore enveloppé dans .tableau-scroll :
-     le tableau lui-même défile horizontalement plutôt que de déborder de l'écran. */
   table{
     display:block;
     overflow-x:auto;
@@ -387,10 +341,9 @@ td.mono, span.mono{ font-family:'Courier New',monospace; color:white; }/*couleur
   .nom-utilisateur{ font-size:0.8rem; }
 }
 
-/* ---------- Très petit mobile (<480px) ---------- */
 @media (max-width:479px){
   h1{ font-size:1.2rem; }
   form{ padding:16px; }
   thead th, tbody td{ padding:10px 12px; font-size:0.82rem; }
-  .profil-utilisateur .nom-utilisateur{ display:none; } /* on garde juste l'icône, faute de place */
+  .profil-utilisateur .nom-utilisateur{ display:none; }
 }

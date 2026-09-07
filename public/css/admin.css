@@ -1,92 +1,89 @@
+/* =====================================================================
+   ADMIN.CSS — TABLEAU DE BORD ADMINISTRATEUR 
+===================================================================== */
 
-/* RESET DE BASE & POLICE */
-* {
-  box-sizing: border-box;
-}
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 
-html, body {
-  overflow-x: hidden;
-  overflow-y: auto !important;
-  -webkit-overflow-scrolling: touch;
+#video-fond { 
+  display: none !important; 
 }
 
 body {
+  background-color: #f4f1fc;
   padding: 20px;
-  min-height: 100vh;
-  position: relative;
-  color: #ffffff;
-  font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+  font-family: 'Inter', sans-serif;
+  color: #1e1b2e;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
 }
 
-#video-fond {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover;
-  z-index: -1;
-}
-
-/* Master Container : Effet verre global */
+/* =====================================================================
+   2. LAYOUT PRINCIPAL (App Wrapper)
+===================================================================== */
 .disposition-admin {
   display: flex;
   min-height: calc(100vh - 40px);
-  border-radius: var(--rayon-lg, 16px);
+  border-radius: 28px;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.06) !important;
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  background-color: #ffffff;
+  box-shadow: 0 20px 45px -22px rgba(124, 58, 237, 0.35);
+  border: none;
 }
 
-   /*  BARRE LATÉRALE  */
-
-
+/* =====================================================================
+   3. SIDEBAR (Barre Latérale)
+===================================================================== */
 .barre-laterale-admin {
-  width: 290px;
-  min-width: 270px;
-  background: rgba(255, 255, 255, 0.08);
-  border-right: 1px solid rgba(255, 255, 255, 0.15);
+  width: 270px;
+  min-width: 250px;
+  background: linear-gradient(165deg, #7c3aed 0%, #5b21b6 100%);
   color: #ffffff;
-  padding: 30px 22px;
+  padding: 28px 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  max-height: 100vh;
-  overflow-y: auto;
 }
 
 .marque-barre-laterale {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   font-family: 'Poppins', sans-serif;
-  font-size: 1.2rem;
+  font-size: 1.05rem;
   font-weight: 800;
-  letter-spacing: 0.5px;
-  margin-bottom: 36px;
-  color: #f5f5f5;
+  letter-spacing: 0.3px;
+  margin-bottom: 34px;
+  color: #ffffff;
+}
+
+.marque-barre-laterale i {
+  width: 36px; 
+  height: 36px;
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  font-size: 1rem;
 }
 
 .etiquette-barre-laterale {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.55);
   margin-bottom: 12px;
-  padding-left: 6px;
+  padding-left: 8px;
 }
 
 .menu-admin ul {
   list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .menu-admin button {
@@ -94,82 +91,231 @@ body {
   text-align: left;
   justify-content: flex-start;
   background: transparent;
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(255, 255, 255, 0.75);
   box-shadow: none;
   font-weight: 600;
-  padding: 12px 16px;
+  font-size: 0.88rem;
+  padding: 11px 14px;
   border-radius: 12px;
-  border: none;
-  cursor: pointer;
   display: flex;
   align-items: center;
   gap: 12px;
-  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .menu-admin button:hover {
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.12);
   color: #ffffff;
+  transform: none;
 }
 
 .menu-admin button.actif {
-  background: rgba(255, 255, 255, 0.25);
-  color: #ffffff;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  background: #ffffff;
+  color: #5b21b6;
+  box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.25);
+  font-weight: 700;
 }
 
-   /*  ZONE PRINCIPALE  */
+.menu-admin button i {
+  width: 26px; 
+  height: 26px;
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  background: rgba(237, 12, 12, 0.058);
+  flex-shrink: 0;
+}
 
+.menu-admin button.actif i { 
+  background: rgba(4, 34, 228, 0); 
+}
 
+.menu-admin button[data-panel="statistiques"] i { color: #fde68a; }
+.menu-admin button[data-panel="utilisateurs"] i { color: #93c5fd; }
+.menu-admin button[data-panel="eleves"] i { color: #86efac; }
+.menu-admin button[data-panel="professeurs"] i { color: #fda4af; }
+.menu-admin button[data-panel="matieres"] i { color: #d8b4fe; }
+.menu-admin button[data-panel="notes"] i { color: #fdba74; }
+.menu-admin button[data-panel="absences"] i { color: #f9a8d4; }
+.menu-admin button[data-panel="bulletins"] i { color: #67e8f9; }
+
+/* =====================================================================
+   4. ZONE PRINCIPALE & HEADER
+===================================================================== */
 .zone-principale-admin {
   flex: 1;
-  background: transparent !important;
-  padding: 26px 36px 40px;
+  min-width: 0;
+  background-color: #f4f1fc;
+  padding: 26px 34px 40px;
   overflow-y: auto;
 }
 
 .barre-superieure {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
   margin-bottom: 26px;
+  flex-wrap: wrap;
 }
 
-   /*  CONTENU & PANNEAUX  */
+.champ-recherche-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #ffffff;
+  border: 1px solid #ece9f7;
+  border-radius: 999px;
+  padding: 5px 5px;
+  box-shadow: 0 20px 45px -22px rgba(124, 58, 237, 0.35);
+  flex: 1;
+  max-width: 380px;
+  min-width: 180px;
+}
 
+.champ-recherche-wrapper i { 
+  color: #8b87a3; 
+  font-size: 0.85rem; 
+}
 
-.contenu-admin,
+.input-recherche {
+  border: none; 
+  outline: none; 
+  background: transparent;
+  font-size: 0.85rem; 
+  color: #1e1b2e; 
+  width: 100%;
+}
+
+.input-recherche::placeholder { 
+  color: #b7b3cc; 
+}
+
+.profil-utilisateur {
+  display: flex; 
+  align-items: center; 
+  gap: 12px;
+  background-color: #ffffff;
+  padding: 6px 8px 6px 16px;
+  border-radius: 999px;
+  border: 1px solid #ece9f7;
+  box-shadow: 0 20px 45px -22px rgba(124, 58, 237, 0.35);
+}
+
+.profil-utilisateur i {
+  font-size: 1.1rem;
+  color: #ffffff;
+  background: linear-gradient(135deg, #7c3aed, #ec4899);
+  width: 34px; 
+  height: 34px;
+  border-radius: 50%;
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+}
+
+.nom-utilisateur { 
+  font-weight: 700; 
+  font-size: 0.85rem; 
+  color: #1e1b2e; 
+}
+
+/* Bouton de déconnexion compact et optimisé */
+.bouton-deconnexion, 
+#deconnexion {
+  background: linear-gradient(135deg, #7c3aed, #5b21b6) !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  font-size: 0.75rem !important;
+  padding: 5px 12px !important;
+  border-radius: 999px !important;
+  box-shadow: 0 4px 12px -6px rgba(124, 58, 237, 0.4) !important;
+  border: none;
+  cursor: pointer;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  height: auto !important;
+  line-height: 1.2 !important;
+  transition: transform 0.2s ease;
+}
+
+/* Icône power intégrée proprement sous forme de petit cercle */
+.bouton-deconnexion i, 
+#deconnexion i {
+  font-size: 0.7rem !important;
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px !important;
+  min-height: 18px !important;
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-radius: 50% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+}
+
+.bouton-deconnexion:hover, 
+#deconnexion:hover { 
+  transform: translateY(-1px); 
+}
+
+/* =====================================================================
+   5. CONTENU & PANNEAUX DE GESTION
+===================================================================== */
+.contenu-admin, 
 #contenu {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 22px;
 }
 
-.barre-outils-panneau,
-.carte-formulaire,
-form {
-  width: 100% !important;
-  max-width: 100% !important;
-  box-sizing: border-box !important;
+.barre-outils-panneau {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   gap: 12px;
-  background: rgba(255, 255, 255, 0.1) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  background-color: #ffffff;
+  border: 1px solid #ece9f7;
   padding: 20px 26px;
-  border-radius: var(--rayon-lg, 16px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border-radius: 20px;
+  box-shadow: 0 20px 45px -22px rgba(124, 58, 237, 0.35);
 }
 
-   /*  STATISTIQUES  */
+.barre-outils-panneau h2 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: #1e1b2e;
+  margin: 0;
+}
 
+.barre-outils-panneau button {
+  background: linear-gradient(135deg, #7c3aed, #ec4899);
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-weight: 700;
+  box-shadow: 0 10px 22px -10px rgba(124, 58, 237, 0.35);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
 
+.barre-outils-panneau button:hover { 
+  transform: translateY(-2px); 
+}
+
+/* =====================================================================
+   6. STATISTIQUES (KPI Cards)
+===================================================================== */
 .grille-statistiques {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
@@ -177,163 +323,360 @@ form {
 }
 
 .carte-statistique {
-  background: rgba(255, 255, 255, 0.12) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.25) !important;
-  border-radius: var(--rayon-lg, 16px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  background-color: #ffffff;
+  border: 1px solid #ece9f7;
+  border-radius: 20px;
+  box-shadow: 0 20px 45px -22px rgba(124, 58, 237, 0.35);
   padding: 22px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  transition: transform 0.2s ease, background 0.2s ease;
+  gap: 10px;
   position: relative;
   overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .carte-statistique:hover {
-  transform: translateY(-3px);
-  background: rgba(255, 255, 255, 0.18) !important;
+  transform: translateY(-4px);
+  box-shadow: 0 26px 55px -20px rgba(124, 58, 237, 0.45);
 }
 
 .carte-statistique::before {
   content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.8), transparent);
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  height: 5px;
+  background: linear-gradient(90deg, #7c3aed, #ec4899);
+  border-radius: 20px 20px 0 0;
 }
 
 .titre-statistique {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: 0.06em;
+  color: #8b87a3;
 }
 
 .valeur-statistique {
   font-family: 'Poppins', sans-serif;
-  font-size: 2rem;
+  font-size: 2.1rem;
   font-weight: 800;
-  color: #ffffff;
+  color: #1e1b2e;
 }
 
-/* =========================
-   TABLEAUX RESPONSIVES & CADRES EN VERRE
-========================= */
-.table-responsive {
-  width: 100% !important;
-  max-height: 60vh; /* Permet à la dernière ligne de toucher le bas du cadre */
-  overflow-y: auto !important; /* Active le scroll vertical */
-  overflow-x: auto !important; /* Active le scroll horizontal */
-  -webkit-overflow-scrolling: touch;
-  margin-top: 10px;
-  margin-bottom: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.25) !important;
-  border-radius: 16px !important;
-  background: rgba(255, 255, 255, 0.08) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-}
-
+/* =====================================================================
+   7. TABLEAUX DE DONNÉES
+===================================================================== */
 table {
-  width: 100% !important;
-  border-collapse: collapse !important;
-  white-space: nowrap;
-  margin: 0 !important;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background-color: #ffffff;
+  border: 1px solid #ece9f7;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 45px -22px rgba(124, 58, 237, 0.35);
 }
 
-table th, 
-table td {
-  padding: 12px 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
-  border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
-  color: #ffffff;
+thead { 
+  background-color: #faf9ff; 
 }
 
-table th {
-  background: rgba(20, 30, 50, 0.7); /* Fond légèrement plus sombre pour détacher l'en-tête */
+thead th {
+  color: #5b21b6;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 800;
+  padding: 16px 22px;
+  text-align: left;
+  border-bottom: 1px solid #ece9f7;
+}
+
+tbody td {
+  padding: 15px 22px;
+  border-bottom: 1px solid #ece9f7;
+  font-size: 0.9rem;
+  color: #1e1b2e;
+}
+
+tbody tr:last-child td { 
+  border-bottom: none; 
+}
+
+tbody tr:hover {
+  background-color: #5564d54b !important;
+}
+
+td.mono, 
+span.mono { 
+  font-family: 'Courier New', monospace; 
+  color: #8b87a3 !important; 
+}
+
+/* =====================================================================
+   8. COMPOSANTS (Badges & États)
+===================================================================== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 14px;
+  border-radius: 999px;
+  font-size: 0.72rem;
   font-weight: 700;
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background-color: #fde2e2;
+  color: #c0392b;
 }
 
-table tr:last-child td {
-  border-bottom: none !important; /* Évite les coupures visuelles en bas */
+.badge.ok { 
+  background-color: #dcf7ec; 
+  color: #0e9c6c; 
 }
 
-   /*  ACTIONS DE LIGNE  */
+.etat-vide {
+  background-color: #ffffff;
+  border: 1.5px dashed #ece9f7;
+  border-radius: 20px;
+  padding: 34px;
+  text-align: center;
+  color: #8b87a3;
+}
 
-
-   .actions-ligne {
-  display: flex;
-  gap: 8px;
+.actions-ligne { 
+  display: flex; 
+  gap: 8px; 
+  flex-wrap: wrap; 
 }
 
 .actions-ligne button {
   padding: 7px 14px;
   font-size: 0.78rem;
+  border-radius: 999px;
+  cursor: pointer;
+  border: none;
 }
 
-/* Icones Onglets */
-.menu-admin button[data-panel="statistiques"] i { color: #ffd166; }
-.menu-admin button[data-panel="utilisateurs"] i { color: #8ecae6; }
-.menu-admin button[data-panel="eleves"] i { color: #95d5b2; }
-.menu-admin button[data-panel="professeurs"] i { color: #ffb4a2; }
-.menu-admin button[data-panel="matieres"] i { color: #e0aaff; }
-.menu-admin button[data-panel="notes"] i { color: #ffd6a5; }
-.menu-admin button[data-panel="absences"] i { color: #ff8fa3; }
+.actions-ligne button.secondaire {
+  background-color: #f4f1fc;
+  color: #5b21b6;
+  border: 1px solid #ece9f7;
+  box-shadow: none;
+}
 
-   /* RESPONSIVE TABLETTE ET MOBILE  */
+.actions-ligne button.danger {
+  background: linear-gradient(135deg, #f87171, #dc2626);
+  box-shadow: 0 8px 18px -10px rgba(220, 38, 38, 0.5);
+  color: #ffffff;
+}
 
-   
+/* =====================================================================
+   9. FORMULAIRES INTÉGRÉS
+===================================================================== */
+#contenu form {
+  background-color: #ffffff;
+  border: 1px solid #ece9f7;
+  border-radius: 20px;
+  box-shadow: 0 20px 45px -22px rgba(124, 58, 237, 0.35);
+  padding: 24px;
+}
+
+#contenu label { 
+  color: #5b21b6; 
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+#contenu input, 
+#contenu select {
+  background-color: #faf9ff;
+  border: 1.5px solid #ece9f7;
+  color: #1e1b2e;
+  padding: 10px 14px;
+  border-radius: 12px;
+  outline: none;
+  font-size: 0.9rem;
+  width: 100%;
+}
+
+#contenu input:focus, 
+#contenu select:focus {
+  border-color: #7c3aed;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.35);
+}
+
+#contenu button[type="submit"] {
+  background: linear-gradient(135deg, #7c3aed, #ec4899);
+  box-shadow: 0 10px 22px -10px rgba(124, 58, 237, 0.35);
+  color: #ffffff;
+  font-weight: 700;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+/* =====================================================================
+   10. MODALE D'ADMINISTRATION
+===================================================================== */
+.modal-admin {
+  position: fixed; 
+  inset: 0;
+  background-color: rgba(30, 27, 46, 0.55);
+  backdrop-filter: blur(4px);
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal-admin[hidden] { 
+  display: none; 
+}
+
+.contenu-modal {
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 30px 32px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.4);
+}
+
+.contenu-modal h2 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: #1e1b2e;
+  margin-top: 0;
+  margin-bottom: 20px;
+  display: flex; 
+  align-items: center; 
+  gap: 10px;
+}
+
+.contenu-modal h2 i { 
+  color: #7c3aed; 
+}
+
+.contenu-modal .champ-saisie { 
+  margin-bottom: 14px; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 6px; 
+}
+
+.contenu-modal label { 
+  font-size: 0.78rem; 
+  font-weight: 700; 
+  color: #5b21b6; 
+  text-transform: uppercase; 
+  letter-spacing: 0.04em; 
+}
+
+.contenu-modal input, 
+.contenu-modal select {
+  padding: 11px 14px; 
+  border-radius: 10px; 
+  border: 1.5px solid #ece9f7;
+  background-color: #faf9ff; 
+  font-size: 0.9rem; 
+  color: #1e1b2e;
+  outline: none;
+  width: 100%;
+}
+
+.contenu-modal input:focus, 
+.contenu-modal select:focus {
+  border-color: #7c3aed; 
+  background-color: #fff; 
+  box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.35);
+}
+
+.actions-modal { 
+  display: flex; 
+  gap: 10px; 
+  margin-top: 18px; 
+}
+
+.bouton-valider {
+  flex: 1; 
+  background: linear-gradient(135deg, #7c3aed, #ec4899);
+  color: #fff; 
+  border: none; 
+  padding: 11px; 
+  border-radius: 999px; 
+  font-weight: 700; 
+  cursor: pointer;
+}
+
+.bouton-annuler {
+  flex: 1; 
+  background-color: #fcf3f1; 
+  color: #5b21b6; 
+  border: 1px solid #ece9f7;
+  padding: 11px; 
+  border-radius: 999px; 
+  font-weight: 700; 
+  cursor: pointer; 
+  box-shadow: none;
+}
+
+/* =====================================================================
+   11. RESPONSIVE DESIGN (Media Queries)
+===================================================================== */
 @media (max-width: 1024px) {
   .disposition-admin { 
     flex-direction: column; 
+    border-radius: 20px; 
   }
   
   .barre-laterale-admin {
-    width: 100%;
+    width: 100%; 
     min-width: 100%;
-    max-height: none;
-    flex-direction: column;
-    align-items: stretch;
+    flex-direction: row; 
+    align-items: center; 
+    justify-content: space-between;
     padding: 16px 20px;
-    border-right: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   }
   
   .marque-barre-laterale { 
-    margin-bottom: 16px; 
-    justify-content: center;
+    margin-bottom: 0; 
+  }
+  
+  .etiquette-barre-laterale { 
+    display: none; 
   }
   
   .menu-admin ul { 
     flex-direction: row; 
-    overflow-x: auto !important; 
-    -webkit-overflow-scrolling: touch;
-    gap: 8px; 
-    padding-bottom: 8px;
+    overflow-x: auto; 
+    gap: 6px; 
+    padding-bottom: 2px; 
   }
   
   .menu-admin li { 
     flex-shrink: 0; 
   }
-
-  .menu-admin button {
-    white-space: nowrap;
+  
+  .menu-admin button { 
+    white-space: nowrap; 
   }
   
   .zone-principale-admin { 
     padding: 20px; 
+  }
+}
+
+@media (max-width: 640px) {
+  .barre-laterale-admin { 
+    flex-direction: column; 
+    align-items: stretch; 
+    gap: 12px; 
   }
 }
 
@@ -351,9 +694,45 @@ table tr:last-child td {
     grid-template-columns: 1fr; 
   }
   
-  .barre-outils-panneau,
-  form { 
+  .barre-outils-panneau { 
     flex-direction: column; 
     align-items: stretch; 
+    padding: 16px; 
+  }
+  
+  .zone-principale-admin { 
+    padding: 16px; 
+  }
+  
+  .barre-superieure { 
+    justify-content: center; 
+  }
+  
+  .champ-recherche-wrapper { 
+    max-width: 100%; 
+    order: 2; 
+  }
+  
+  .profil-utilisateur { 
+    width: 100%; 
+    justify-content: space-between; 
+    order: 1; 
+  }
+  
+  table { 
+    display: block; 
+    overflow-x: auto; 
+    -webkit-overflow-scrolling: touch; 
+    white-space: nowrap; 
+  }
+}
+
+@media (max-width: 380px) {
+  .carte-statistique { 
+    padding: 16px; 
+  }
+  
+  .valeur-statistique { 
+    font-size: 1.6rem; 
   }
 }

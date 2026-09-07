@@ -1,73 +1,93 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Espace Professeur - School Management</title>
-    <link rel="stylesheet" href="../css/global.css">
-    <link rel="stylesheet" href="../css/teacher.css">
+    <link rel="stylesheet" href="../css/global.css" />
+    <link rel="stylesheet" href="../css/teacher.css" />
     <!-- FontAwesome pour les icônes -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body class="corps-role">
-
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body class="corps-role">
     <!-- Vidéo de fond en arrière-plan -->
     <video autoplay loop muted playsinline id="video-fond">
-        <source src="../IMAGES/im.mp4" type="video/mp4">
+      <source src="../IMAGES/im.mp4" type="video/mp4" />
     </video>
 
     <div class="conteneur-role">
-        <!-- EN-TÊTE / BARRE SUPÉRIEURE -->
-        <header class="entete-role">
-            <div class="marque-role">
-                <i class="fas fa-graduation-cap"></i>
-                <span>SCHOOL MANAGEMENT</span>
-            </div>
-            
-            
-            <div class="profil-utilisateur">
-                <i class="fas fa-user-circle"></i>
-                <span class="nom-utilisateur" id="nomProfesseur">Chargement...</span>
-                <button type="button" id="deconnexion" class="bouton-deconnexion">
-                    <i class="fas fa-power-off"></i> Déconnexion
-                </button>
-            </div>
-        </header>
+      <!-- EN-TÊTE / BARRE SUPÉRIEURE -->
+      <header class="entete-role">
+        <div class="marque-role">
+          <i class="fas fa-graduation-cap"></i>
+          <span>SCHOOL MANAGEMENT</span>
+        </div>
 
-        <!-- CARTE DE BIENVENUE -->
-        <section class="info-professeur">
-            <h2><i class="fas fa-hand-sparkles"></i> Bienvenue <span id="nomProfesseurCarte">Professeur</span></h2>
-            <p>Utilisez le menu ci-dessous pour consulter vos élèves, gérer les notes et les absences.</p>
-        </section>
+        <div class="profil-utilisateur">
+          <i class="fas fa-user-circle"></i>
+          <span class="nom-utilisateur" id="nomProfesseur">Chargement...</span>
+          <button type="button" id="deconnexion" class="bouton-deconnexion">
+            <i class="fas fa-power-off"></i> Déconnexion
+          </button>
+        </div>
+      </header>
 
-        <!-- MENU DE NAVIGATION -->
-        <section class="menu-professeur">
-            <h2>Gestion pédagogique</h2>
-            <div class="puces-menu">
-                <button type="button" data-panel="eleves"><i class="fas fa-user-graduate"></i> Voir les élèves</button>
-                <button type="button" data-panel="notes"><i class="fas fa-file-invoice"></i> Gérer les notes</button>
-                <button type="button" data-panel="absences"><i class="fas fa-user-clock"></i> Gérer les absences</button>
-            </div>
-        </section>
+      <!-- CARTE DE BIENVENUE -->
+      <section class="info-professeur">
+        <h2>
+          <i class="fas fa-hand-sparkles"></i> Bienvenue
+          <span id="nomProfesseurCarte">Professeur</span>
+        </h2>
+        <p>
+          Utilisez le menu ci-dessous pour consulter vos élèves, gérer les notes
+          et les absences.
+        </p>
+      </section>
 
-        <!-- BARRE DE RECHERCHE PAR MATRICULE -->
-        <form class="barre-recherche-form" role="search" onsubmit="return false;">
-            <label for="recherche" class="masque-visuellement">Rechercher un élève par matricule</label>
-            <input type="text" id="recherche" name="recherche" placeholder="Rechercher par matricule (ex: MAT-2026-01)...">
-            <button type="submit" id="btn-rechercher">
-                <i class="fas fa-search"></i> Rechercher
-            </button>
-        </form>
+      <!-- MENU DE NAVIGATION -->
+      <section class="menu-professeur">
+        <h2>Gestion pédagogique</h2>
+        <div class="puces-menu">
+          <button type="button" data-panel="eleves">
+            <i class="fas fa-user-graduate"></i> Voir les élèves
+          </button>
+          <button type="button" data-panel="notes">
+            <i class="fas fa-file-invoice"></i> Gérer les notes
+          </button>
+          <button type="button" data-panel="absences">
+            <i class="fas fa-user-clock"></i> Gérer les absences
+          </button>
+        </div>
+      </section>
 
-        <!-- ZONE D'AFFICHAGE DU CONTENU DYNAMIQUE -->
-        <main id="contenu" class="panneau">
-            <div class="etat-vide">
-                Choisissez une action ci-dessus pour commencer.
-            </div>
-        </main>
+      <!-- BARRE DE RECHERCHE PAR MATRICULE -->
+      <form class="barre-recherche-form" role="search" onsubmit="return false;">
+        <label for="recherche" class="masque-visuellement"
+          >Rechercher un élève par matricule</label
+        >
+        <input
+          type="text"
+          id="recherche"
+          name="recherche"
+          placeholder="Rechercher par matricule (ex: MAT-2026-01)..."
+        />
+        <button type="submit" id="btn-rechercher">
+          <i class="fas fa-search"></i> Rechercher
+        </button>
+      </form>
+
+      <!-- ZONE D'AFFICHAGE DU CONTENU DYNAMIQUE -->
+      <main id="contenu" class="panneau">
+        <div class="etat-vide">
+          Choisissez une action ci-dessus pour commencer.
+        </div>
+      </main>
     </div>
 
     <!-- SCRIPT JS -->
     <script type="module" src="../js/teacher.js"></script>
-</body>
+  </body>
 </html>
